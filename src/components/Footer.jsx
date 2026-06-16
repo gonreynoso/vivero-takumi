@@ -1,25 +1,43 @@
-import { Link } from 'react-router-dom'
-import { Mail, Phone, MapPin, Globe, Share2, MessageCircle } from 'lucide-react'
-import { categorias } from '../data/categorias'
-import { TextHoverEffect, FooterBackgroundGradient } from './TextHoverEffect'
+import { Link } from "react-router-dom";
+import {
+  Mail,
+  Phone,
+  MapPin,
+  Globe,
+  Share2,
+  MessageCircle,
+} from "lucide-react";
+import { categorias } from "../data/categorias";
+import { TextHoverEffect, FooterBackgroundGradient } from "./TextHoverEffect";
 
 const linksAyuda = [
-  { label: 'Preguntas frecuentes', href: '#' },
-  { label: 'Cómo cuidar tu planta', href: '#' },
-  { label: 'Envíos y entregas', href: '#' },
-]
+  { label: "Preguntas frecuentes", href: "#" },
+  { label: "Cómo cuidar tu planta", href: "#" },
+  { label: "Envíos y entregas", href: "#" },
+];
 
 const contactInfo = [
-  { icon: <Mail size={18} className="text-accent" />, text: 'hola@verdevivo.com', href: 'mailto:hola@verdevivo.com' },
-  { icon: <Phone size={18} className="text-accent" />, text: '(011) 4567-8900', href: 'tel:+541145678900' },
-  { icon: <MapPin size={18} className="text-accent" />, text: 'Ruta 8 km 45, Buenos Aires' },
-]
+  {
+    icon: <Mail size={18} className="text-accent" />,
+    text: "hola@viverotakumi.com",
+    href: "mailto:hola@viverotakumi.com",
+  },
+  {
+    icon: <Phone size={18} className="text-accent" />,
+    text: "(011) 4567-8900",
+    href: "tel:+541145678900",
+  },
+  {
+    icon: <MapPin size={18} className="text-accent" />,
+    text: "Ruta 8 km 45, Buenos Aires",
+  },
+];
 
 const socialLinks = [
-  { icon: <Globe size={20} />, label: 'Sitio web', href: '#' },
-  { icon: <Share2 size={20} />, label: 'Redes sociales', href: '#' },
-  { icon: <MessageCircle size={20} />, label: 'WhatsApp', href: '#' },
-]
+  { icon: <Globe size={20} />, label: "Sitio web", href: "#" },
+  { icon: <Share2 size={20} />, label: "Redes sociales", href: "#" },
+  { icon: <MessageCircle size={20} />, label: "WhatsApp", href: "#" },
+];
 
 // Footer de la tienda con enlaces, contacto y efecto hover en el nombre de marca
 export default function Footer() {
@@ -32,7 +50,7 @@ export default function Footer() {
           <div className="flex flex-col gap-3">
             <div className="flex items-center gap-2 text-white text-2xl font-bold">
               <span>🌿</span>
-              Verde Vivo
+              Vivero Takumi
             </div>
             <p className="text-sm leading-relaxed">
               Tu vivero de confianza: plantas de interior, exterior, suculentas,
@@ -65,7 +83,10 @@ export default function Footer() {
             <ul className="space-y-3 text-sm">
               {linksAyuda.map((link) => (
                 <li key={link.label}>
-                  <a href={link.href} className="hover:text-white transition-colors">
+                  <a
+                    href={link.href}
+                    className="hover:text-white transition-colors"
+                  >
                     {link.label}
                   </a>
                 </li>
@@ -82,7 +103,10 @@ export default function Footer() {
                 <li key={item.text} className="flex items-center gap-3">
                   {item.icon}
                   {item.href ? (
-                    <a href={item.href} className="hover:text-white transition-colors">
+                    <a
+                      href={item.href}
+                      className="hover:text-white transition-colors"
+                    >
                       {item.text}
                     </a>
                   ) : (
@@ -109,13 +133,13 @@ export default function Footer() {
               </a>
             ))}
           </div>
-          <p>© {new Date().getFullYear()} Verde Vivo. Todos los derechos reservados.</p>
+          <p>Vivero Takumi. Todos los derechos reservados.</p>
         </div>
       </div>
 
       <div className="hidden lg:flex h-48 -mt-16 relative z-10">
-        <TextHoverEffect text="Verde Vivo" />
+        <TextHoverEffect text="Vivero Takumi" />
       </div>
     </footer>
-  )
+  );
 }

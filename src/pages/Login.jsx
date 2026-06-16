@@ -1,31 +1,31 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { LogIn, Mail, Lock } from 'lucide-react'
-import { useAuth } from '../context/AuthContext'
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { LogIn, Mail, Lock } from "lucide-react";
+import { useAuth } from "../context/AuthContext";
 
 const rutaPorRol = {
-  admin: '/admin/dashboard',
-  empleado: '/empleado/stock',
-  cliente: '/catalogo',
-}
+  admin: "/admin/dashboard",
+  empleado: "/empleado/stock",
+  cliente: "/catalogo",
+};
 
 // Página de login, único punto de entrada público de la app
 export default function Login() {
-  const { login } = useAuth()
-  const navigate = useNavigate()
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [error, setError] = useState('')
+  const { login } = useAuth();
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   const handleSubmit = (e) => {
-    e.preventDefault()
-    const resultado = login(email, password)
+    e.preventDefault();
+    const resultado = login(email, password);
     if (resultado.ok) {
-      navigate(rutaPorRol[resultado.usuario.rol])
+      navigate(rutaPorRol[resultado.usuario.rol]);
     } else {
-      setError(resultado.error)
+      setError(resultado.error);
     }
-  }
+  };
 
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-background px-4">
@@ -34,7 +34,7 @@ export default function Login() {
           <LogIn className="w-7 h-7 text-white" />
         </div>
         <h2 className="text-2xl font-semibold mb-2 text-center text-gray-800">
-          Ingresá a Verde Vivo
+          Ingresá a Vivero Takumi
         </h2>
         <p className="text-gray-500 text-sm mb-6 text-center">
           Accedé al catálogo, tu carrito y tus pedidos.
@@ -86,11 +86,11 @@ export default function Login() {
         </div>
 
         <div className="text-xs text-gray-400 text-center space-y-1">
-          <p>admin@verdevivo.com / admin123</p>
-          <p>empleado@verdevivo.com / emp123</p>
-          <p>cliente@verdevivo.com / cli123</p>
+          <p>admin@viverotakumi.com / admin123</p>
+          <p>empleado@viverotakumi.com / emp123</p>
+          <p>cliente@viverotakumi.com / cli123</p>
         </div>
       </div>
     </div>
-  )
+  );
 }
