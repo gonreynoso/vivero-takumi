@@ -3,6 +3,7 @@ import { useData } from '../context/DataContext'
 import { categorias } from '../data/categorias'
 import PlantaCard from '../components/PlantaCard'
 import { DicedHeroSection } from '../components/DicedHeroSection'
+import InteractiveImageAccordion from '../components/InteractiveImageAccordion'
 import Faq from '../components/Faq'
 import { useCart } from '../context/CartContext'
 import { useAuth } from '../context/AuthContext'
@@ -59,6 +60,11 @@ export default function Home() {
     .map((id) => plantas.find((p) => p.id === id))
     .filter(Boolean)
 
+  const itemsAccordion = categorias.map((categoria) => ({
+    titulo: categoria,
+    imagen: plantas.find((p) => p.categoria === categoria)?.imagen,
+  }))
+
   const handleAgregar = (planta) => {
     if (!usuario) {
       mostrarToast('Iniciá sesión para agregar plantas al carrito', 'info')
@@ -71,36 +77,15 @@ export default function Home() {
 
   return (
     <div className="flex flex-col gap-14">
-      <section className="relative bg-primary rounded-3xl overflow-hidden">
-        <div className="absolute -right-16 -top-16 w-72 h-72 rounded-full border-[2px] border-dashed border-white/15" />
-        <div className="grid md:grid-cols-2 items-center">
-          <div className="relative z-10 p-8 sm:p-12 flex flex-col gap-5">
-            <span className="inline-flex self-start items-center gap-1.5 bg-white/15 text-white text-xs font-medium px-3 py-1.5 rounded-full">
-              🌱 Nueva colección de temporada
-            </span>
-            <h1 className="text-3xl sm:text-4xl font-bold text-white leading-tight max-w-md">
-              Llená tu casa y tu jardín de vida verde
-            </h1>
-            <p className="text-white/80 max-w-sm">
-              Plantas de interior, exterior, suculentas, aromáticas y frutales,
-              cuidadas con cariño y listas para tu hogar.
-            </p>
-            <Link
-              to="/catalogo"
-              className="self-start bg-white text-primary font-semibold px-6 py-3 rounded-full hover:bg-white/90 transition-colors"
-            >
-              Ver catálogo
-            </Link>
-          </div>
-          <div className="relative h-56 md:h-96">
-            <img
-              src="https://images.unsplash.com/photo-1569736957322-b5e515f249b0?w=900"
-              alt="Plantas Verde Vivo"
-              className="absolute inset-0 w-full h-full object-cover md:rounded-l-[3rem]"
-            />
-          </div>
-        </div>
-      </section>
+      <InteractiveImageAccordion
+        topText="🌱 Nueva colección de temporada"
+        mainText="Llená tu casa y tu jardín de vida verde"
+        subText="Plantas de interior, exterior, suculentas, aromáticas y frutales, cuidadas con cariño y listas para tu hogar."
+        buttonText="Ver catálogo"
+        items={itemsAccordion}
+        onButtonClick={() => navigate('/catalogo')}
+        onItemClick={(item) => navigate(`/catalogo?categoria=${encodeURIComponent(item.titulo)}`)}
+      />
 
       <section>
         <h2 className="text-xl font-bold text-gray-800 mb-5">Categorías</h2>
