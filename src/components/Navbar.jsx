@@ -1,24 +1,27 @@
-import { useNavigate, Link, NavLink } from 'react-router-dom'
+import { useNavigate, Link, useLocation } from 'react-router-dom'
+import { Home, Leaf, ShoppingCart, Package, LogIn } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 import { useCart } from '../context/CartContext'
+import { GlowMenu } from './GlowMenu'
 
-const linksPorRol = {
+const itemsPorRol = {
   cliente: [
-    { to: '/', label: 'Inicio' },
-    { to: '/catalogo', label: 'Catálogo' },
-    { to: '/mis-pedidos', label: 'Mis pedidos' },
+    { to: '/', label: 'Inicio', icon: Home, gradient: 'radial-gradient(circle, rgba(82,183,136,0.25) 0%, rgba(82,183,136,0.08) 50%, transparent 100%)' },
+    { to: '/catalogo', label: 'Catálogo', icon: Leaf, gradient: 'radial-gradient(circle, rgba(82,183,136,0.25) 0%, rgba(82,183,136,0.08) 50%, transparent 100%)' },
+    { to: '/mis-pedidos', label: 'Mis pedidos', icon: Package, gradient: 'radial-gradient(circle, rgba(82,183,136,0.25) 0%, rgba(82,183,136,0.08) 50%, transparent 100%)' },
   ],
   invitado: [
-    { to: '/', label: 'Inicio' },
-    { to: '/catalogo', label: 'Catálogo' },
+    { to: '/', label: 'Inicio', icon: Home, gradient: 'radial-gradient(circle, rgba(82,183,136,0.25) 0%, rgba(82,183,136,0.08) 50%, transparent 100%)' },
+    { to: '/catalogo', label: 'Catálogo', icon: Leaf, gradient: 'radial-gradient(circle, rgba(82,183,136,0.25) 0%, rgba(82,183,136,0.08) 50%, transparent 100%)' },
   ],
 }
 
-// Barra superior con el nombre de la app, links de navegación, carrito y logout
+// Barra superior con el nombre de la app, menú con efecto glow, carrito y logout
 export default function Navbar() {
   const { usuario, logout } = useAuth()
   const cart = useCart()
   const navigate = useNavigate()
+  const location = useLocation()
 
   const handleLogout = () => {
     logout()
@@ -26,11 +29,15 @@ export default function Navbar() {
   }
 
   const esTienda = !usuario || usuario.rol === 'cliente'
-  const links = linksPorRol[usuario?.rol] || (!usuario ? linksPorRol.invitado : null)
+  const items = itemsPorRol[usuario?.rol] || (!usuario ? itemsPorRol.invitado : null)
+  const activeItem = items?.find((item) =>
+    item.to === '/' ? location.pathname === '/' : location.pathname.startsWith(item.to)
+  )?.label
+
   const logo = (
     <div className="flex items-center gap-2">
       <span className="text-xl">🌿</span>
-      <span className="font-bold text-lg">Verde Vivo</span>
+      <span className="font-bold text-lg">Vivero Takumi</span>
     </div>
   )
 
@@ -39,23 +46,14 @@ export default function Navbar() {
       <div className="flex items-center gap-8">
         {esTienda ? <Link to="/">{logo}</Link> : logo}
 
-        {links && (
-          <nav className="hidden md:flex items-center gap-6">
-            {links.map((link) => (
-              <NavLink
-                key={link.to}
-                to={link.to}
-                end={link.to === '/'}
-                className={({ isActive }) =>
-                  `text-sm font-medium transition-colors ${
-                    isActive ? 'text-white' : 'text-white/70 hover:text-white'
-                  }`
-                }
-              >
-                {link.label}
-              </NavLink>
-            ))}
-          </nav>
+        {items && (
+          <div className="hidden md:block">
+            <GlowMenu
+              items={items}
+              activeItem={activeItem}
+              onItemClick={(item) => navigate(item.to)}
+            />
+          </div>
         )}
       </div>
 
@@ -66,7 +64,7 @@ export default function Navbar() {
             className="relative flex items-center"
             aria-label="Carrito"
           >
-            <span className="text-2xl">🛒</span>
+            <ShoppingCart className="w-6 h-6" />
             {cart.cantidadTotal > 0 && (
               <span className="absolute -top-2 -right-2 bg-accent text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
                 {cart.cantidadTotal}
@@ -91,8 +89,9 @@ export default function Navbar() {
         ) : (
           <button
             onClick={() => navigate('/login')}
-            className="text-sm bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-lg transition-colors"
+            className="text-sm bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1.5"
           >
+            <LogIn className="w-4 h-4" />
             Iniciar sesión
           </button>
         )}
