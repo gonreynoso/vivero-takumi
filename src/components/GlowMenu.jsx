@@ -37,7 +37,7 @@ export const GlowMenu = forwardRef(({ className, items, activeItem, onItemClick,
     <motion.nav
       ref={ref}
       className={cn(
-        'p-2 rounded-2xl bg-white/10 backdrop-blur-lg border border-white/15 shadow-lg relative overflow-hidden',
+        'p-1.5 rounded-2xl bg-gray-50 border border-gray-100 relative overflow-hidden',
         className
       )}
       initial="initial"
@@ -46,7 +46,7 @@ export const GlowMenu = forwardRef(({ className, items, activeItem, onItemClick,
     >
       <motion.div
         className="absolute -inset-2 rounded-3xl z-0 pointer-events-none"
-        style={{ background: 'radial-gradient(circle, rgba(255,255,255,0.12), transparent 70%)' }}
+        style={{ background: 'radial-gradient(circle, rgba(45,106,79,0.06), transparent 70%)' }}
         variants={navGlowVariants}
       />
       <ul className="flex items-center gap-1 relative z-10">
@@ -76,7 +76,7 @@ export const GlowMenu = forwardRef(({ className, items, activeItem, onItemClick,
                   <motion.div
                     className={cn(
                       'flex items-center gap-2 px-4 py-2 relative z-10 bg-transparent transition-colors rounded-xl text-sm font-medium',
-                      isActive ? 'text-white' : 'text-white/70 group-hover:text-white'
+                      isActive ? 'text-primary' : 'text-gray-500 group-hover:text-gray-900'
                     )}
                     variants={itemVariants}
                     transition={sharedTransition}
@@ -88,7 +88,7 @@ export const GlowMenu = forwardRef(({ className, items, activeItem, onItemClick,
                   <motion.div
                     className={cn(
                       'flex items-center gap-2 px-4 py-2 absolute inset-0 z-10 bg-transparent transition-colors rounded-xl text-sm font-medium',
-                      isActive ? 'text-white' : 'text-white/70 group-hover:text-white'
+                      isActive ? 'text-primary' : 'text-gray-900'
                     )}
                     variants={backVariants}
                     transition={sharedTransition}

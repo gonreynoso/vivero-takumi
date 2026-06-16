@@ -9,6 +9,8 @@ import StoreLayout from './components/StoreLayout'
 
 import Login from './pages/Login'
 import Home from './pages/Home'
+import Nosotros from './pages/Nosotros'
+import Contacto from './pages/Contacto'
 
 import Dashboard from './pages/admin/Dashboard'
 import PlantasAdmin from './pages/admin/Plantas'
@@ -49,11 +51,13 @@ function AppRoutes() {
         <Route path="/" element={<Home />} />
         <Route path="/catalogo" element={<Catalogo />} />
         <Route path="/planta/:id" element={<DetallePlanta />} />
+        <Route path="/carrito" element={<Carrito />} />
+        <Route path="/nosotros" element={<Nosotros />} />
+        <Route path="/contacto" element={<Contacto />} />
       </Route>
 
       <Route element={<ProtectedRoute rolesPermitidos={['cliente']} />}>
         <Route element={<StoreLayout />}>
-          <Route path="/carrito" element={<Carrito />} />
           <Route path="/mis-pedidos" element={<MisPedidos />} />
         </Route>
       </Route>

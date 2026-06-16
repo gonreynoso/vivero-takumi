@@ -15,6 +15,7 @@ const itemsCliente = [
 const itemsInvitado = [
   { to: '/', icon: Home, label: 'Inicio' },
   { to: '/catalogo', icon: Leaf, label: 'Catálogo' },
+  { to: '/carrito', icon: ShoppingCart, label: 'Carrito' },
   { to: '/login', icon: LogIn, label: 'Ingresar' },
 ]
 

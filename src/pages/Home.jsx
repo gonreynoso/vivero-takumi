@@ -6,7 +6,6 @@ import { DicedHeroSection } from '../components/DicedHeroSection'
 import InteractiveImageAccordion from '../components/InteractiveImageAccordion'
 import Faq from '../components/Faq'
 import { useCart } from '../context/CartContext'
-import { useAuth } from '../context/AuthContext'
 import { useToast } from '../context/ToastContext'
 
 const dicedSlides = [
@@ -24,6 +23,13 @@ const beneficios = [
   { icono: '🌱', titulo: 'Plantas garantizadas', descripcion: 'Cuidadas y revisadas antes de salir del vivero.' },
   { icono: '📋', titulo: 'Guías de cuidado', descripcion: 'Cada planta incluye su ficha completa de cuidados.' },
   { icono: '🔒', titulo: 'Compra segura', descripcion: 'Tus pedidos y datos siempre protegidos.' },
+]
+
+const metricas = [
+  { valor: '12+', etiqueta: 'Años de experiencia' },
+  { valor: '10.000+', etiqueta: 'Plantas entregadas' },
+  { valor: '5', etiqueta: 'Categorías de plantas' },
+  { valor: '4.8★', etiqueta: 'Calificación promedio' },
 ]
 
 const testimonios = [
@@ -48,7 +54,6 @@ const testimonios = [
 export default function Home() {
   const { plantas } = useData()
   const { agregarAlCarrito } = useCart()
-  const { usuario } = useAuth()
   const { mostrarToast } = useToast()
   const navigate = useNavigate()
 
@@ -66,17 +71,12 @@ export default function Home() {
   }))
 
   const handleAgregar = (planta) => {
-    if (!usuario) {
-      mostrarToast('Iniciá sesión para agregar plantas al carrito', 'info')
-      navigate('/login')
-      return
-    }
     agregarAlCarrito(planta)
     mostrarToast(`${planta.nombre} agregada al carrito`)
   }
 
   return (
-    <div className="flex flex-col gap-14">
+    <div className="flex flex-col gap-20">
       <InteractiveImageAccordion
         topText="🌱 Nueva colección de temporada"
         mainText="Llená tu casa y tu jardín de vida verde"
@@ -129,6 +129,17 @@ export default function Home() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {destacadas.map((planta) => (
             <PlantaCard key={planta.id} planta={planta} onAgregarCarrito={handleAgregar} />
+          ))}
+        </div>
+      </section>
+
+      <section className="bg-primary rounded-3xl py-10 px-6">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 max-w-4xl mx-auto">
+          {metricas.map((metrica) => (
+            <div key={metrica.etiqueta} className="text-center">
+              <p className="text-3xl font-bold text-white">{metrica.valor}</p>
+              <p className="text-sm text-white/70 mt-1">{metrica.etiqueta}</p>
+            </div>
           ))}
         </div>
       </section>

@@ -1,20 +1,18 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import { useData } from '../../context/DataContext'
 import { useCart } from '../../context/CartContext'
-import { useAuth } from '../../context/AuthContext'
 import { useToast } from '../../context/ToastContext'
 import Badge from '../../components/Badge'
 import GuiaCuidado from '../../components/GuiaCuidado'
 
 const colorDificultad = { fácil: 'verde', media: 'amarillo', difícil: 'rojo' }
 
-// Detalle de una planta con su guía de cuidado completa, navegable sin login
+// Detalle de una planta con su guía de cuidado completa, navegable y comprable sin login
 export default function DetallePlanta() {
   const { id } = useParams()
   const navigate = useNavigate()
   const { plantas } = useData()
   const { agregarAlCarrito } = useCart()
-  const { usuario } = useAuth()
   const { mostrarToast } = useToast()
 
   const planta = plantas.find((p) => p.id === Number(id))
@@ -31,11 +29,6 @@ export default function DetallePlanta() {
   }
 
   const handleAgregar = () => {
-    if (!usuario) {
-      mostrarToast('Iniciá sesión para agregar plantas al carrito', 'info')
-      navigate('/login')
-      return
-    }
     agregarAlCarrito(planta)
     mostrarToast(`${planta.nombre} agregada al carrito`)
   }
