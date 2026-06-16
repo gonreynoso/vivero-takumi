@@ -50,12 +50,12 @@ export default function Faq({
 
   return (
     <section>
-      <div className="mx-auto flex max-w-2xl flex-col text-center gap-3 mb-8">
+      <div className="flex flex-col text-center gap-3 mb-8">
         <h2 className="text-2xl font-bold text-gray-800">{heading}</h2>
         <p className="text-gray-500">{description}</p>
       </div>
 
-      <div className="mx-auto w-full max-w-2xl flex flex-col divide-y divide-gray-100 bg-white rounded-2xl border border-gray-100 shadow-sm">
+      <div className="w-full flex flex-col divide-y divide-gray-100 bg-white rounded-2xl border border-gray-100 shadow-sm">
         {items.map((item) => {
           const estaAbierto = abierto === item.id
           return (
