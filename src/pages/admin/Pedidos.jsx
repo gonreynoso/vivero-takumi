@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { useData } from '../../context/DataContext'
 import { useToast } from '../../context/ToastContext'
 import PedidoCard from '../../components/PedidoCard'
@@ -10,7 +11,8 @@ const estados = ['todos', 'pendiente', 'confirmado', 'entregado']
 export default function Pedidos() {
   const { pedidos, actualizarEstadoPedido } = useData()
   const { mostrarToast } = useToast()
-  const [filtro, setFiltro] = useState('todos')
+  const [searchParams] = useSearchParams()
+  const [filtro, setFiltro] = useState(searchParams.get('estado') || 'todos')
 
   const pedidosFiltrados =
     filtro === 'todos' ? pedidos : pedidos.filter((p) => p.estado === filtro)
