@@ -37,13 +37,14 @@ export default function InteractiveImageAccordion({
   subText,
   buttonText,
   items,
+  beneficios,
   onButtonClick,
   onItemClick,
 }) {
   const [activeIndex, setActiveIndex] = useState(items.length - 1)
 
   return (
-    <section className="min-h-[calc(100vh-4rem)] flex items-center">
+    <section className="min-h-[calc(100vh-4rem)] flex flex-col items-center justify-center gap-10 py-10">
       <div className="w-full flex flex-col md:flex-row items-center justify-between gap-10">
         <div className="w-full md:w-1/2 text-center md:text-left">
           {topText && (
@@ -79,6 +80,21 @@ export default function InteractiveImageAccordion({
           </div>
         </div>
       </div>
+
+      {beneficios && (
+        <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          {beneficios.map((beneficio) => (
+            <div
+              key={beneficio.titulo}
+              className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 flex flex-col items-center text-center gap-2"
+            >
+              <span className="text-3xl">{beneficio.icono}</span>
+              <h3 className="font-semibold text-gray-800">{beneficio.titulo}</h3>
+              <p className="text-sm text-gray-500">{beneficio.descripcion}</p>
+            </div>
+          ))}
+        </div>
+      )}
     </section>
   )
 }

@@ -83,29 +83,31 @@ export default function Home() {
         subText="Plantas de interior, exterior, suculentas, aromáticas y frutales, cuidadas con cariño y listas para tu hogar."
         buttonText="Ver catálogo"
         items={itemsAccordion}
+        beneficios={beneficios}
         onButtonClick={() => navigate('/catalogo')}
         onItemClick={(item) => navigate(`/catalogo?categoria=${encodeURIComponent(item.titulo)}`)}
       />
 
       <section>
         <h2 className="text-xl font-bold text-gray-800 mb-5">Categorías</h2>
-        <div className="flex gap-6 overflow-x-auto pb-2">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-5">
           {categorias.map((categoria) => {
             const imagenCategoria = plantas.find((p) => p.categoria === categoria)?.imagen
             return (
               <Link
                 key={categoria}
                 to={`/catalogo?categoria=${encodeURIComponent(categoria)}`}
-                className="group flex flex-col items-center gap-2 flex-shrink-0"
+                className="group relative h-40 rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow"
               >
-                <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-transparent shadow-sm group-hover:border-accent group-hover:shadow-md transition-all">
-                  <img
-                    src={imagenCategoria}
-                    alt={categoria}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                  />
-                </div>
-                <span className="text-sm font-medium text-gray-700">{categoria}</span>
+                <img
+                  src={imagenCategoria}
+                  alt={categoria}
+                  className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
+                <span className="absolute bottom-3 left-4 text-white font-semibold">
+                  {categoria}
+                </span>
               </Link>
             )
           })}
@@ -129,19 +131,6 @@ export default function Home() {
             <PlantaCard key={planta.id} planta={planta} onAgregarCarrito={handleAgregar} />
           ))}
         </div>
-      </section>
-
-      <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-        {beneficios.map((beneficio) => (
-          <div
-            key={beneficio.titulo}
-            className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 flex flex-col items-center text-center gap-2"
-          >
-            <span className="text-3xl">{beneficio.icono}</span>
-            <h3 className="font-semibold text-gray-800">{beneficio.titulo}</h3>
-            <p className="text-sm text-gray-500">{beneficio.descripcion}</p>
-          </div>
-        ))}
       </section>
 
       <section>
