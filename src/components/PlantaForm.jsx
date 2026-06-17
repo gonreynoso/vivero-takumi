@@ -1,16 +1,11 @@
 import { useState } from 'react'
 import { Boxes, DollarSign, FileText, Gauge, Image as ImageIcon, Sprout, Tag, Upload } from 'lucide-react'
+import { convertirAWebp } from '../lib/imagenes'
 
 const dificultades = ['fácil', 'media', 'difícil']
 
-// Convierte un archivo de imagen a data URL para guardarlo directamente en el estado (sin backend)
-function leerComoDataUrl(archivo) {
-  return new Promise((resolve, reject) => {
-    const lector = new FileReader()
-    lector.onload = () => resolve(lector.result)
-    lector.onerror = reject
-    lector.readAsDataURL(archivo)
-  })
+function formatearKb(bytes) {
+  return `${Math.max(1, Math.round(bytes / 1024))} KB`
 }
 
 // Formulario para crear o editar una planta, usado dentro de un Modal
@@ -28,6 +23,8 @@ export default function PlantaForm({ plantaInicial, categorias, onGuardar, onCan
     }
   )
   const [errorImagen, setErrorImagen] = useState('')
+  const [convirtiendoImagen, setConvirtiendoImagen] = useState(false)
+  const [infoCompresion, setInfoCompresion] = useState(null)
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -50,8 +47,17 @@ export default function PlantaForm({ plantaInicial, categorias, onGuardar, onCan
       return
     }
     setErrorImagen('')
-    const dataUrl = await leerComoDataUrl(archivo)
-    setForm((prev) => ({ ...prev, imagen: dataUrl }))
+    setInfoCompresion(null)
+    setConvirtiendoImagen(true)
+    try {
+      const { dataUrl, tamanoOriginal, tamanoFinal } = await convertirAWebp(archivo)
+      setForm((prev) => ({ ...prev, imagen: dataUrl }))
+      setInfoCompresion({ original: tamanoOriginal, final: tamanoFinal })
+    } catch {
+      setErrorImagen('No se pudo convertir la imagen, probá con otro archivo')
+    } finally {
+      setConvirtiendoImagen(false)
+    }
   }
 
   const handleSubmit = (e) => {
@@ -166,11 +172,28 @@ export default function PlantaForm({ plantaInicial, categorias, onGuardar, onCan
             placeholder="URL de la imagen (https://...)"
             className="w-full px-3 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-accent bg-gray-50 text-sm"
           />
-          <label className="flex items-center gap-1.5 text-xs text-gray-500 cursor-pointer hover:text-primary w-fit">
+          <label
+            className={`flex items-center gap-1.5 text-xs w-fit ${
+              convirtiendoImagen
+                ? 'text-gray-300 cursor-wait'
+                : 'text-gray-500 cursor-pointer hover:text-primary'
+            }`}
+          >
             <Upload className="w-3.5 h-3.5" />
-            o subí una imagen desde tu computadora
-            <input type="file" accept="image/*" onChange={handleArchivoImagen} className="hidden" />
+            {convirtiendoImagen ? 'Convirtiendo a WebP...' : 'o subí una imagen desde tu computadora'}
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleArchivoImagen}
+              disabled={convirtiendoImagen}
+              className="hidden"
+            />
           </label>
+          {infoCompresion && (
+            <p className="text-xs text-accent">
+              Convertida a WebP: {formatearKb(infoCompresion.original)} → {formatearKb(infoCompresion.final)}
+            </p>
+          )}
           {errorImagen && <p className="text-xs text-red-500">{errorImagen}</p>}
         </div>
       </div>
