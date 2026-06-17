@@ -11,9 +11,9 @@ import { categorias } from "../data/categorias";
 import { TextHoverEffect, FooterBackgroundGradient } from "./TextHoverEffect";
 
 const linksAyuda = [
-  { label: "Preguntas frecuentes", href: "#" },
-  { label: "Cómo cuidar tu planta", href: "#" },
-  { label: "Envíos y entregas", href: "#" },
+  { label: "Preguntas frecuentes", href: "/#faq" },
+  { label: "Cómo cuidar tu planta", href: "/#faq-1" },
+  { label: "Envíos y entregas", href: "/#faq-2" },
 ];
 
 const contactInfo = [
@@ -83,12 +83,12 @@ export default function Footer() {
             <ul className="space-y-3 text-sm">
               {linksAyuda.map((link) => (
                 <li key={link.label}>
-                  <a
-                    href={link.href}
+                  <Link
+                    to={link.href}
                     className="hover:text-white transition-colors"
                   >
                     {link.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>

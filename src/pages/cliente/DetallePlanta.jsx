@@ -31,6 +31,7 @@ export default function DetallePlanta() {
   const handleAgregar = () => {
     agregarAlCarrito(planta)
     mostrarToast(`${planta.nombre} agregada al carrito`)
+    navigate('/carrito')
   }
 
   return (

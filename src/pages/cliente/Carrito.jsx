@@ -1,42 +1,27 @@
-import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { ShoppingBag, Trash2, Truck } from 'lucide-react'
 import { useCart } from '../../context/CartContext'
 import { useData } from '../../context/DataContext'
-import { useAuth } from '../../context/AuthContext'
-import { useToast } from '../../context/ToastContext'
 import CartItem from '../../components/CartItem'
 import EmptyState from '../../components/EmptyState'
 
-// Carrito de compras, permite confirmar el pedido con o sin sesión iniciada
+// Carrito de compras estilo Mercado Libre: los items se seleccionan individualmente y solo
+// los seleccionados pasan al checkout; el resto queda guardado en el carrito
 export default function Carrito() {
-  const { items, cambiarCantidad, quitarDelCarrito, vaciarCarrito, total } = useCart()
-  const { agregarPedido, descontarStock } = useData()
-  const { usuario } = useAuth()
-  const { mostrarToast } = useToast()
+  const {
+    items,
+    seleccionados,
+    cambiarCantidad,
+    quitarDelCarrito,
+    toggleSeleccion,
+    seleccionarTodos,
+    vaciarCarrito,
+    totalSeleccionado,
+    cantidadSeleccionada,
+    todosSeleccionados,
+  } = useCart()
+  const { plantas } = useData()
   const navigate = useNavigate()
-  const [datosInvitado, setDatosInvitado] = useState({ nombre: '', email: '' })
-
-  const handleConfirmar = (e) => {
-    e.preventDefault()
-    const hoy = new Date().toISOString().slice(0, 10)
-    agregarPedido({
-      clienteEmail: usuario?.email || datosInvitado.email,
-      clienteNombre: usuario?.nombre || datosInvitado.nombre,
-      items: items.map(({ plantaId, nombre, precio, cantidad }) => ({
-        plantaId,
-        nombre,
-        precio,
-        cantidad,
-      })),
-      total,
-      estado: 'pendiente',
-      fecha: hoy,
-    })
-    descontarStock(items)
-    vaciarCarrito()
-    mostrarToast('Pedido confirmado correctamente')
-    navigate(usuario ? '/mis-pedidos' : '/catalogo')
-  }
 
   if (items.length === 0) {
     return <EmptyState mensaje="Tu carrito está vacío. ¡Agregá alguna planta del catálogo!" icono="🛒" />
@@ -44,60 +29,79 @@ export default function Carrito() {
 
   return (
     <div className="flex flex-col gap-6">
-      <h1 className="text-2xl font-bold text-gray-800">Mi carrito</h1>
-
-      <div className="flex flex-col gap-3">
-        {items.map((item) => (
-          <CartItem
-            key={item.plantaId}
-            item={item}
-            onCambiarCantidad={cambiarCantidad}
-            onQuitar={quitarDelCarrito}
-          />
-        ))}
+      <div className="flex items-center gap-3">
+        <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-primary/10 text-primary">
+          <ShoppingBag className="w-5 h-5" />
+        </div>
+        <h1 className="text-2xl font-bold text-gray-800">Carrito ({items.length})</h1>
       </div>
 
-      <form
-        onSubmit={handleConfirmar}
-        className="bg-white rounded-xl shadow-sm border border-gray-100 p-5 flex flex-col gap-4"
-      >
-        {!usuario && (
-          <div className="grid sm:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Nombre y apellido
-              </label>
+      <div className="grid lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-2 flex flex-col gap-3">
+          <div className="flex items-center justify-between bg-white rounded-2xl border border-gray-100 px-5 py-3.5">
+            <label className="flex items-center gap-2 text-sm font-medium text-gray-700 cursor-pointer">
               <input
-                value={datosInvitado.nombre}
-                onChange={(e) => setDatosInvitado({ ...datosInvitado, nombre: e.target.value })}
-                required
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent"
+                type="checkbox"
+                checked={todosSeleccionados}
+                onChange={(e) => seleccionarTodos(e.target.checked)}
+                className="w-4 h-4 accent-primary cursor-pointer"
               />
+              Seleccionar todos ({items.length})
+            </label>
+            <button
+              onClick={vaciarCarrito}
+              className="flex items-center gap-1.5 text-sm text-gray-400 hover:text-red-500 transition-colors"
+            >
+              <Trash2 className="w-4 h-4" />
+              Vaciar carrito
+            </button>
+          </div>
+
+          {items.map((item) => {
+            const planta = plantas.find((p) => p.id === item.plantaId)
+            return (
+              <CartItem
+                key={item.plantaId}
+                item={item}
+                stockDisponible={planta?.stock ?? item.cantidad}
+                seleccionado={seleccionados.includes(item.plantaId)}
+                onToggleSeleccion={toggleSeleccion}
+                onCambiarCantidad={cambiarCantidad}
+                onQuitar={quitarDelCarrito}
+              />
+            )
+          })}
+        </div>
+
+        <div className="lg:sticky lg:top-6 lg:self-start flex flex-col gap-4">
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 flex flex-col gap-3.5">
+            <h2 className="font-semibold text-gray-800">Resumen de compra</h2>
+            <div className="flex items-center justify-between text-sm text-gray-600">
+              <span>Productos ({cantidadSeleccionada})</span>
+              <span>${totalSeleccionado}</span>
             </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-              <input
-                type="email"
-                value={datosInvitado.email}
-                onChange={(e) => setDatosInvitado({ ...datosInvitado, email: e.target.value })}
-                required
-                placeholder="Para coordinar la entrega"
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent"
-              />
+            <div className="flex items-center justify-between text-sm text-gray-600">
+              <span className="flex items-center gap-1.5">
+                <Truck className="w-4 h-4 text-accent" />
+                Envío
+              </span>
+              <span className="text-primary font-medium">Gratis</span>
+            </div>
+            <div className="border-t border-dashed border-gray-200 pt-3.5 flex items-center justify-between">
+              <span className="font-semibold text-gray-800">Total</span>
+              <span className="text-xl font-bold text-primary">${totalSeleccionado}</span>
             </div>
           </div>
-        )}
 
-        <div className="flex items-center justify-between">
-          <span className="text-lg font-semibold text-gray-800">Total: ${total}</span>
           <button
-            type="submit"
-            className="bg-primary text-white px-6 py-2.5 rounded-lg font-medium hover:bg-primary/90"
+            onClick={() => navigate('/checkout')}
+            disabled={cantidadSeleccionada === 0}
+            className="w-full bg-gradient-to-b from-accent to-primary text-white font-medium py-2.5 rounded-xl shadow hover:brightness-105 transition disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:brightness-100"
           >
-            Confirmar pedido
+            Continuar compra
           </button>
         </div>
-      </form>
+      </div>
     </div>
   )
 }

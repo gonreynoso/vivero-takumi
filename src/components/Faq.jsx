@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useLocation } from 'react-router-dom'
 import { ChevronDown } from 'lucide-react'
 
 const faqItemsDefault = [
@@ -41,15 +42,28 @@ const faqItemsDefault = [
 ]
 
 // Sección de preguntas frecuentes con acordeón simple (sin dependencias externas)
+// Soporta deep-linking: /#faq enfoca la sección, /#faq-N abre y desplaza a esa pregunta puntual
 export default function Faq({
   heading = 'Preguntas frecuentes',
   description = '¿Tenés dudas sobre tu pedido, el cuidado de tus plantas o los envíos? Acá respondemos las consultas más comunes.',
   items = faqItemsDefault,
 }) {
-  const [abierto, setAbierto] = useState(items[0]?.id ?? null)
+  const { hash } = useLocation()
+  const idDesdeHash = hash.replace('#', '')
+  const [abierto, setAbierto] = useState(
+    () => items.find((item) => item.id === idDesdeHash)?.id ?? items[0]?.id ?? null
+  )
+
+  useEffect(() => {
+    if (!idDesdeHash) return
+    const elemento = document.getElementById(idDesdeHash)
+    if (!elemento) return
+    const timeout = setTimeout(() => elemento.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100)
+    return () => clearTimeout(timeout)
+  }, [idDesdeHash])
 
   return (
-    <section>
+    <section id="faq">
       <div className="flex flex-col text-center gap-3 mb-8">
         <h2 className="text-2xl font-bold text-gray-800">{heading}</h2>
         <p className="text-gray-500">{description}</p>
@@ -59,7 +73,7 @@ export default function Faq({
         {items.map((item) => {
           const estaAbierto = abierto === item.id
           return (
-            <div key={item.id} className="px-5">
+            <div key={item.id} id={item.id} className="px-5">
               <button
                 onClick={() => setAbierto(estaAbierto ? null : item.id)}
                 className="w-full flex items-center justify-between gap-4 py-4 text-left font-medium text-gray-800 hover:opacity-70 transition-opacity"

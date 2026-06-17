@@ -23,6 +23,8 @@ import PedidosEmpleado from './pages/empleado/Pedidos'
 import Catalogo from './pages/cliente/Catalogo'
 import DetallePlanta from './pages/cliente/DetallePlanta'
 import Carrito from './pages/cliente/Carrito'
+import Checkout from './pages/cliente/Checkout'
+import PedidoConfirmado from './pages/cliente/PedidoConfirmado'
 import MisPedidos from './pages/cliente/MisPedidos'
 
 // Define toda la navegación de la app y los guards de rol por sección
@@ -52,6 +54,8 @@ function AppRoutes() {
         <Route path="/catalogo" element={<Catalogo />} />
         <Route path="/planta/:id" element={<DetallePlanta />} />
         <Route path="/carrito" element={<Carrito />} />
+        <Route path="/checkout" element={<Checkout />} />
+        <Route path="/pedido-confirmado" element={<PedidoConfirmado />} />
         <Route path="/nosotros" element={<Nosotros />} />
         <Route path="/contacto" element={<Contacto />} />
       </Route>

@@ -73,6 +73,7 @@ export default function Home() {
   const handleAgregar = (planta) => {
     agregarAlCarrito(planta)
     mostrarToast(`${planta.nombre} agregada al carrito`)
+    navigate('/carrito')
   }
 
   return (

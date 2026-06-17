@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useData } from '../../context/DataContext'
 import { useCart } from '../../context/CartContext'
 import { useToast } from '../../context/ToastContext'
@@ -14,6 +14,7 @@ export default function Catalogo() {
   const { plantas } = useData()
   const { agregarAlCarrito } = useCart()
   const { mostrarToast } = useToast()
+  const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const [filtros, setFiltros] = useState({
     ...filtrosIniciales,
@@ -33,6 +34,7 @@ export default function Catalogo() {
   const handleAgregar = (planta) => {
     agregarAlCarrito(planta)
     mostrarToast(`${planta.nombre} agregada al carrito`)
+    navigate('/carrito')
   }
 
   return (
