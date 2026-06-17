@@ -30,6 +30,11 @@ export default async (req) => {
     </div>
   `
 
+  const filasItemsTexto = pedido.items
+    .map((item) => `- ${item.cantidad} x ${item.nombre}: $${item.precio * item.cantidad}`)
+    .join('\n')
+  const texto = `Gracias por tu compra, ${pedido.clienteNombre}.\n\nTu pedido fue recibido y está ${pedido.estado}. Pronto nos pondremos en contacto para coordinar la entrega.\n\n${filasItemsTexto}\n\nTotal: $${pedido.total}\n\nVivero Takumi · ${pedido.fecha}`
+
   const respuesta = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: {
@@ -41,6 +46,7 @@ export default async (req) => {
       to: pedido.clienteEmail,
       subject: 'Confirmación de tu pedido — Vivero Takumi',
       html,
+      text: texto,
     }),
   })
 
