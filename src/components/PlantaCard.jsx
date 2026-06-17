@@ -11,10 +11,15 @@ const colorDificultad = {
 // Card de planta para catálogo, con acciones opcionales (agregar al carrito, editar, eliminar)
 export default function PlantaCard({ planta, onAgregarCarrito, acciones }) {
   const [favorito, setFavorito] = useState(false)
+  const habilitada = planta.habilitada !== false
   const colorStock = planta.stock === 0 ? 'rojo' : planta.stock < 5 ? 'amarillo' : 'verde'
 
   return (
-    <div className="group bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col hover:shadow-lg hover:-translate-y-0.5 transition-all">
+    <div
+      className={`group bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col hover:shadow-lg hover:-translate-y-0.5 transition-all ${
+        !habilitada ? 'opacity-60' : ''
+      }`}
+    >
       <div className="relative">
         <Link to={`/planta/${planta.id}`}>
           <img
@@ -32,7 +37,8 @@ export default function PlantaCard({ planta, onAgregarCarrito, acciones }) {
             {favorito ? '♥' : '♡'}
           </span>
         </button>
-        <div className="absolute top-3 left-3">
+        <div className="absolute top-3 left-3 flex gap-1.5">
+          {!habilitada && <Badge color="gris">Deshabilitada</Badge>}
           <Badge color={colorDificultad[planta.dificultad] || 'gris'}>
             {planta.dificultad}
           </Badge>
@@ -63,10 +69,10 @@ export default function PlantaCard({ planta, onAgregarCarrito, acciones }) {
           {onAgregarCarrito && (
             <button
               onClick={() => onAgregarCarrito(planta)}
-              disabled={planta.stock === 0}
+              disabled={!habilitada || planta.stock === 0}
               className="flex-1 bg-primary text-white rounded-full py-2 text-sm font-medium hover:bg-primary/90 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
             >
-              Agregar al carrito
+              {habilitada ? 'Agregar al carrito' : 'No disponible'}
             </button>
           )}
           {acciones}

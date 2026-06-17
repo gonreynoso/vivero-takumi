@@ -11,7 +11,7 @@ const filtrosIniciales = { busqueda: '', categoria: '', dificultad: '', precioMa
 
 // Catálogo de plantas, navegable y comprable sin necesidad de login
 export default function Catalogo() {
-  const { plantas } = useData()
+  const { plantas, categorias } = useData()
   const { agregarAlCarrito } = useCart()
   const { mostrarToast } = useToast()
   const navigate = useNavigate()
@@ -22,6 +22,7 @@ export default function Catalogo() {
   })
 
   const plantasFiltradas = plantas.filter((planta) => {
+    if (planta.habilitada === false) return false
     const coincideBusqueda = planta.nombre
       .toLowerCase()
       .includes(filtros.busqueda.toLowerCase())
@@ -41,7 +42,7 @@ export default function Catalogo() {
     <div className="flex flex-col gap-6">
       <h1 className="text-2xl font-bold text-gray-800">Catálogo de plantas</h1>
 
-      <FiltrosCatalogo filtros={filtros} onChange={setFiltros} />
+      <FiltrosCatalogo filtros={filtros} onChange={setFiltros} categorias={categorias} />
 
       {plantasFiltradas.length === 0 ? (
         <EmptyState mensaje="No encontramos plantas que coincidan con tu búsqueda." />

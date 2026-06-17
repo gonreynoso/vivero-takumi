@@ -14,6 +14,7 @@ import Contacto from './pages/Contacto'
 
 import Dashboard from './pages/admin/Dashboard'
 import PlantasAdmin from './pages/admin/Plantas'
+import CategoriasAdmin from './pages/admin/Categorias'
 import Usuarios from './pages/admin/Usuarios'
 import PedidosAdmin from './pages/admin/Pedidos'
 
@@ -33,12 +34,18 @@ function AppRoutes() {
     <Routes>
       <Route path="/login" element={<Login />} />
 
-      <Route element={<ProtectedRoute rolesPermitidos={['admin']} />}>
+      <Route element={<ProtectedRoute rolesPermitidos={['admin', 'manager']} />}>
         <Route element={<Layout />}>
           <Route path="/admin/dashboard" element={<Dashboard />} />
           <Route path="/admin/plantas" element={<PlantasAdmin />} />
-          <Route path="/admin/usuarios" element={<Usuarios />} />
+          <Route path="/admin/categorias" element={<CategoriasAdmin />} />
           <Route path="/admin/pedidos" element={<PedidosAdmin />} />
+        </Route>
+      </Route>
+
+      <Route element={<ProtectedRoute rolesPermitidos={['admin']} />}>
+        <Route element={<Layout />}>
+          <Route path="/admin/usuarios" element={<Usuarios />} />
         </Route>
       </Route>
 

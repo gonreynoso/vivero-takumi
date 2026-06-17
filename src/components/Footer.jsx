@@ -7,7 +7,7 @@ import {
   Share2,
   MessageCircle,
 } from "lucide-react";
-import { categorias } from "../data/categorias";
+import { useData } from "../context/DataContext";
 import { TextHoverEffect, FooterBackgroundGradient } from "./TextHoverEffect";
 
 const linksAyuda = [
@@ -41,6 +41,8 @@ const socialLinks = [
 
 // Footer de la tienda con enlaces, contacto y efecto hover en el nombre de marca
 export default function Footer() {
+  const { categorias } = useData();
+
   return (
     <footer className="bg-primary text-white/70 relative overflow-hidden mt-16">
       <FooterBackgroundGradient />

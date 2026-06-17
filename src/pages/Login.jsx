@@ -5,6 +5,7 @@ import { useAuth } from "../context/AuthContext";
 
 const rutaPorRol = {
   admin: "/admin/dashboard",
+  manager: "/admin/dashboard",
   empleado: "/empleado/stock",
   cliente: "/catalogo",
 };
@@ -87,6 +88,7 @@ export default function Login() {
 
         <div className="text-xs text-gray-400 text-center space-y-1">
           <p>admin@viverotakumi.com / admin123</p>
+          <p>manager@viverotakumi.com / manager123</p>
           <p>empleado@viverotakumi.com / emp123</p>
           <p>cliente@viverotakumi.com / cli123</p>
         </div>

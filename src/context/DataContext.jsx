@@ -1,52 +1,30 @@
-import { createContext, useContext, useReducer } from 'react'
-import { plantasIniciales } from '../data/plantas'
+import { createContext, useContext, useEffect, useReducer, useState } from 'react'
 import { pedidosIniciales } from '../data/pedidos'
 import { usuariosIniciales } from '../data/usuarios'
+import { supabase } from '../lib/supabaseClient'
 
 const DataContext = createContext(null)
 
+const CLAVE_STORAGE = 'vivero-takumi:data'
+
 const estadoInicial = {
-  plantas: plantasIniciales,
   pedidos: pedidosIniciales,
   usuarios: usuariosIniciales,
 }
 
+// Hidrata desde localStorage si existe (persiste entre recargas y se sincroniza entre pestañas,
+// ya que pedidos y usuarios todavía no viven en una base de datos real)
+function cargarEstadoInicial(estadoPorDefecto) {
+  try {
+    const guardado = localStorage.getItem(CLAVE_STORAGE)
+    return guardado ? JSON.parse(guardado) : estadoPorDefecto
+  } catch {
+    return estadoPorDefecto
+  }
+}
+
 function dataReducer(state, action) {
   switch (action.type) {
-    case 'AGREGAR_PLANTA': {
-      const nuevoId = Math.max(0, ...state.plantas.map((p) => p.id)) + 1
-      return {
-        ...state,
-        plantas: [...state.plantas, { ...action.payload, id: nuevoId }],
-      }
-    }
-    case 'EDITAR_PLANTA':
-      return {
-        ...state,
-        plantas: state.plantas.map((p) =>
-          p.id === action.payload.id ? { ...p, ...action.payload } : p
-        ),
-      }
-    case 'ELIMINAR_PLANTA':
-      return {
-        ...state,
-        plantas: state.plantas.filter((p) => p.id !== action.payload),
-      }
-    case 'ACTUALIZAR_STOCK':
-      return {
-        ...state,
-        plantas: state.plantas.map((p) =>
-          p.id === action.payload.id ? { ...p, stock: action.payload.stock } : p
-        ),
-      }
-    case 'DESCONTAR_STOCK':
-      return {
-        ...state,
-        plantas: state.plantas.map((p) => {
-          const item = action.payload.find((i) => i.plantaId === p.id)
-          return item ? { ...p, stock: Math.max(0, p.stock - item.cantidad) } : p
-        }),
-      }
     case 'AGREGAR_USUARIO': {
       const nuevoId = Math.max(0, ...state.usuarios.map((u) => u.id)) + 1
       return {
@@ -80,21 +58,113 @@ function dataReducer(state, action) {
           p.id === action.payload.id ? { ...p, estado: action.payload.estado } : p
         ),
       }
+    case 'SINCRONIZAR':
+      return action.payload
     default:
       return state
   }
 }
 
-// Provee plantas, pedidos y usuarios junto con las acciones para modificarlos
+// Provee pedidos y usuarios (locales) además de plantas y categorías (Supabase)
 export function DataProvider({ children }) {
-  const [state, dispatch] = useReducer(dataReducer, estadoInicial)
+  const [state, dispatch] = useReducer(dataReducer, estadoInicial, cargarEstadoInicial)
+  const [plantas, setPlantas] = useState([])
+  const [categorias, setCategorias] = useState([])
+  const [cargandoPlantas, setCargandoPlantas] = useState(true)
 
-  const agregarPlanta = (planta) => dispatch({ type: 'AGREGAR_PLANTA', payload: planta })
-  const editarPlanta = (planta) => dispatch({ type: 'EDITAR_PLANTA', payload: planta })
-  const eliminarPlanta = (id) => dispatch({ type: 'ELIMINAR_PLANTA', payload: id })
-  const actualizarStock = (id, stock) =>
-    dispatch({ type: 'ACTUALIZAR_STOCK', payload: { id, stock } })
-  const descontarStock = (items) => dispatch({ type: 'DESCONTAR_STOCK', payload: items })
+  useEffect(() => {
+    localStorage.setItem(CLAVE_STORAGE, JSON.stringify(state))
+  }, [state])
+
+  useEffect(() => {
+    const handleStorage = (e) => {
+      if (e.key === CLAVE_STORAGE && e.newValue) {
+        dispatch({ type: 'SINCRONIZAR', payload: JSON.parse(e.newValue) })
+      }
+    }
+    window.addEventListener('storage', handleStorage)
+    return () => window.removeEventListener('storage', handleStorage)
+  }, [])
+
+  useEffect(() => {
+    async function cargarDesdeSupabase() {
+      const [{ data: plantasData, error: errorPlantas }, { data: categoriasData, error: errorCategorias }] =
+        await Promise.all([
+          supabase.from('plantas').select('*').order('id'),
+          supabase.from('categorias').select('nombre').order('nombre'),
+        ])
+      if (errorPlantas) console.error('Error cargando plantas:', errorPlantas)
+      if (errorCategorias) console.error('Error cargando categorías:', errorCategorias)
+      setPlantas(plantasData ?? [])
+      setCategorias((categoriasData ?? []).map((c) => c.nombre))
+      setCargandoPlantas(false)
+    }
+    cargarDesdeSupabase()
+  }, [])
+
+  const agregarPlanta = async (planta) => {
+    const { data, error } = await supabase.from('plantas').insert(planta).select().single()
+    if (error) throw error
+    setPlantas((prev) => [...prev, data])
+  }
+
+  const editarPlanta = async (planta) => {
+    const { id, ...campos } = planta
+    const { data, error } = await supabase
+      .from('plantas')
+      .update(campos)
+      .eq('id', id)
+      .select()
+      .single()
+    if (error) throw error
+    setPlantas((prev) => prev.map((p) => (p.id === id ? data : p)))
+  }
+
+  const eliminarPlanta = async (id) => {
+    const { error } = await supabase.from('plantas').delete().eq('id', id)
+    if (error) throw error
+    setPlantas((prev) => prev.filter((p) => p.id !== id))
+  }
+
+  const actualizarStock = async (id, stock) => {
+    const { data, error } = await supabase
+      .from('plantas')
+      .update({ stock })
+      .eq('id', id)
+      .select()
+      .single()
+    if (error) throw error
+    setPlantas((prev) => prev.map((p) => (p.id === id ? data : p)))
+  }
+
+  // Lee el stock actual desde el estado en memoria y lo descuenta en Supabase.
+  // No es atómico (lee y después escribe) — aceptable para esta etapa sin backend propio.
+  const descontarStock = async (items) => {
+    const actualizaciones = items.map((item) => {
+      const planta = plantas.find((p) => p.id === item.plantaId)
+      const nuevoStock = Math.max(0, (planta?.stock ?? 0) - item.cantidad)
+      return supabase.from('plantas').update({ stock: nuevoStock }).eq('id', item.plantaId).select().single()
+    })
+    const resultados = await Promise.all(actualizaciones)
+    setPlantas((prev) =>
+      prev.map((p) => {
+        const actualizado = resultados.find((r) => r.data?.id === p.id)
+        return actualizado?.data ? actualizado.data : p
+      })
+    )
+  }
+
+  const toggleHabilitada = async (id) => {
+    const planta = plantas.find((p) => p.id === id)
+    const { data, error } = await supabase
+      .from('plantas')
+      .update({ habilitada: planta?.habilitada === false })
+      .eq('id', id)
+      .select()
+      .single()
+    if (error) throw error
+    setPlantas((prev) => prev.map((p) => (p.id === id ? data : p)))
+  }
 
   const agregarUsuario = (usuario) => dispatch({ type: 'AGREGAR_USUARIO', payload: usuario })
   const editarUsuario = (usuario) => dispatch({ type: 'EDITAR_USUARIO', payload: usuario })
@@ -104,10 +174,32 @@ export function DataProvider({ children }) {
   const actualizarEstadoPedido = (id, estado) =>
     dispatch({ type: 'ACTUALIZAR_ESTADO_PEDIDO', payload: { id, estado } })
 
+  const agregarCategoria = async (nombre) => {
+    const { error } = await supabase.from('categorias').insert({ nombre })
+    if (error) throw error
+    setCategorias((prev) => [...prev, nombre])
+  }
+
+  // El rename hace cascada a las plantas a nivel de base (FK con ON UPDATE CASCADE)
+  const editarCategoria = async (anterior, nueva) => {
+    const { error } = await supabase.from('categorias').update({ nombre: nueva }).eq('nombre', anterior)
+    if (error) throw error
+    setCategorias((prev) => prev.map((c) => (c === anterior ? nueva : c)))
+    setPlantas((prev) => prev.map((p) => (p.categoria === anterior ? { ...p, categoria: nueva } : p)))
+  }
+
+  const eliminarCategoria = async (nombre) => {
+    const { error } = await supabase.from('categorias').delete().eq('nombre', nombre)
+    if (error) throw error
+    setCategorias((prev) => prev.filter((c) => c !== nombre))
+  }
+
   return (
     <DataContext.Provider
       value={{
-        plantas: state.plantas,
+        plantas,
+        categorias,
+        cargandoPlantas,
         pedidos: state.pedidos,
         usuarios: state.usuarios,
         agregarPlanta,
@@ -115,11 +207,15 @@ export function DataProvider({ children }) {
         eliminarPlanta,
         actualizarStock,
         descontarStock,
+        toggleHabilitada,
         agregarUsuario,
         editarUsuario,
         eliminarUsuario,
         agregarPedido,
         actualizarEstadoPedido,
+        agregarCategoria,
+        editarCategoria,
+        eliminarCategoria,
       }}
     >
       {children}

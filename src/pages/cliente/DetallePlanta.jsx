@@ -28,6 +28,8 @@ export default function DetallePlanta() {
     )
   }
 
+  const habilitada = planta.habilitada !== false
+
   const handleAgregar = () => {
     agregarAlCarrito(planta)
     mostrarToast(`${planta.nombre} agregada al carrito`)
@@ -48,9 +50,12 @@ export default function DetallePlanta() {
         />
 
         <div className="flex flex-col gap-4">
-          <div className="flex items-start justify-between">
+          <div className="flex items-start justify-between gap-2">
             <h1 className="text-2xl font-bold text-gray-800">{planta.nombre}</h1>
-            <Badge color={colorDificultad[planta.dificultad]}>{planta.dificultad}</Badge>
+            <div className="flex gap-1.5 shrink-0">
+              {!habilitada && <Badge color="gris">Deshabilitada</Badge>}
+              <Badge color={colorDificultad[planta.dificultad]}>{planta.dificultad}</Badge>
+            </div>
           </div>
           <p className="text-sm text-gray-500">{planta.categoria}</p>
           <p className="text-gray-600">{planta.descripcion}</p>
@@ -64,10 +69,10 @@ export default function DetallePlanta() {
 
           <button
             onClick={handleAgregar}
-            disabled={planta.stock === 0}
+            disabled={!habilitada || planta.stock === 0}
             className="bg-primary text-white rounded-lg py-2.5 font-medium hover:bg-primary/90 disabled:opacity-40 disabled:cursor-not-allowed"
           >
-            Agregar al carrito
+            {habilitada ? 'Agregar al carrito' : 'No disponible'}
           </button>
         </div>
       </div>

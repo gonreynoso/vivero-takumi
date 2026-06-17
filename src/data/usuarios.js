@@ -6,6 +6,7 @@ export const usuariosIniciales = [
     email: 'admin@viverotakumi.com',
     password: 'admin123',
     rol: 'admin',
+    protegido: true,
   },
   {
     id: 2,
@@ -13,6 +14,13 @@ export const usuariosIniciales = [
     email: 'empleado@viverotakumi.com',
     password: 'emp123',
     rol: 'empleado',
+  },
+  {
+    id: 4,
+    nombre: 'Encargado Vivero',
+    email: 'manager@viverotakumi.com',
+    password: 'manager123',
+    rol: 'manager',
   },
   {
     id: 3,

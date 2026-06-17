@@ -10,10 +10,14 @@ export default function Stock() {
   const { mostrarToast } = useToast()
   const [valores, setValores] = useState({})
 
-  const handleGuardar = (planta) => {
+  const handleGuardar = async (planta) => {
     const nuevoStock = Number(valores[planta.id] ?? planta.stock)
-    actualizarStock(planta.id, nuevoStock)
-    mostrarToast(`Stock de ${planta.nombre} actualizado a ${nuevoStock}`)
+    try {
+      await actualizarStock(planta.id, nuevoStock)
+      mostrarToast(`Stock de ${planta.nombre} actualizado a ${nuevoStock}`)
+    } catch {
+      mostrarToast('No se pudo actualizar el stock', 'info')
+    }
   }
 
   return (

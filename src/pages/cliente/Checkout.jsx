@@ -32,7 +32,7 @@ export default function Checkout() {
     return <Navigate to="/carrito" replace />
   }
 
-  const handleConfirmar = (e) => {
+  const handleConfirmar = async (e) => {
     e.preventDefault()
     setConfirmado(true)
     const hoy = new Date().toISOString().slice(0, 10)
@@ -50,7 +50,11 @@ export default function Checkout() {
       fecha: hoy,
     }
     agregarPedido(pedido)
-    descontarStock(itemsSeleccionados)
+    try {
+      await descontarStock(itemsSeleccionados)
+    } catch (error) {
+      console.error('No se pudo descontar el stock', error)
+    }
     quitarVarios(itemsSeleccionados.map((item) => item.plantaId))
     mostrarToast('¡Compra realizada con éxito!')
 

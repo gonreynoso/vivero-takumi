@@ -1,7 +1,9 @@
+import { Lock } from 'lucide-react'
 import Badge from './Badge'
 
 const colorRol = {
   admin: 'rojo',
+  manager: 'amarillo',
   empleado: 'azul',
   cliente: 'verde',
 }
@@ -11,7 +13,10 @@ export default function UserCard({ usuario, onEditar, onEliminar }) {
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 flex items-center justify-between gap-3">
       <div>
-        <p className="font-semibold text-gray-800">{usuario.nombre}</p>
+        <p className="font-semibold text-gray-800 flex items-center gap-1.5">
+          {usuario.nombre}
+          {usuario.protegido && <Lock className="w-3.5 h-3.5 text-gray-400" aria-label="Cuenta protegida" />}
+        </p>
         <p className="text-sm text-gray-500">{usuario.email}</p>
       </div>
       <div className="flex items-center gap-2">
@@ -24,7 +29,7 @@ export default function UserCard({ usuario, onEditar, onEliminar }) {
             Editar
           </button>
         )}
-        {onEliminar && (
+        {onEliminar && !usuario.protegido && (
           <button
             onClick={() => onEliminar(usuario)}
             className="text-sm text-red-600 hover:underline"

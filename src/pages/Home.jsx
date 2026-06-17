@@ -1,6 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { useData } from '../context/DataContext'
-import { categorias } from '../data/categorias'
 import PlantaCard from '../components/PlantaCard'
 import { DicedHeroSection } from '../components/DicedHeroSection'
 import InteractiveImageAccordion from '../components/InteractiveImageAccordion'
@@ -52,18 +51,18 @@ const testimonios = [
 
 // Home pública con hero, categorías, destacados, beneficios, novedades y testimonios
 export default function Home() {
-  const { plantas } = useData()
+  const { plantas, categorias } = useData()
   const { agregarAlCarrito } = useCart()
   const { mostrarToast } = useToast()
   const navigate = useNavigate()
 
   const destacadas = idsDestacados
     .map((id) => plantas.find((p) => p.id === id))
-    .filter(Boolean)
+    .filter((p) => p && p.habilitada !== false)
 
   const nuevosIngresos = idsNuevosIngresos
     .map((id) => plantas.find((p) => p.id === id))
-    .filter(Boolean)
+    .filter((p) => p && p.habilitada !== false)
 
   const itemsAccordion = categorias.map((categoria) => ({
     titulo: categoria,

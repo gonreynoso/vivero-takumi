@@ -1,14 +1,17 @@
 import { useEffect, useRef, useState } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
-import { LayoutDashboard, Leaf, Users, Package, ChevronDown, LogOut, MoreVertical, X } from 'lucide-react'
+import { LayoutDashboard, Leaf, Users, Package, Tag, ChevronDown, LogOut, MoreVertical, X } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 
+const navegacionAdminBase = [
+  { to: '/admin/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+  { to: '/admin/plantas', label: 'Plantas', icon: Leaf },
+  { to: '/admin/categorias', label: 'Categorías', icon: Tag },
+]
+
 const navegacionPorRol = {
-  admin: [
-    { to: '/admin/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-    { to: '/admin/plantas', label: 'Plantas', icon: Leaf },
-    { to: '/admin/usuarios', label: 'Usuarios', icon: Users },
-  ],
+  admin: [...navegacionAdminBase, { to: '/admin/usuarios', label: 'Usuarios', icon: Users }],
+  manager: navegacionAdminBase,
   empleado: [{ to: '/empleado/stock', label: 'Stock', icon: Leaf }],
 }
 
@@ -60,7 +63,7 @@ export default function Sidebar({ rol, abierto, onCerrar }) {
   const { usuario, logout } = useAuth()
   const navigate = useNavigate()
   const navegacion = navegacionPorRol[rol] || []
-  const pedidosPath = rol === 'admin' ? '/admin/pedidos' : '/empleado/pedidos'
+  const pedidosPath = rol === 'admin' || rol === 'manager' ? '/admin/pedidos' : '/empleado/pedidos'
 
   const menuRef = useRef(null)
   const [menuAbierto, setMenuAbierto] = useState(false)

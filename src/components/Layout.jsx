@@ -27,7 +27,7 @@ export default function Layout() {
         </button>
       </header>
 
-      <main className="sm:pl-72 p-6">
+      <main className="p-6 sm:pl-[19.5rem]">
         <Outlet />
       </main>
     </div>

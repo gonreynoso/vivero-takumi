@@ -1,9 +1,7 @@
-import { categorias } from '../data/categorias'
-
 const dificultades = ['fácil', 'media', 'difícil']
 
 // Filtros del catálogo: búsqueda, categoría, dificultad y rango de precio
-export default function FiltrosCatalogo({ filtros, onChange }) {
+export default function FiltrosCatalogo({ filtros, onChange, categorias }) {
   const handleChange = (campo, valor) => {
     onChange({ ...filtros, [campo]: valor })
   }
