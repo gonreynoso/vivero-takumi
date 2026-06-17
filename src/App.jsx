@@ -8,6 +8,7 @@ import Layout from './components/Layout'
 import StoreLayout from './components/StoreLayout'
 
 import Login from './pages/Login'
+import Registro from './pages/Registro'
 import Home from './pages/Home'
 import Nosotros from './pages/Nosotros'
 import Contacto from './pages/Contacto'
@@ -33,6 +34,7 @@ function AppRoutes() {
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
+      <Route path="/registro" element={<Registro />} />
 
       <Route element={<ProtectedRoute rolesPermitidos={['admin', 'manager']} />}>
         <Route element={<Layout />}>

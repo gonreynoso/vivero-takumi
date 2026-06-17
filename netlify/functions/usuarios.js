@@ -47,9 +47,11 @@ export default async (req) => {
       return new Response(JSON.stringify({ error: error.message }), { status: 400 })
     }
 
+    // upsert: el trigger on_auth_user_created ya insertó un profile con rol "cliente" al crearse
+    // el usuario en auth.users; si quien llama es admin y pidió otro rol, esto lo corrige
     const { error: errorPerfil } = await supabaseAdmin
       .from('profiles')
-      .insert({ id: data.user.id, nombre, email, rol })
+      .upsert({ id: data.user.id, nombre, email, rol })
     if (errorPerfil) {
       return new Response(JSON.stringify({ error: errorPerfil.message }), { status: 400 })
     }
