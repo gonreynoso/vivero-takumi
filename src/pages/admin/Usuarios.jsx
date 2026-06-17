@@ -1,25 +1,81 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Lock, Mail, Shield, User } from 'lucide-react'
 import { useData } from '../../context/DataContext'
 import { useAuth } from '../../context/AuthContext'
 import { useToast } from '../../context/ToastContext'
+import { supabase } from '../../lib/supabaseClient'
 import UserCard from '../../components/UserCard'
 import Modal from '../../components/Modal'
 import EmptyState from '../../components/EmptyState'
 
 const rolesDisponibles = ['admin', 'manager', 'empleado', 'cliente']
-const EMAIL_SUPER_ADMIN = 'gonzalo.reynoso9@gmail.com'
 
-// CRUD de usuarios/empleados, exclusivo del admin
+async function llamarFuncionUsuarios(body) {
+  const { data: sesion } = await supabase.auth.getSession()
+  const token = sesion?.session?.access_token
+  const respuesta = await fetch('/.netlify/functions/usuarios', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
+    body: JSON.stringify(body),
+  })
+  const json = await respuesta.json()
+  if (!respuesta.ok) throw new Error(json.error || 'Error en el servidor')
+  return json
+}
+
+// CRUD de usuarios. Los usuarios reales (Supabase Auth) se manejan vía Netlify Function
+// con la Secret key del lado del servidor; solo el admin puede crearlos con un rol distinto
+// de "cliente" — esa regla se aplica en el servidor, no acá. Los 3 usuarios locales de
+// demo (manager/empleado/cliente) siguen viviendo en DataContext mientras se termina la migración.
 export default function Usuarios() {
-  const { usuarios, agregarUsuario, editarUsuario, eliminarUsuario } = useData()
+  const { usuarios: usuariosLocales, editarUsuario, eliminarUsuario } = useData()
   const { usuario: usuarioActual } = useAuth()
   const { mostrarToast } = useToast()
-  // El super admin protegido solo se ve a sí mismo en la lista; para cualquier otra cuenta es invisible
-  const usuariosVisibles = usuarios.filter((u) => !u.protegido || u.id === usuarioActual.id)
+
+  const [usuariosSupabase, setUsuariosSupabase] = useState([])
+  const [cargando, setCargando] = useState(true)
   const [modalForm, setModalForm] = useState(null) // null | 'crear' | usuario a editar
   const [usuarioAEliminar, setUsuarioAEliminar] = useState(null)
   const [form, setForm] = useState({ nombre: '', email: '', password: '', rol: 'empleado' })
+
+  const cargarUsuariosSupabase = async () => {
+    try {
+      const data = await llamarFuncionUsuarios({ accion: 'listar' })
+      setUsuariosSupabase(data.map((u) => ({ ...u, origen: 'supabase', protegido: u.rol === 'admin' })))
+    } catch {
+      // si quien mira la lista no es admin (ej. manager), la función responde 403 y listamos solo lo local
+      setUsuariosSupabase([])
+    } finally {
+      setCargando(false)
+    }
+  }
+
+  useEffect(() => {
+    let cancelado = false
+    llamarFuncionUsuarios({ accion: 'listar' })
+      .then((data) => {
+        if (cancelado) return
+        setUsuariosSupabase(data.map((u) => ({ ...u, origen: 'supabase', protegido: u.rol === 'admin' })))
+      })
+      .catch(() => {
+        if (!cancelado) setUsuariosSupabase([])
+      })
+      .finally(() => {
+        if (!cancelado) setCargando(false)
+      })
+    return () => {
+      cancelado = true
+    }
+  }, [])
+
+  // El super admin (rol "admin" en Supabase) solo se ve a sí mismo en la lista
+  const usuariosVisibles = [
+    ...usuariosLocales,
+    ...usuariosSupabase.filter((u) => !u.protegido || u.id === usuarioActual.id),
+  ]
 
   const abrirCrear = () => {
     setForm({ nombre: '', email: '', password: '', rol: 'empleado' })
@@ -39,26 +95,42 @@ export default function Usuarios() {
     setUsuarioAEliminar(usuario)
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    if (form.email.toLowerCase() === EMAIL_SUPER_ADMIN) {
-      mostrarToast('Ese email pertenece a la cuenta protegida, usá otro', 'info')
-      return
+    try {
+      if (modalForm !== 'crear') {
+        if (modalForm.origen === 'supabase') {
+          await llamarFuncionUsuarios({ accion: 'editar', id: modalForm.id, ...form })
+          await cargarUsuariosSupabase()
+        } else {
+          editarUsuario({ ...form, id: modalForm.id })
+        }
+        mostrarToast('Usuario actualizado correctamente')
+      } else {
+        await llamarFuncionUsuarios({ accion: 'crear', ...form })
+        await cargarUsuariosSupabase()
+        mostrarToast('Usuario creado correctamente')
+      }
+      setModalForm(null)
+    } catch (error) {
+      mostrarToast(error.message, 'info')
     }
-    if (modalForm !== 'crear') {
-      editarUsuario({ ...form, id: modalForm.id })
-      mostrarToast('Usuario actualizado correctamente')
-    } else {
-      agregarUsuario(form)
-      mostrarToast('Usuario creado correctamente')
-    }
-    setModalForm(null)
   }
 
-  const confirmarEliminar = () => {
-    eliminarUsuario(usuarioAEliminar.id)
-    mostrarToast('Usuario eliminado', 'info')
-    setUsuarioAEliminar(null)
+  const confirmarEliminar = async () => {
+    try {
+      if (usuarioAEliminar.origen === 'supabase') {
+        await llamarFuncionUsuarios({ accion: 'eliminar', id: usuarioAEliminar.id })
+        await cargarUsuariosSupabase()
+      } else {
+        eliminarUsuario(usuarioAEliminar.id)
+      }
+      mostrarToast('Usuario eliminado', 'info')
+    } catch (error) {
+      mostrarToast(error.message, 'info')
+    } finally {
+      setUsuarioAEliminar(null)
+    }
   }
 
   return (
@@ -73,13 +145,13 @@ export default function Usuarios() {
         </button>
       </div>
 
-      {usuariosVisibles.length === 0 ? (
+      {!cargando && usuariosVisibles.length === 0 ? (
         <EmptyState mensaje="No hay usuarios registrados todavía." />
       ) : (
         <div className="flex flex-col gap-3">
           {usuariosVisibles.map((usuario) => (
             <UserCard
-              key={usuario.id}
+              key={`${usuario.origen ?? 'local'}-${usuario.id}`}
               usuario={usuario}
               onEditar={abrirEditar}
               onEliminar={handleEliminarClick}
@@ -124,10 +196,10 @@ export default function Usuarios() {
                 <Lock className="w-4 h-4" />
               </span>
               <input
-                value={form.password}
+                value={form.password || ''}
                 onChange={(e) => setForm({ ...form, password: e.target.value })}
-                required
-                placeholder="Contraseña"
+                required={modalForm === 'crear'}
+                placeholder={modalForm === 'crear' ? 'Contraseña' : 'Nueva contraseña (opcional)'}
                 className="w-full pl-10 pr-3 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-accent bg-gray-50 text-sm"
               />
             </div>

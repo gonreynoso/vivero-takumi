@@ -79,18 +79,6 @@ export default function Login() {
             Ingresar
           </button>
         </form>
-
-        <div className="w-full flex items-center my-5">
-          <div className="flex-grow border-t border-dashed border-gray-200" />
-          <span className="mx-2 text-xs text-gray-400">Usuarios de prueba</span>
-          <div className="flex-grow border-t border-dashed border-gray-200" />
-        </div>
-
-        <div className="text-xs text-gray-400 text-center space-y-1">
-          <p>manager@viverotakumi.com / manager123</p>
-          <p>empleado@viverotakumi.com / emp123</p>
-          <p>cliente@viverotakumi.com / cli123</p>
-        </div>
       </div>
     </div>
   );

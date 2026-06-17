@@ -25,13 +25,6 @@ function cargarEstadoInicial(estadoPorDefecto) {
 
 function dataReducer(state, action) {
   switch (action.type) {
-    case 'AGREGAR_USUARIO': {
-      const nuevoId = Math.max(0, ...state.usuarios.map((u) => u.id)) + 1
-      return {
-        ...state,
-        usuarios: [...state.usuarios, { ...action.payload, id: nuevoId }],
-      }
-    }
     case 'EDITAR_USUARIO':
       return {
         ...state,
@@ -166,7 +159,6 @@ export function DataProvider({ children }) {
     setPlantas((prev) => prev.map((p) => (p.id === id ? data : p)))
   }
 
-  const agregarUsuario = (usuario) => dispatch({ type: 'AGREGAR_USUARIO', payload: usuario })
   const editarUsuario = (usuario) => dispatch({ type: 'EDITAR_USUARIO', payload: usuario })
   const eliminarUsuario = (id) => dispatch({ type: 'ELIMINAR_USUARIO', payload: id })
 
@@ -208,7 +200,6 @@ export function DataProvider({ children }) {
         actualizarStock,
         descontarStock,
         toggleHabilitada,
-        agregarUsuario,
         editarUsuario,
         eliminarUsuario,
         agregarPedido,
