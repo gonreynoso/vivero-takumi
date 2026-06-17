@@ -77,7 +77,11 @@ export default function Checkout() {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ pedido }),
-    }).catch((error) => console.error('No se pudo enviar el mail de confirmación', error))
+    })
+      .then(async (res) => {
+        if (!res.ok) console.error('No se pudo enviar el mail de confirmación', await res.text())
+      })
+      .catch((error) => console.error('No se pudo enviar el mail de confirmación', error))
 
     navigate('/pedido-confirmado', {
       state: {

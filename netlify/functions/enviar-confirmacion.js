@@ -37,7 +37,7 @@ export default async (req) => {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      from: process.env.RESEND_FROM || 'Vivero Takumi <onboarding@resend.dev>',
+      from: process.env.RESEND_FROM || 'Vivero Takumi <pedidos@viverotakumi.kensiweb.com>',
       to: pedido.clienteEmail,
       subject: 'Confirmación de tu pedido — Vivero Takumi',
       html,
