@@ -1,11 +1,10 @@
 import { Link, useNavigate } from 'react-router-dom'
+import { motion } from 'motion/react'
 import { useData } from '../context/DataContext'
-import PlantaCard from '../components/PlantaCard'
+import PlantaCardMinimal from '../components/PlantaCardMinimal'
 import { DicedHeroSection } from '../components/DicedHeroSection'
 import InteractiveImageAccordion from '../components/InteractiveImageAccordion'
 import Faq from '../components/Faq'
-import { useCart } from '../context/CartContext'
-import { useToast } from '../context/ToastContext'
 
 const dicedSlides = [
   { title: 'Monstera Deliciosa', image: 'https://images.unsplash.com/photo-1614594975525-e45190c55d0b?w=500' },
@@ -15,7 +14,6 @@ const dicedSlides = [
 ]
 
 const idsDestacados = [1, 5, 8, 14]
-const idsNuevosIngresos = [2, 6, 11, 15]
 
 const beneficios = [
   { icono: '🚚', titulo: 'Envío a domicilio', descripcion: 'Recibí tus plantas en casa, sin moverte del sillón.' },
@@ -30,6 +28,12 @@ const metricas = [
   { valor: '5', etiqueta: 'Categorías de plantas' },
   { valor: '4.8★', etiqueta: 'Calificación promedio' },
 ]
+
+const fadeUp = {
+  initial: { opacity: 0, y: 24 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, amount: 0.2 },
+}
 
 const testimonios = [
   {
@@ -52,28 +56,18 @@ const testimonios = [
 // Home pública con hero, categorías, destacados, beneficios, novedades y testimonios
 export default function Home() {
   const { plantas, categorias } = useData()
-  const { agregarAlCarrito } = useCart()
-  const { mostrarToast } = useToast()
   const navigate = useNavigate()
 
   const destacadas = idsDestacados
     .map((id) => plantas.find((p) => p.id === id))
     .filter((p) => p && p.habilitada !== false)
 
-  const nuevosIngresos = idsNuevosIngresos
-    .map((id) => plantas.find((p) => p.id === id))
-    .filter((p) => p && p.habilitada !== false)
+  const tienda = plantas.filter((p) => p.habilitada !== false)
 
   const itemsAccordion = categorias.map((categoria) => ({
     titulo: categoria,
     imagen: plantas.find((p) => p.categoria === categoria)?.imagen,
   }))
-
-  const handleAgregar = (planta) => {
-    agregarAlCarrito(planta)
-    mostrarToast(`${planta.nombre} agregada al carrito`)
-    navigate('/carrito')
-  }
 
   return (
     <div className="flex flex-col gap-20">
@@ -89,33 +83,40 @@ export default function Home() {
       />
 
       <section>
-        <h2 className="text-xl font-bold text-gray-800 mb-5">Categorías</h2>
+        <motion.h2 {...fadeUp} transition={{ duration: 0.5 }} className="text-xl font-bold text-gray-800 mb-5">
+          Categorías
+        </motion.h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-5">
-          {categorias.map((categoria) => {
+          {categorias.map((categoria, i) => {
             const imagenCategoria = plantas.find((p) => p.categoria === categoria)?.imagen
             return (
-              <Link
+              <motion.div
                 key={categoria}
-                to={`/catalogo?categoria=${encodeURIComponent(categoria)}`}
-                className="group relative h-40 rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow"
+                {...fadeUp}
+                transition={{ duration: 0.4, delay: Math.min(i * 0.06, 0.3) }}
               >
-                <img
-                  src={imagenCategoria}
-                  alt={categoria}
-                  className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
-                <span className="absolute bottom-3 left-4 text-white font-semibold">
-                  {categoria}
-                </span>
-              </Link>
+                <Link
+                  to={`/catalogo?categoria=${encodeURIComponent(categoria)}`}
+                  className="group relative h-40 rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow block"
+                >
+                  <img
+                    src={imagenCategoria}
+                    alt={categoria}
+                    className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
+                  <span className="absolute bottom-3 left-4 text-white font-semibold">
+                    {categoria}
+                  </span>
+                </Link>
+              </motion.div>
             )
           })}
         </div>
       </section>
 
       <section>
-        <div className="flex items-center justify-between mb-5">
+        <motion.div {...fadeUp} transition={{ duration: 0.5 }} className="flex items-center justify-between mb-5">
           <div>
             <span className="text-xs font-semibold text-accent uppercase tracking-wide">
               Lo más elegido
@@ -125,50 +126,63 @@ export default function Home() {
           <Link to="/catalogo" className="text-sm font-medium text-primary hover:underline">
             Ver todo el catálogo →
           </Link>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          {destacadas.map((planta) => (
-            <PlantaCard key={planta.id} planta={planta} onAgregarCarrito={handleAgregar} />
+        </motion.div>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-5 gap-y-8">
+          {destacadas.map((planta, i) => (
+            <motion.div key={planta.id} {...fadeUp} transition={{ duration: 0.4, delay: Math.min(i * 0.08, 0.3) }}>
+              <PlantaCardMinimal planta={planta} />
+            </motion.div>
           ))}
         </div>
       </section>
 
       <section className="bg-primary rounded-3xl py-10 px-6">
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 max-w-4xl mx-auto">
-          {metricas.map((metrica) => (
-            <div key={metrica.etiqueta} className="text-center">
+          {metricas.map((metrica, i) => (
+            <motion.div
+              key={metrica.etiqueta}
+              {...fadeUp}
+              transition={{ duration: 0.4, delay: i * 0.1 }}
+              className="text-center"
+            >
               <p className="text-3xl font-bold text-white">{metrica.valor}</p>
               <p className="text-sm text-white/70 mt-1">{metrica.etiqueta}</p>
-            </div>
+            </motion.div>
           ))}
         </div>
       </section>
 
       <section>
-        <div className="flex items-center justify-between mb-5">
+        <motion.div {...fadeUp} transition={{ duration: 0.5 }} className="flex items-center justify-between mb-5">
           <div>
             <span className="text-xs font-semibold text-accent uppercase tracking-wide">
-              Recién llegadas
+              Catálogo completo
             </span>
-            <h2 className="text-xl font-bold text-gray-800">Nuevos ingresos</h2>
+            <h2 className="text-xl font-bold text-gray-800">Tienda</h2>
           </div>
           <Link to="/catalogo" className="text-sm font-medium text-primary hover:underline">
             Ver todo el catálogo →
           </Link>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          {nuevosIngresos.map((planta) => (
-            <PlantaCard key={planta.id} planta={planta} onAgregarCarrito={handleAgregar} />
+        </motion.div>
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-5 gap-y-8">
+          {tienda.map((planta, i) => (
+            <motion.div key={planta.id} {...fadeUp} transition={{ duration: 0.4, delay: Math.min(i * 0.05, 0.3) }}>
+              <PlantaCardMinimal planta={planta} />
+            </motion.div>
           ))}
         </div>
       </section>
 
       <section>
-        <h2 className="text-xl font-bold text-gray-800 mb-5">Lo que dicen nuestros clientes</h2>
+        <motion.h2 {...fadeUp} transition={{ duration: 0.5 }} className="text-xl font-bold text-gray-800 mb-5">
+          Lo que dicen nuestros clientes
+        </motion.h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
-          {testimonios.map((testimonio) => (
-            <div
+          {testimonios.map((testimonio, i) => (
+            <motion.div
               key={testimonio.nombre}
+              {...fadeUp}
+              transition={{ duration: 0.4, delay: i * 0.1 }}
               className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 flex flex-col gap-3"
             >
               <div className="text-yellow-500 text-sm">
@@ -177,7 +191,7 @@ export default function Home() {
               </div>
               <p className="text-sm text-gray-600 flex-1">“{testimonio.texto}”</p>
               <p className="text-sm font-semibold text-gray-800">{testimonio.nombre}</p>
-            </div>
+            </motion.div>
           ))}
         </div>
       </section>

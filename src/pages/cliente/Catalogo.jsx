@@ -1,9 +1,7 @@
 import { useState } from 'react'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useSearchParams } from 'react-router-dom'
 import { useData } from '../../context/DataContext'
-import { useCart } from '../../context/CartContext'
-import { useToast } from '../../context/ToastContext'
-import PlantaCard from '../../components/PlantaCard'
+import PlantaCardMinimal from '../../components/PlantaCardMinimal'
 import FiltrosCatalogo from '../../components/FiltrosCatalogo'
 import EmptyState from '../../components/EmptyState'
 
@@ -12,9 +10,6 @@ const filtrosIniciales = { busqueda: '', categoria: '', dificultad: '', precioMa
 // Catálogo de plantas, navegable y comprable sin necesidad de login
 export default function Catalogo() {
   const { plantas, categorias } = useData()
-  const { agregarAlCarrito } = useCart()
-  const { mostrarToast } = useToast()
-  const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const [filtros, setFiltros] = useState({
     ...filtrosIniciales,
@@ -32,12 +27,6 @@ export default function Catalogo() {
     return coincideBusqueda && coincideCategoria && coincideDificultad && coincidePrecio
   })
 
-  const handleAgregar = (planta) => {
-    agregarAlCarrito(planta)
-    mostrarToast(`${planta.nombre} agregada al carrito`)
-    navigate('/carrito')
-  }
-
   return (
     <div className="flex flex-col gap-6">
       <h1 className="text-2xl font-bold text-gray-800">Catálogo de plantas</h1>
@@ -47,9 +36,9 @@ export default function Catalogo() {
       {plantasFiltradas.length === 0 ? (
         <EmptyState mensaje="No encontramos plantas que coincidan con tu búsqueda." />
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-5 gap-y-8">
           {plantasFiltradas.map((planta) => (
-            <PlantaCard key={planta.id} planta={planta} onAgregarCarrito={handleAgregar} />
+            <PlantaCardMinimal key={planta.id} planta={planta} />
           ))}
         </div>
       )}

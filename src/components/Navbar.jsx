@@ -50,7 +50,7 @@ export default function Navbar() {
 
   return (
     <header className="bg-white border-b border-gray-100 sticky top-0 z-20">
-      <div className="h-16 grid grid-cols-[auto_1fr_auto] items-center px-4 sm:px-6 gap-3 sm:gap-6">
+      <div className="h-16 max-w-7xl mx-auto grid grid-cols-[auto_1fr_auto] items-center px-4 sm:px-6 gap-3 sm:gap-6">
         <div className="flex items-center gap-2">
           {items && (
             <button
