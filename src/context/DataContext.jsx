@@ -17,7 +17,12 @@ const estadoInicial = {
 function cargarEstadoInicial(estadoPorDefecto) {
   try {
     const guardado = localStorage.getItem(CLAVE_STORAGE)
-    return guardado ? JSON.parse(guardado) : estadoPorDefecto
+    if (!guardado) return estadoPorDefecto
+    const estado = JSON.parse(guardado)
+    // Navegadores con datos cacheados de antes de migrar el super admin a Supabase
+    // todavía pueden tener este usuario hardcodeado guardado localmente; se descarta acá.
+    estado.usuarios = (estado.usuarios || []).filter((u) => u.email !== 'admin@viverotakumi.com')
+    return estado
   } catch {
     return estadoPorDefecto
   }
