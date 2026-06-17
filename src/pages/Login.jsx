@@ -18,9 +18,9 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const resultado = login(email, password);
+    const resultado = await login(email, password);
     if (resultado.ok) {
       navigate(rutaPorRol[resultado.usuario.rol]);
     } else {
@@ -87,7 +87,6 @@ export default function Login() {
         </div>
 
         <div className="text-xs text-gray-400 text-center space-y-1">
-          <p>admin@viverotakumi.com / admin123</p>
           <p>manager@viverotakumi.com / manager123</p>
           <p>empleado@viverotakumi.com / emp123</p>
           <p>cliente@viverotakumi.com / cli123</p>

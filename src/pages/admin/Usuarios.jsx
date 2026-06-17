@@ -8,6 +8,7 @@ import Modal from '../../components/Modal'
 import EmptyState from '../../components/EmptyState'
 
 const rolesDisponibles = ['admin', 'manager', 'empleado', 'cliente']
+const EMAIL_SUPER_ADMIN = 'gonzalo.reynoso9@gmail.com'
 
 // CRUD de usuarios/empleados, exclusivo del admin
 export default function Usuarios() {
@@ -40,6 +41,10 @@ export default function Usuarios() {
 
   const handleSubmit = (e) => {
     e.preventDefault()
+    if (form.email.toLowerCase() === EMAIL_SUPER_ADMIN) {
+      mostrarToast('Ese email pertenece a la cuenta protegida, usá otro', 'info')
+      return
+    }
     if (modalForm !== 'crear') {
       editarUsuario({ ...form, id: modalForm.id })
       mostrarToast('Usuario actualizado correctamente')
