@@ -17,12 +17,17 @@ export function AuthProvider({ children }) {
     if (!error && data.user) {
       const { data: perfil } = await supabase
         .from('profiles')
-        .select('nombre, rol')
+        .select('nombre, apellido, telefono, direccion, ciudad, dni, rol')
         .eq('id', data.user.id)
         .single()
       const usuarioSupabase = {
         id: data.user.id,
         nombre: perfil?.nombre || data.user.email,
+        apellido: perfil?.apellido || '',
+        telefono: perfil?.telefono || '',
+        direccion: perfil?.direccion || '',
+        ciudad: perfil?.ciudad || '',
+        dni: perfil?.dni || '',
         email: data.user.email,
         rol: perfil?.rol || 'cliente',
       }

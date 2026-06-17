@@ -6,8 +6,23 @@ import { useData } from '../../context/DataContext'
 import { useAuth } from '../../context/AuthContext'
 import { useToast } from '../../context/ToastContext'
 
-const datosEnvioIniciales = { nombre: '', email: '', direccion: '' }
-const datosPagoIniciales = { titular: '', numero: '', vencimiento: '', cvv: '' }
+function datosEnvioIniciales(usuario) {
+  return {
+    nombre: usuario ? `${usuario.nombre}${usuario.apellido ? ` ${usuario.apellido}` : ''}` : '',
+    email: usuario?.email || '',
+    direccion: usuario?.direccion || '',
+    ciudad: usuario?.ciudad || '',
+  }
+}
+
+function datosPagoIniciales(usuario) {
+  return {
+    titular: usuario ? `${usuario.nombre}${usuario.apellido ? ` ${usuario.apellido}` : ''}` : '',
+    numero: '',
+    vencimiento: '',
+    cvv: '',
+  }
+}
 
 // Deja solo dígitos (máx 4: MM + AA) e inserta la barra automáticamente
 function formatearVencimiento(valor) {
@@ -24,8 +39,8 @@ export default function Checkout() {
   const { mostrarToast } = useToast()
   const navigate = useNavigate()
 
-  const [datosEnvio, setDatosEnvio] = useState(datosEnvioIniciales)
-  const [datosPago, setDatosPago] = useState(datosPagoIniciales)
+  const [datosEnvio, setDatosEnvio] = useState(() => datosEnvioIniciales(usuario))
+  const [datosPago, setDatosPago] = useState(() => datosPagoIniciales(usuario))
   const [confirmado, setConfirmado] = useState(false)
 
   if (itemsSeleccionados.length === 0 && !confirmado) {
@@ -67,7 +82,7 @@ export default function Checkout() {
     navigate('/pedido-confirmado', {
       state: {
         pedido,
-        direccion: usuario ? null : datosEnvio.direccion,
+        direccion: datosEnvio.direccion,
         ultimosDigitos: datosPago.numero.replace(/\s/g, '').slice(-4),
       },
     })
@@ -79,51 +94,64 @@ export default function Checkout() {
 
       <form onSubmit={handleConfirmar} className="grid lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 flex flex-col gap-5">
-          {!usuario && (
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 flex flex-col gap-3">
-              <h2 className="font-semibold text-gray-800 flex items-center gap-2">
-                <MapPin className="w-4 h-4 text-accent" />
-                Datos de envío
-              </h2>
-              <div className="relative">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
-                  <User className="w-4 h-4" />
-                </span>
-                <input
-                  value={datosEnvio.nombre}
-                  onChange={(e) => setDatosEnvio({ ...datosEnvio, nombre: e.target.value })}
-                  required
-                  placeholder="Nombre y apellido"
-                  className="w-full pl-10 pr-3 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-accent bg-gray-50 text-sm"
-                />
-              </div>
-              <div className="relative">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
-                  <Mail className="w-4 h-4" />
-                </span>
-                <input
-                  type="email"
-                  value={datosEnvio.email}
-                  onChange={(e) => setDatosEnvio({ ...datosEnvio, email: e.target.value })}
-                  required
-                  placeholder="Email, para coordinar la entrega"
-                  className="w-full pl-10 pr-3 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-accent bg-gray-50 text-sm"
-                />
-              </div>
-              <div className="relative">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
-                  <MapPin className="w-4 h-4" />
-                </span>
-                <input
-                  value={datosEnvio.direccion}
-                  onChange={(e) => setDatosEnvio({ ...datosEnvio, direccion: e.target.value })}
-                  required
-                  placeholder="Dirección de entrega"
-                  className="w-full pl-10 pr-3 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-accent bg-gray-50 text-sm"
-                />
-              </div>
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 flex flex-col gap-3">
+            <h2 className="font-semibold text-gray-800 flex items-center gap-2">
+              <MapPin className="w-4 h-4 text-accent" />
+              Datos de envío
+              {usuario && (
+                <span className="text-xs font-normal text-gray-400">(precargados de tu cuenta, podés editarlos)</span>
+              )}
+            </h2>
+            <div className="relative">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+                <User className="w-4 h-4" />
+              </span>
+              <input
+                value={datosEnvio.nombre}
+                onChange={(e) => setDatosEnvio({ ...datosEnvio, nombre: e.target.value })}
+                required
+                placeholder="Nombre y apellido"
+                className="w-full pl-10 pr-3 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-accent bg-gray-50 text-sm"
+              />
             </div>
-          )}
+            <div className="relative">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+                <Mail className="w-4 h-4" />
+              </span>
+              <input
+                type="email"
+                value={datosEnvio.email}
+                onChange={(e) => setDatosEnvio({ ...datosEnvio, email: e.target.value })}
+                required
+                placeholder="Email, para coordinar la entrega"
+                className="w-full pl-10 pr-3 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-accent bg-gray-50 text-sm"
+              />
+            </div>
+            <div className="relative">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+                <MapPin className="w-4 h-4" />
+              </span>
+              <input
+                value={datosEnvio.direccion}
+                onChange={(e) => setDatosEnvio({ ...datosEnvio, direccion: e.target.value })}
+                required
+                placeholder="Dirección de entrega"
+                className="w-full pl-10 pr-3 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-accent bg-gray-50 text-sm"
+              />
+            </div>
+            <div className="relative">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+                <MapPin className="w-4 h-4" />
+              </span>
+              <input
+                value={datosEnvio.ciudad}
+                onChange={(e) => setDatosEnvio({ ...datosEnvio, ciudad: e.target.value })}
+                required
+                placeholder="Ciudad"
+                className="w-full pl-10 pr-3 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-accent bg-gray-50 text-sm"
+              />
+            </div>
+          </div>
 
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 flex flex-col gap-3">
             <h2 className="font-semibold text-gray-800 flex items-center gap-2">
