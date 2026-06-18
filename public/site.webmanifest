@@ -1,0 +1,14 @@
+{
+  "name": "Vivero Takumi",
+  "short_name": "Vivero Takumi",
+  "description": "Vivero de confianza: plantas de interior, exterior, suculentas, aromáticas y frutales para llenar de vida tu hogar.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f0fdf4",
+  "theme_color": "#2d6a4f",
+  "icons": [
+    { "src": "/favicon-32x32.png", "sizes": "32x32", "type": "image/png" },
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
