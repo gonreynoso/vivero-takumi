@@ -85,7 +85,7 @@ export default function Carrito() {
                 <Truck className="w-4 h-4 text-accent" />
                 Envío
               </span>
-              <span className="text-primary font-medium">Gratis</span>
+              <span className="text-gray-400 font-medium">Se calcula en el siguiente paso</span>
             </div>
             <div className="border-t border-dashed border-gray-200 pt-3.5 flex items-center justify-between">
               <span className="font-semibold text-gray-800">Total</span>
