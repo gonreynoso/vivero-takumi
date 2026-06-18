@@ -1,8 +1,9 @@
 import { useState } from 'react'
-import { Boxes, DollarSign, FileText, Gauge, Image as ImageIcon, Sprout, Tag, Upload } from 'lucide-react'
+import { Boxes, DollarSign, FileText, Gauge, Image as ImageIcon, Sprout, Tag, Upload, X } from 'lucide-react'
 import { convertirAWebp } from '../lib/imagenes'
 
 const dificultades = ['fácil', 'media', 'difícil']
+const MAX_IMAGENES_GALERIA = 4
 
 function formatearKb(bytes) {
   return `${Math.max(1, Math.round(bytes / 1024))} KB`
@@ -17,6 +18,7 @@ export default function PlantaForm({ plantaInicial, categorias, onGuardar, onCan
       precio: '',
       stock: '',
       imagen: '',
+      imagenes: [],
       dificultad: dificultades[0],
       descripcion: '',
       guia_cuidado: { riego: '', luz: '', temperatura: '', tips: '' },
@@ -25,6 +27,7 @@ export default function PlantaForm({ plantaInicial, categorias, onGuardar, onCan
   const [errorImagen, setErrorImagen] = useState('')
   const [convirtiendoImagen, setConvirtiendoImagen] = useState(false)
   const [infoCompresion, setInfoCompresion] = useState(null)
+  const [convirtiendoGaleria, setConvirtiendoGaleria] = useState(false)
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -58,6 +61,31 @@ export default function PlantaForm({ plantaInicial, categorias, onGuardar, onCan
     } finally {
       setConvirtiendoImagen(false)
     }
+  }
+
+  const handleArchivoGaleria = async (e) => {
+    const archivo = e.target.files[0]
+    e.target.value = ''
+    if (!archivo) return
+    if (!archivo.type.startsWith('image/')) {
+      setErrorImagen('El archivo debe ser una imagen')
+      return
+    }
+    if ((form.imagenes || []).length >= MAX_IMAGENES_GALERIA) return
+    setErrorImagen('')
+    setConvirtiendoGaleria(true)
+    try {
+      const { dataUrl } = await convertirAWebp(archivo)
+      setForm((prev) => ({ ...prev, imagenes: [...(prev.imagenes || []), dataUrl] }))
+    } catch {
+      setErrorImagen('No se pudo convertir la imagen, probá con otro archivo')
+    } finally {
+      setConvirtiendoGaleria(false)
+    }
+  }
+
+  const quitarImagenGaleria = (indice) => {
+    setForm((prev) => ({ ...prev, imagenes: prev.imagenes.filter((_, i) => i !== indice) }))
   }
 
   const handleSubmit = (e) => {
@@ -195,6 +223,42 @@ export default function PlantaForm({ plantaInicial, categorias, onGuardar, onCan
             </p>
           )}
           {errorImagen && <p className="text-xs text-red-500">{errorImagen}</p>}
+        </div>
+      </div>
+
+      <div>
+        <p className="text-xs text-gray-500 mb-2">
+          Galería adicional ({(form.imagenes || []).length}/{MAX_IMAGENES_GALERIA})
+        </p>
+        <div className="flex gap-2 flex-wrap">
+          {(form.imagenes || []).map((img, i) => (
+            <div key={i} className="relative w-16 h-16 rounded-lg overflow-hidden border border-gray-200">
+              <img src={img} alt={`Imagen ${i + 2}`} className="w-full h-full object-cover" />
+              <button
+                type="button"
+                onClick={() => quitarImagenGaleria(i)}
+                className="absolute top-0.5 right-0.5 w-4 h-4 rounded-full bg-black/60 text-white flex items-center justify-center"
+              >
+                <X className="w-2.5 h-2.5" />
+              </button>
+            </div>
+          ))}
+          {(form.imagenes || []).length < MAX_IMAGENES_GALERIA && (
+            <label
+              className={`w-16 h-16 rounded-lg border border-dashed border-gray-300 flex items-center justify-center ${
+                convirtiendoGaleria ? 'text-gray-300 cursor-wait' : 'text-gray-400 cursor-pointer hover:text-primary hover:border-primary'
+              }`}
+            >
+              <Upload className="w-4 h-4" />
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleArchivoGaleria}
+                disabled={convirtiendoGaleria}
+                className="hidden"
+              />
+            </label>
+          )}
         </div>
       </div>
 
