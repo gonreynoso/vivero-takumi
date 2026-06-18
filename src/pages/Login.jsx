@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { LogIn, Mail, Lock } from "lucide-react";
+import { ArrowLeft, LogIn, Mail, Lock } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 
 const rutaPorRol = {
@@ -29,7 +29,7 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-background px-4">
+    <div className="min-h-screen w-full flex flex-col items-center justify-center bg-background px-4 gap-4">
       <div className="w-full max-w-sm bg-gradient-to-b from-white to-background rounded-3xl shadow-xl p-8 flex flex-col items-center border border-accent/20">
         <div className="flex items-center justify-center w-14 h-14 rounded-2xl bg-primary mb-6 shadow-lg">
           <LogIn className="w-7 h-7 text-white" />
@@ -87,6 +87,14 @@ export default function Login() {
           </Link>
         </p>
       </div>
+
+      <Link
+        to="/"
+        className="text-sm text-gray-500 hover:text-primary flex items-center gap-1.5"
+      >
+        <ArrowLeft className="w-4 h-4" />
+        Volver al inicio
+      </Link>
     </div>
   );
 }
