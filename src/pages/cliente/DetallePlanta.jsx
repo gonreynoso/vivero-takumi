@@ -119,7 +119,7 @@ export default function DetallePlanta() {
           </button>
 
           <div className="flex flex-col divide-y divide-gray-100 border border-gray-100 rounded-xl">
-            <details className="group p-4">
+            <details className="group p-4" open>
               <summary className="flex items-center justify-between gap-2 cursor-pointer font-semibold text-gray-800 text-sm">
                 <span className="flex items-center gap-2">
                   <CreditCard className="w-4 h-4 text-accent" />
@@ -135,7 +135,7 @@ export default function DetallePlanta() {
               </div>
             </details>
 
-            <details className="group p-4">
+            <details className="group p-4" open>
               <summary className="flex items-center justify-between gap-2 cursor-pointer font-semibold text-gray-800 text-sm">
                 <span className="flex items-center gap-2">
                   <Info className="w-4 h-4 text-accent" />
@@ -149,7 +149,7 @@ export default function DetallePlanta() {
               </div>
             </details>
 
-            <details className="group p-4">
+            <details className="group p-4" open>
               <summary className="flex items-center justify-between gap-2 cursor-pointer font-semibold text-gray-800 text-sm">
                 <span className="flex items-center gap-2">
                   <MapPin className="w-4 h-4 text-accent" />
