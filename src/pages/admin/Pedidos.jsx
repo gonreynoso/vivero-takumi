@@ -42,7 +42,7 @@ export default function Pedidos() {
     <div className="flex flex-col gap-6">
       <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100">Pedidos</h1>
 
-      <div className="flex gap-2">
+      <div className="flex gap-2 flex-wrap">
         {estados.map((e) => (
           <button
             key={e}

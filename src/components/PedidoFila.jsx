@@ -84,8 +84,8 @@ export default function PedidoFila({ pedido, onCambiarEstado, onGuardarEdicion }
 
       {abierto && (
         <div className="border-t border-gray-100 dark:border-gray-700 p-4 flex flex-col gap-4">
-          <div className="flex items-center justify-between">
-            <div className="flex gap-2">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <div className="flex gap-2 flex-wrap">
               {estadosDisponibles.map((e) => (
                 <button
                   key={e}
