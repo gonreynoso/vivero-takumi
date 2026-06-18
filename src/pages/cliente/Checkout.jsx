@@ -54,11 +54,18 @@ export default function Checkout() {
     const pedido = {
       clienteEmail: usuario?.email || datosEnvio.email,
       clienteNombre: usuario?.nombre || datosEnvio.nombre,
-      items: itemsSeleccionados.map(({ plantaId, nombre, precio, cantidad }) => ({
+      clienteTelefono: usuario?.telefono || '',
+      clienteDni: usuario?.dni || '',
+      clienteDireccion: datosEnvio.direccion,
+      clienteCiudad: datosEnvio.ciudad,
+      ultimosDigitos: datosPago.numero.replace(/\s/g, '').slice(-4),
+      items: itemsSeleccionados.map(({ plantaId, nombre, precio, cantidad, imagen, categoria }) => ({
         plantaId,
         nombre,
         precio,
         cantidad,
+        imagen,
+        categoria,
       })),
       total: totalSeleccionado,
       estado: 'pendiente',
@@ -86,8 +93,8 @@ export default function Checkout() {
     navigate('/pedido-confirmado', {
       state: {
         pedido,
-        direccion: datosEnvio.direccion,
-        ultimosDigitos: datosPago.numero.replace(/\s/g, '').slice(-4),
+        direccion: pedido.clienteDireccion,
+        ultimosDigitos: pedido.ultimosDigitos,
       },
     })
   }

@@ -2,14 +2,14 @@ import { useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { useData } from '../../context/DataContext'
 import { useToast } from '../../context/ToastContext'
-import PedidoCard from '../../components/PedidoCard'
+import PedidoFila from '../../components/PedidoFila'
 import EmptyState from '../../components/EmptyState'
 
 const estados = ['todos', 'pendiente', 'confirmado', 'entregado']
 
 // Vista del admin para ver y gestionar todos los pedidos del vivero
 export default function Pedidos() {
-  const { pedidos, actualizarEstadoPedido } = useData()
+  const { pedidos, actualizarEstadoPedido, editarPedido } = useData()
   const { mostrarToast } = useToast()
   const [searchParams] = useSearchParams()
   const [filtro, setFiltro] = useState(searchParams.get('estado') || 'todos')
@@ -20,6 +20,11 @@ export default function Pedidos() {
   const handleCambiarEstado = (id, estado) => {
     actualizarEstadoPedido(id, estado)
     mostrarToast(`Pedido #${id} marcado como ${estado}`)
+  }
+
+  const handleGuardarEdicion = (pedido) => {
+    editarPedido(pedido)
+    mostrarToast(`Pedido #${pedido.id} actualizado`)
   }
 
   return (
@@ -43,13 +48,13 @@ export default function Pedidos() {
       {pedidosFiltrados.length === 0 ? (
         <EmptyState mensaje="No hay pedidos para mostrar con este filtro." />
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="flex flex-col gap-3">
           {pedidosFiltrados.map((pedido) => (
-            <PedidoCard
+            <PedidoFila
               key={pedido.id}
               pedido={pedido}
-              mostrarCliente
               onCambiarEstado={handleCambiarEstado}
+              onGuardarEdicion={handleGuardarEdicion}
             />
           ))}
         </div>

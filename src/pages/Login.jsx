@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ArrowLeft, LogIn, Mail, Lock } from "lucide-react";
+import { ArrowLeft, Eye, EyeOff, LogIn, Mail, Lock } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 
 const rutaPorRol = {
@@ -16,6 +16,7 @@ export default function Login() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [mostrarPassword, setMostrarPassword] = useState(false);
   const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
@@ -61,13 +62,21 @@ export default function Login() {
               <Lock className="w-4 h-4" />
             </span>
             <input
-              type="password"
+              type={mostrarPassword ? "text" : "password"}
               placeholder="Contraseña"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="w-full pl-10 pr-3 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-accent bg-gray-50 text-sm"
+              className="w-full pl-10 pr-10 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-accent bg-gray-50 text-sm"
             />
+            <button
+              type="button"
+              onClick={() => setMostrarPassword((v) => !v)}
+              aria-label={mostrarPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+            >
+              {mostrarPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+            </button>
           </div>
 
           {error && <p className="text-sm text-red-500">{error}</p>}

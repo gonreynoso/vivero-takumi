@@ -56,6 +56,13 @@ function dataReducer(state, action) {
           p.id === action.payload.id ? { ...p, estado: action.payload.estado } : p
         ),
       }
+    case 'EDITAR_PEDIDO':
+      return {
+        ...state,
+        pedidos: state.pedidos.map((p) =>
+          p.id === action.payload.id ? { ...p, ...action.payload } : p
+        ),
+      }
     case 'SINCRONIZAR':
       return action.payload
     default:
@@ -171,6 +178,14 @@ export function DataProvider({ children }) {
   const actualizarEstadoPedido = (id, estado) =>
     dispatch({ type: 'ACTUALIZAR_ESTADO_PEDIDO', payload: { id, estado } })
 
+  // Si vienen items, recalcula el total en base a precio*cantidad de cada uno
+  const editarPedido = (pedido) => {
+    const total = pedido.items
+      ? pedido.items.reduce((acc, item) => acc + item.precio * item.cantidad, 0)
+      : pedido.total
+    dispatch({ type: 'EDITAR_PEDIDO', payload: { ...pedido, total } })
+  }
+
   const agregarCategoria = async (nombre) => {
     const { error } = await supabase.from('categorias').insert({ nombre })
     if (error) throw error
@@ -209,6 +224,7 @@ export function DataProvider({ children }) {
         eliminarUsuario,
         agregarPedido,
         actualizarEstadoPedido,
+        editarPedido,
         agregarCategoria,
         editarCategoria,
         eliminarCategoria,
