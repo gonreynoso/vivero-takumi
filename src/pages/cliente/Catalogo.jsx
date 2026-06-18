@@ -36,7 +36,7 @@ export default function Catalogo() {
       {plantasFiltradas.length === 0 ? (
         <EmptyState mensaje="No encontramos plantas que coincidan con tu búsqueda." />
       ) : (
-        <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-5 gap-y-8">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-3 sm:gap-x-5 gap-y-6 sm:gap-y-8">
           {plantasFiltradas.map((planta) => (
             <PlantaCardMinimal key={planta.id} planta={planta} />
           ))}

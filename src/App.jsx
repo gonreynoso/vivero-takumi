@@ -6,6 +6,7 @@ import { ToastProvider } from './context/ToastContext'
 import ProtectedRoute from './routes/ProtectedRoute'
 import Layout from './components/Layout'
 import StoreLayout from './components/StoreLayout'
+import ScrollToTop from './components/ScrollToTop'
 
 import Login from './pages/Login'
 import Registro from './pages/Registro'
@@ -32,6 +33,8 @@ import MisPedidos from './pages/cliente/MisPedidos'
 // Define toda la navegación de la app y los guards de rol por sección
 function AppRoutes() {
   return (
+    <>
+    <ScrollToTop />
     <Routes>
       <Route path="/login" element={<Login />} />
       <Route path="/registro" element={<Registro />} />
@@ -77,6 +80,7 @@ function AppRoutes() {
 
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
+    </>
   )
 }
 

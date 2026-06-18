@@ -4,8 +4,8 @@ import { useState } from 'react'
 function AccordionItem({ item, isActive, onMouseEnter, onClick }) {
   return (
     <div
-      className={`relative h-[60vh] md:h-[65vh] rounded-2xl overflow-hidden cursor-pointer transition-all duration-700 ease-in-out ${
-        isActive ? 'w-[280px] md:w-[380px]' : 'w-[50px] md:w-[60px]'
+      className={`relative w-32 h-72 md:h-[65vh] rounded-2xl overflow-hidden cursor-pointer snap-center shrink-0 transition-all duration-700 ease-in-out ${
+        isActive ? 'md:w-[380px]' : 'md:w-[60px]'
       }`}
       onMouseEnter={onMouseEnter}
       onClick={onClick}
@@ -18,10 +18,8 @@ function AccordionItem({ item, isActive, onMouseEnter, onClick }) {
       <div className="absolute inset-0 bg-black/30" />
 
       <span
-        className={`absolute text-white text-lg font-semibold whitespace-nowrap transition-all duration-300 ease-in-out ${
-          isActive
-            ? 'bottom-6 left-1/2 -translate-x-1/2 rotate-0'
-            : 'w-auto text-left bottom-24 left-1/2 -translate-x-1/2 rotate-90'
+        className={`absolute text-white text-base md:text-lg font-semibold whitespace-nowrap transition-all duration-300 ease-in-out bottom-6 left-1/2 -translate-x-1/2 rotate-0 ${
+          isActive ? '' : 'md:bottom-24 md:rotate-90'
         }`}
       >
         {item.titulo}
@@ -67,7 +65,7 @@ export default function InteractiveImageAccordion({
         </div>
 
         <div className="w-full md:w-1/2">
-          <div className="flex flex-row items-center justify-center gap-3 overflow-x-auto p-4">
+          <div className="flex flex-row items-center md:justify-center gap-3 overflow-x-auto snap-x snap-mandatory p-4">
             {items.map((item, index) => (
               <AccordionItem
                 key={item.titulo}
