@@ -3,6 +3,7 @@ import { DataProvider } from './context/DataContext'
 import { AuthProvider } from './context/AuthContext'
 import { CartProvider } from './context/CartContext'
 import { ToastProvider } from './context/ToastContext'
+import { ThemeProvider } from './context/ThemeContext'
 import ProtectedRoute from './routes/ProtectedRoute'
 import Layout from './components/Layout'
 import StoreLayout from './components/StoreLayout'
@@ -91,7 +92,9 @@ export default function App() {
         <AuthProvider>
           <CartProvider>
             <ToastProvider>
-              <AppRoutes />
+              <ThemeProvider>
+                <AppRoutes />
+              </ThemeProvider>
             </ToastProvider>
           </CartProvider>
         </AuthProvider>

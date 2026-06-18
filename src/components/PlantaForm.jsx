@@ -100,7 +100,7 @@ export default function PlantaForm({ plantaInicial, categorias, onGuardar, onCan
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
       <div className="relative">
-        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500">
           <Sprout className="w-4 h-4" />
         </span>
         <input
@@ -109,20 +109,20 @@ export default function PlantaForm({ plantaInicial, categorias, onGuardar, onCan
           onChange={handleChange}
           required
           placeholder="Nombre de la planta"
-          className="w-full pl-10 pr-3 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-accent bg-gray-50 text-sm"
+          className="w-full pl-10 pr-3 py-2.5 rounded-xl border border-gray-200 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-accent bg-gray-50 dark:bg-gray-700 dark:text-gray-100 text-sm"
         />
       </div>
 
       <div className="grid sm:grid-cols-2 gap-4">
         <div className="relative">
-          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500">
             <Tag className="w-4 h-4" />
           </span>
           <select
             name="categoria"
             value={form.categoria}
             onChange={handleChange}
-            className="w-full pl-10 pr-3 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-accent bg-gray-50 text-sm"
+            className="w-full pl-10 pr-3 py-2.5 rounded-xl border border-gray-200 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-accent bg-gray-50 dark:bg-gray-700 dark:text-gray-100 text-sm"
           >
             {categorias.map((c) => (
               <option key={c} value={c}>
@@ -132,14 +132,14 @@ export default function PlantaForm({ plantaInicial, categorias, onGuardar, onCan
           </select>
         </div>
         <div className="relative">
-          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500">
             <Gauge className="w-4 h-4" />
           </span>
           <select
             name="dificultad"
             value={form.dificultad}
             onChange={handleChange}
-            className="w-full pl-10 pr-3 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-accent bg-gray-50 text-sm"
+            className="w-full pl-10 pr-3 py-2.5 rounded-xl border border-gray-200 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-accent bg-gray-50 dark:bg-gray-700 dark:text-gray-100 text-sm"
           >
             {dificultades.map((d) => (
               <option key={d} value={d}>
@@ -152,7 +152,7 @@ export default function PlantaForm({ plantaInicial, categorias, onGuardar, onCan
 
       <div className="grid sm:grid-cols-2 gap-4">
         <div className="relative">
-          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500">
             <DollarSign className="w-4 h-4" />
           </span>
           <input
@@ -163,11 +163,11 @@ export default function PlantaForm({ plantaInicial, categorias, onGuardar, onCan
             min="0"
             required
             placeholder="Precio"
-            className="w-full pl-10 pr-3 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-accent bg-gray-50 text-sm"
+            className="w-full pl-10 pr-3 py-2.5 rounded-xl border border-gray-200 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-accent bg-gray-50 dark:bg-gray-700 dark:text-gray-100 text-sm"
           />
         </div>
         <div className="relative">
-          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500">
             <Boxes className="w-4 h-4" />
           </span>
           <input
@@ -178,13 +178,13 @@ export default function PlantaForm({ plantaInicial, categorias, onGuardar, onCan
             min="0"
             required
             placeholder="Stock"
-            className="w-full pl-10 pr-3 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-accent bg-gray-50 text-sm"
+            className="w-full pl-10 pr-3 py-2.5 rounded-xl border border-gray-200 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-accent bg-gray-50 dark:bg-gray-700 dark:text-gray-100 text-sm"
           />
         </div>
       </div>
 
       <div className="flex gap-4">
-        <div className="w-24 h-24 rounded-xl border border-gray-200 bg-gray-50 overflow-hidden shrink-0 flex items-center justify-center">
+        <div className="w-24 h-24 rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 overflow-hidden shrink-0 flex items-center justify-center">
           {form.imagen ? (
             <img src={form.imagen} alt="Vista previa" className="w-full h-full object-cover" />
           ) : (
@@ -198,13 +198,13 @@ export default function PlantaForm({ plantaInicial, categorias, onGuardar, onCan
             onChange={handleChange}
             required
             placeholder="URL de la imagen (https://...)"
-            className="w-full px-3 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-accent bg-gray-50 text-sm"
+            className="w-full px-3 py-2.5 rounded-xl border border-gray-200 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-accent bg-gray-50 dark:bg-gray-700 dark:text-gray-100 text-sm"
           />
           <label
             className={`flex items-center gap-1.5 text-xs w-fit ${
               convirtiendoImagen
                 ? 'text-gray-300 cursor-wait'
-                : 'text-gray-500 cursor-pointer hover:text-primary'
+                : 'text-gray-500 dark:text-gray-400 cursor-pointer hover:text-primary'
             }`}
           >
             <Upload className="w-3.5 h-3.5" />
@@ -263,7 +263,7 @@ export default function PlantaForm({ plantaInicial, categorias, onGuardar, onCan
       </div>
 
       <div className="relative">
-        <span className="absolute left-3 top-3 text-gray-400">
+        <span className="absolute left-3 top-3 text-gray-400 dark:text-gray-500">
           <FileText className="w-4 h-4" />
         </span>
         <textarea
@@ -273,12 +273,12 @@ export default function PlantaForm({ plantaInicial, categorias, onGuardar, onCan
           rows={2}
           required
           placeholder="Descripción"
-          className="w-full pl-10 pr-3 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-accent bg-gray-50 text-sm"
+          className="w-full pl-10 pr-3 py-2.5 rounded-xl border border-gray-200 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-accent bg-gray-50 dark:bg-gray-700 dark:text-gray-100 text-sm"
         />
       </div>
 
-      <fieldset className="border border-gray-200 rounded-xl p-4">
-        <legend className="text-sm font-medium text-gray-700 px-1">Guía de cuidado</legend>
+      <fieldset className="border border-gray-200 dark:border-gray-600 rounded-xl p-4">
+        <legend className="text-sm font-medium text-gray-700 dark:text-gray-300 px-1">Guía de cuidado</legend>
         <div className="grid sm:grid-cols-2 gap-3">
           <input
             name="riego"
@@ -286,7 +286,7 @@ export default function PlantaForm({ plantaInicial, categorias, onGuardar, onCan
             onChange={handleGuiaChange}
             placeholder="Riego"
             required
-            className="border border-gray-200 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent bg-gray-50 text-sm"
+            className="border border-gray-200 dark:border-gray-600 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent bg-gray-50 dark:bg-gray-700 dark:text-gray-100 text-sm"
           />
           <input
             name="luz"
@@ -294,7 +294,7 @@ export default function PlantaForm({ plantaInicial, categorias, onGuardar, onCan
             onChange={handleGuiaChange}
             placeholder="Luz"
             required
-            className="border border-gray-200 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent bg-gray-50 text-sm"
+            className="border border-gray-200 dark:border-gray-600 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent bg-gray-50 dark:bg-gray-700 dark:text-gray-100 text-sm"
           />
           <input
             name="temperatura"
@@ -302,7 +302,7 @@ export default function PlantaForm({ plantaInicial, categorias, onGuardar, onCan
             onChange={handleGuiaChange}
             placeholder="Temperatura"
             required
-            className="border border-gray-200 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent bg-gray-50 text-sm"
+            className="border border-gray-200 dark:border-gray-600 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent bg-gray-50 dark:bg-gray-700 dark:text-gray-100 text-sm"
           />
           <input
             name="tips"
@@ -310,7 +310,7 @@ export default function PlantaForm({ plantaInicial, categorias, onGuardar, onCan
             onChange={handleGuiaChange}
             placeholder="Tips"
             required
-            className="border border-gray-200 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent bg-gray-50 text-sm"
+            className="border border-gray-200 dark:border-gray-600 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent bg-gray-50 dark:bg-gray-700 dark:text-gray-100 text-sm"
           />
         </div>
       </fieldset>
@@ -319,7 +319,7 @@ export default function PlantaForm({ plantaInicial, categorias, onGuardar, onCan
         <button
           type="button"
           onClick={onCancelar}
-          className="px-4 py-2 rounded-lg text-gray-600 hover:bg-gray-100"
+          className="px-4 py-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
         >
           Cancelar
         </button>

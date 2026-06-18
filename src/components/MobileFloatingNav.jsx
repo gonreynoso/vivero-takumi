@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { motion } from 'motion/react'
-import { Home, Leaf, ShoppingCart, Package, LogIn } from 'lucide-react'
+import { Home, Leaf, ShoppingCart, Package, User } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 import { useCart } from '../context/CartContext'
 
@@ -16,7 +16,7 @@ const itemsInvitado = [
   { to: '/', icon: Home, label: 'Inicio' },
   { to: '/catalogo', icon: Leaf, label: 'Catálogo' },
   { to: '/carrito', icon: ShoppingCart, label: 'Carrito' },
-  { to: '/login', icon: LogIn, label: 'Ingresar' },
+  { to: '/login', icon: User, label: 'Perfil' },
 ]
 
 // Menú de navegación flotante, solo visible en mobile, para las páginas de tienda

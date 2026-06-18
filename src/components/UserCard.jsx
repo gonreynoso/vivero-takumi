@@ -11,13 +11,13 @@ const colorRol = {
 // Card de usuario para la gestión de empleados/usuarios del admin
 export default function UserCard({ usuario, onEditar, onEliminar }) {
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 flex items-center justify-between gap-3">
+    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-4 flex items-center justify-between gap-3">
       <div>
-        <p className="font-semibold text-gray-800 flex items-center gap-1.5">
+        <p className="font-semibold text-gray-800 dark:text-gray-100 flex items-center gap-1.5">
           {usuario.nombre}
           {usuario.protegido && <Lock className="w-3.5 h-3.5 text-gray-400" aria-label="Cuenta protegida" />}
         </p>
-        <p className="text-sm text-gray-500">{usuario.email}</p>
+        <p className="text-sm text-gray-500 dark:text-gray-400">{usuario.email}</p>
       </div>
       <div className="flex items-center gap-2">
         <Badge color={colorRol[usuario.rol] || 'gris'}>{usuario.rol}</Badge>

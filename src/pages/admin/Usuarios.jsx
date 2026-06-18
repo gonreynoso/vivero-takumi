@@ -3,28 +3,12 @@ import { Lock, Mail, Shield, User } from 'lucide-react'
 import { useData } from '../../context/DataContext'
 import { useAuth } from '../../context/AuthContext'
 import { useToast } from '../../context/ToastContext'
-import { supabase } from '../../lib/supabaseClient'
+import { llamarFuncionUsuarios } from '../../lib/usuariosApi'
 import UserCard from '../../components/UserCard'
 import Modal from '../../components/Modal'
 import EmptyState from '../../components/EmptyState'
 
 const rolesDisponibles = ['admin', 'manager', 'empleado', 'cliente']
-
-async function llamarFuncionUsuarios(body) {
-  const { data: sesion } = await supabase.auth.getSession()
-  const token = sesion?.session?.access_token
-  const respuesta = await fetch('/.netlify/functions/usuarios', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
-    },
-    body: JSON.stringify(body),
-  })
-  const json = await respuesta.json()
-  if (!respuesta.ok) throw new Error(json.error || 'Error en el servidor')
-  return json
-}
 
 // CRUD de usuarios. Los usuarios reales (Supabase Auth) se manejan vía Netlify Function
 // con la Secret key del lado del servidor; solo el admin puede crearlos con un rol distinto
@@ -136,7 +120,7 @@ export default function Usuarios() {
   return (
     <div className="flex flex-col gap-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-gray-800">Usuarios</h1>
+        <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100">Usuarios</h1>
         <button
           onClick={abrirCrear}
           className="bg-primary text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-primary/90"
@@ -167,7 +151,7 @@ export default function Usuarios() {
         >
           <form onSubmit={handleSubmit} className="flex flex-col gap-3">
             <div className="relative">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500">
                 <User className="w-4 h-4" />
               </span>
               <input
@@ -175,11 +159,11 @@ export default function Usuarios() {
                 onChange={(e) => setForm({ ...form, nombre: e.target.value })}
                 required
                 placeholder="Nombre y apellido"
-                className="w-full pl-10 pr-3 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-accent bg-gray-50 text-sm"
+                className="w-full pl-10 pr-3 py-2.5 rounded-xl border border-gray-200 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-accent bg-gray-50 dark:bg-gray-700 dark:text-gray-100 text-sm"
               />
             </div>
             <div className="relative">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500">
                 <Mail className="w-4 h-4" />
               </span>
               <input
@@ -188,11 +172,11 @@ export default function Usuarios() {
                 onChange={(e) => setForm({ ...form, email: e.target.value })}
                 required
                 placeholder="Email"
-                className="w-full pl-10 pr-3 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-accent bg-gray-50 text-sm"
+                className="w-full pl-10 pr-3 py-2.5 rounded-xl border border-gray-200 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-accent bg-gray-50 dark:bg-gray-700 dark:text-gray-100 text-sm"
               />
             </div>
             <div className="relative">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500">
                 <Lock className="w-4 h-4" />
               </span>
               <input
@@ -200,18 +184,18 @@ export default function Usuarios() {
                 onChange={(e) => setForm({ ...form, password: e.target.value })}
                 required={modalForm === 'crear'}
                 placeholder={modalForm === 'crear' ? 'Contraseña' : 'Nueva contraseña (opcional)'}
-                className="w-full pl-10 pr-3 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-accent bg-gray-50 text-sm"
+                className="w-full pl-10 pr-3 py-2.5 rounded-xl border border-gray-200 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-accent bg-gray-50 dark:bg-gray-700 dark:text-gray-100 text-sm"
               />
             </div>
             <div className="relative">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500">
                 <Shield className="w-4 h-4" />
               </span>
               <select
                 value={form.rol}
                 onChange={(e) => setForm({ ...form, rol: e.target.value })}
                 disabled={modalForm !== 'crear' && modalForm.protegido}
-                className="w-full pl-10 pr-3 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-accent bg-gray-50 text-sm capitalize disabled:opacity-60 disabled:cursor-not-allowed"
+                className="w-full pl-10 pr-3 py-2.5 rounded-xl border border-gray-200 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-accent bg-gray-50 dark:bg-gray-700 dark:text-gray-100 text-sm capitalize disabled:opacity-60 disabled:cursor-not-allowed"
               >
                 {rolesDisponibles.map((r) => (
                   <option key={r} value={r} className="capitalize">
@@ -228,7 +212,7 @@ export default function Usuarios() {
               <button
                 type="button"
                 onClick={() => setModalForm(null)}
-                className="px-4 py-2 rounded-lg text-gray-600 hover:bg-gray-100"
+                className="px-4 py-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
               >
                 Cancelar
               </button>
@@ -245,13 +229,13 @@ export default function Usuarios() {
 
       {usuarioAEliminar && (
         <Modal titulo="Confirmar eliminación" onClose={() => setUsuarioAEliminar(null)}>
-          <p className="text-gray-600 mb-6">
+          <p className="text-gray-600 dark:text-gray-300 mb-6">
             ¿Seguro que querés eliminar a <strong>{usuarioAEliminar.nombre}</strong>?
           </p>
           <div className="flex justify-end gap-3">
             <button
               onClick={() => setUsuarioAEliminar(null)}
-              className="px-4 py-2 rounded-lg text-gray-600 hover:bg-gray-100"
+              className="px-4 py-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
             >
               Cancelar
             </button>
