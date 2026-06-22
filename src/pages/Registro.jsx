@@ -11,7 +11,7 @@ import {
   Building2,
   IdCard,
 } from "lucide-react";
-import { supabase } from "../lib/supabaseClient";
+import { useData } from "../context/DataContext";
 
 const camposIniciales = {
   nombre: "",
@@ -26,9 +26,10 @@ const camposIniciales = {
   dni: "",
 };
 
-// Alta de cuenta pública. El rol siempre queda "cliente" (lo fuerza el trigger
-// on_auth_user_created en Supabase) y la cuenta se activa al confirmar el mail.
+// Alta de cuenta pública. El rol siempre queda "cliente"; se guarda en el array
+// de usuarios local (sin backend) y queda lista para iniciar sesión de inmediato.
 export default function Registro() {
+  const { usuarios, agregarUsuario } = useData();
   const [form, setForm] = useState(camposIniciales);
   const [error, setError] = useState("");
   const [enviando, setEnviando] = useState(false);
@@ -50,28 +51,24 @@ export default function Registro() {
       setError("Las contraseñas no coinciden");
       return;
     }
-
-    setEnviando(true);
-    const { error: errorSignUp } = await supabase.auth.signUp({
-      email: form.email,
-      password: form.password,
-      options: {
-        data: {
-          nombre: form.nombre,
-          apellido: form.apellido,
-          telefono: form.telefono,
-          direccion: form.direccion,
-          ciudad: form.ciudad,
-          dni: form.dni,
-        },
-        emailRedirectTo: `${window.location.origin}/login`,
-      },
-    });
-    setEnviando(false);
-    if (errorSignUp) {
-      setError(errorSignUp.message);
+    if (usuarios.some((u) => u.email === form.email)) {
+      setError("Ya existe una cuenta con ese email");
       return;
     }
+
+    setEnviando(true);
+    agregarUsuario({
+      nombre: form.nombre,
+      apellido: form.apellido,
+      telefono: form.telefono,
+      direccion: form.direccion,
+      ciudad: form.ciudad,
+      dni: form.dni,
+      email: form.email,
+      password: form.password,
+      rol: "cliente",
+    });
+    setEnviando(false);
     setEnviado(true);
   };
 
@@ -82,13 +79,12 @@ export default function Registro() {
           <div className="flex items-center justify-center w-14 h-14 rounded-2xl bg-primary mb-6 shadow-lg">
             <MailCheck className="w-7 h-7 text-white" />
           </div>
-          <h2 className="text-2xl font-semibold mb-2 text-gray-800">Revisá tu correo</h2>
+          <h2 className="text-2xl font-semibold mb-2 text-gray-800">Cuenta creada</h2>
           <p className="text-gray-500 text-sm mb-6">
-            Te enviamos un mail a <strong>{form.email}</strong> para confirmar tu cuenta. Una vez
-            confirmada, ya podés iniciar sesión.
+            Tu cuenta <strong>{form.email}</strong> ya está lista. Ahora podés iniciar sesión.
           </p>
           <Link to="/login" className="text-primary text-sm font-medium hover:underline">
-            Volver a ingresar
+            Ir a iniciar sesión
           </Link>
         </div>
       </div>

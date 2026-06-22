@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react'
 import {
   Area,
   AreaChart,
@@ -17,7 +16,6 @@ import {
 import { DollarSign, Leaf, PackageCheck, Receipt, ShoppingCart, Users } from 'lucide-react'
 import { useData } from '../../context/DataContext'
 import { useTheme } from '../../context/ThemeContext'
-import { llamarFuncionUsuarios } from '../../lib/usuariosApi'
 import StatsCard from '../../components/StatsCard'
 
 const COLORES_ESTADO = { pendiente: '#eab308', confirmado: '#3b82f6', entregado: '#52b788' }
@@ -26,13 +24,6 @@ const COLORES_ESTADO = { pendiente: '#eab308', confirmado: '#3b82f6', entregado:
 export default function Dashboard() {
   const { plantas, pedidos, usuarios } = useData()
   const { oscuro } = useTheme()
-  const [usuariosSupabase, setUsuariosSupabase] = useState([])
-
-  useEffect(() => {
-    llamarFuncionUsuarios({ accion: 'listar' })
-      .then(setUsuariosSupabase)
-      .catch(() => setUsuariosSupabase([]))
-  }, [])
 
   const colorEje = oscuro ? '#9ca3af' : '#6b7280'
   const colorGrilla = oscuro ? '#374151' : '#e5e7eb'
@@ -45,7 +36,7 @@ export default function Dashboard() {
   const pedidosEntregados = pedidos.filter((p) => p.estado === 'entregado').length
   const ticketPromedio = pedidos.length ? Math.round(totalVentas / pedidos.length) : 0
   const plantasStockBajo = plantas.filter((p) => p.stock < 5).length
-  const usuariosTotales = usuarios.length + usuariosSupabase.length
+  const usuariosTotales = usuarios.length
 
   const ventasPorCategoria = Object.entries(
     plantas.reduce((acc, planta) => {
