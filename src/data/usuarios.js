@@ -1,6 +1,12 @@
-// Usuarios hardcodeados del sistema, con sus roles.
-// El super admin real ya no vive acá: es una cuenta auténtica en Supabase Auth + tabla profiles.
+// Usuarios hardcodeados del sistema, con sus roles. Sin backend: el login valida contra este array.
 export const usuariosIniciales = [
+  {
+    id: 1,
+    nombre: 'Admin Vivero',
+    email: 'admin@viverotakumi.com',
+    password: 'admin123',
+    rol: 'admin',
+  },
   {
     id: 2,
     nombre: 'Empleado Vivero',

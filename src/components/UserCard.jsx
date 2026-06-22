@@ -15,7 +15,7 @@ export default function UserCard({ usuario, onEditar, onEliminar }) {
       <div className="min-w-0">
         <p className="font-semibold text-gray-800 dark:text-gray-100 flex items-center gap-1.5">
           {usuario.nombre}
-          {usuario.protegido && <Lock className="w-3.5 h-3.5 text-gray-400" aria-label="Cuenta protegida" />}
+          {usuario.rol === 'admin' && <Lock className="w-3.5 h-3.5 text-gray-400" aria-label="Cuenta protegida" />}
         </p>
         <p className="text-sm text-gray-500 dark:text-gray-400 truncate">{usuario.email}</p>
       </div>
@@ -29,7 +29,7 @@ export default function UserCard({ usuario, onEditar, onEliminar }) {
             Editar
           </button>
         )}
-        {onEliminar && !usuario.protegido && (
+        {onEliminar && usuario.rol !== 'admin' && (
           <button
             onClick={() => onEliminar(usuario)}
             className="text-sm text-red-600 hover:underline"
