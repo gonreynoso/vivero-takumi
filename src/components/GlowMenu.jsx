@@ -49,7 +49,7 @@ export const GlowMenu = forwardRef(({ className, items, activeItem, onItemClick,
         style={{ background: 'radial-gradient(circle, rgba(45,106,79,0.06), transparent 70%)' }}
         variants={navGlowVariants}
       />
-      <ul className="flex items-center gap-1 relative z-10">
+      <ul className="flex items-center gap-0.5 relative z-10">
         {items.map((item) => {
           const Icon = item.icon
           const isActive = item.label === activeItem
@@ -63,20 +63,19 @@ export const GlowMenu = forwardRef(({ className, items, activeItem, onItemClick,
                   whileHover="hover"
                   initial="initial"
                 >
-                  <motion.div
-                    className="absolute inset-0 z-0 pointer-events-none"
-                    variants={glowVariants}
-                    animate={isActive ? 'hover' : 'initial'}
-                    style={{
-                      background: item.gradient,
-                      opacity: isActive ? 1 : 0,
-                      borderRadius: '16px',
-                    }}
-                  />
+                  {isActive ? (
+                    <div className="absolute inset-0 z-0 bg-primary rounded-xl pointer-events-none" />
+                  ) : (
+                    <motion.div
+                      className="absolute inset-0 z-0 pointer-events-none"
+                      variants={glowVariants}
+                      style={{ background: item.gradient, borderRadius: '16px' }}
+                    />
+                  )}
                   <motion.div
                     className={cn(
-                      'flex items-center gap-2 px-4 py-2 relative z-10 bg-transparent transition-colors rounded-xl text-sm font-medium',
-                      isActive ? 'text-primary' : 'text-gray-500 group-hover:text-gray-900'
+                      'flex items-center gap-1.5 px-2.5 py-2 relative z-10 bg-transparent transition-colors rounded-xl text-sm font-medium whitespace-nowrap',
+                      isActive ? 'text-white' : 'text-gray-500 group-hover:text-gray-900'
                     )}
                     variants={itemVariants}
                     transition={sharedTransition}
@@ -87,8 +86,8 @@ export const GlowMenu = forwardRef(({ className, items, activeItem, onItemClick,
                   </motion.div>
                   <motion.div
                     className={cn(
-                      'flex items-center gap-2 px-4 py-2 absolute inset-0 z-10 bg-transparent transition-colors rounded-xl text-sm font-medium',
-                      isActive ? 'text-primary' : 'text-gray-900'
+                      'flex items-center gap-1.5 px-2.5 py-2 absolute inset-0 z-10 bg-transparent transition-colors rounded-xl text-sm font-medium whitespace-nowrap',
+                      isActive ? 'text-white' : 'text-gray-900'
                     )}
                     variants={backVariants}
                     transition={sharedTransition}
