@@ -1,5 +1,5 @@
 import { useNavigate, Link, useLocation } from 'react-router-dom'
-import { Home, Leaf, ShoppingCart, Package, LogOut, Info, Mail, User } from 'lucide-react'
+import { Home, Leaf, ShoppingCart, Package, LogOut, Info, Mail, User, Sprout } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 import { useCart } from '../context/CartContext'
 import { GlowMenu } from './GlowMenu'
@@ -8,13 +8,16 @@ const itemsPorRol = {
   cliente: [
     { to: '/', label: 'Inicio', icon: Home, gradient: 'radial-gradient(circle, rgba(82,183,136,0.25) 0%, rgba(82,183,136,0.08) 50%, transparent 100%)' },
     { to: '/catalogo', label: 'Catálogo', icon: Leaf, gradient: 'radial-gradient(circle, rgba(82,183,136,0.25) 0%, rgba(82,183,136,0.08) 50%, transparent 100%)' },
+    { to: '/recomendador', label: 'Recomendador', icon: Sprout, gradient: 'radial-gradient(circle, rgba(82,183,136,0.25) 0%, rgba(82,183,136,0.08) 50%, transparent 100%)' },
     { to: '/mis-pedidos', label: 'Mis pedidos', icon: Package, gradient: 'radial-gradient(circle, rgba(82,183,136,0.25) 0%, rgba(82,183,136,0.08) 50%, transparent 100%)' },
+    { to: '/mis-plantas', label: 'Mis plantas', icon: Sprout, gradient: 'radial-gradient(circle, rgba(82,183,136,0.25) 0%, rgba(82,183,136,0.08) 50%, transparent 100%)' },
     { to: '/nosotros', label: 'Nosotros', icon: Info, gradient: 'radial-gradient(circle, rgba(82,183,136,0.25) 0%, rgba(82,183,136,0.08) 50%, transparent 100%)' },
     { to: '/contacto', label: 'Contacto', icon: Mail, gradient: 'radial-gradient(circle, rgba(82,183,136,0.25) 0%, rgba(82,183,136,0.08) 50%, transparent 100%)' },
   ],
   invitado: [
     { to: '/', label: 'Inicio', icon: Home, gradient: 'radial-gradient(circle, rgba(82,183,136,0.25) 0%, rgba(82,183,136,0.08) 50%, transparent 100%)' },
     { to: '/catalogo', label: 'Catálogo', icon: Leaf, gradient: 'radial-gradient(circle, rgba(82,183,136,0.25) 0%, rgba(82,183,136,0.08) 50%, transparent 100%)' },
+    { to: '/recomendador', label: 'Recomendador', icon: Sprout, gradient: 'radial-gradient(circle, rgba(82,183,136,0.25) 0%, rgba(82,183,136,0.08) 50%, transparent 100%)' },
     { to: '/nosotros', label: 'Nosotros', icon: Info, gradient: 'radial-gradient(circle, rgba(82,183,136,0.25) 0%, rgba(82,183,136,0.08) 50%, transparent 100%)' },
     { to: '/contacto', label: 'Contacto', icon: Mail, gradient: 'radial-gradient(circle, rgba(82,183,136,0.25) 0%, rgba(82,183,136,0.08) 50%, transparent 100%)' },
   ],
