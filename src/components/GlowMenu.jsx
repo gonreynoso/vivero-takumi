@@ -37,7 +37,7 @@ export const GlowMenu = forwardRef(({ className, items, activeItem, onItemClick,
     <motion.nav
       ref={ref}
       className={cn(
-        'p-1.5 rounded-2xl bg-gray-50 border border-gray-100 relative overflow-hidden',
+        'p-1.5 rounded-2xl bg-gray-50 dark:bg-gray-800 border border-gray-100 dark:border-gray-700 relative overflow-hidden',
         className
       )}
       initial="initial"
@@ -75,7 +75,7 @@ export const GlowMenu = forwardRef(({ className, items, activeItem, onItemClick,
                   <motion.div
                     className={cn(
                       'flex items-center gap-1.5 px-2.5 py-2 relative z-10 bg-transparent transition-colors rounded-xl text-sm font-medium whitespace-nowrap',
-                      isActive ? 'text-white' : 'text-gray-500 group-hover:text-gray-900'
+                      isActive ? 'text-white' : 'text-gray-500 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-gray-100'
                     )}
                     variants={itemVariants}
                     transition={sharedTransition}
@@ -87,7 +87,7 @@ export const GlowMenu = forwardRef(({ className, items, activeItem, onItemClick,
                   <motion.div
                     className={cn(
                       'flex items-center gap-1.5 px-2.5 py-2 absolute inset-0 z-10 bg-transparent transition-colors rounded-xl text-sm font-medium whitespace-nowrap',
-                      isActive ? 'text-white' : 'text-gray-900'
+                      isActive ? 'text-white' : 'text-gray-900 dark:text-gray-100'
                     )}
                     variants={backVariants}
                     transition={sharedTransition}

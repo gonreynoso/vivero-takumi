@@ -83,7 +83,7 @@ export default function Home() {
       />
 
       <section>
-        <motion.h2 {...fadeUp} transition={{ duration: 0.5 }} className="text-xl font-bold text-gray-800 mb-5">
+        <motion.h2 {...fadeUp} transition={{ duration: 0.5 }} className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-5">
           Categorías
         </motion.h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-5">
@@ -121,9 +121,9 @@ export default function Home() {
             <span className="text-xs font-semibold text-accent uppercase tracking-wide">
               Lo más elegido
             </span>
-            <h2 className="text-xl font-bold text-gray-800">Plantas destacadas</h2>
+            <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100">Plantas destacadas</h2>
           </div>
-          <Link to="/catalogo" className="text-sm font-medium text-primary hover:underline">
+          <Link to="/catalogo" className="text-sm font-medium text-primary dark:text-accent hover:underline">
             Ver todo el catálogo →
           </Link>
         </motion.div>
@@ -158,9 +158,9 @@ export default function Home() {
             <span className="text-xs font-semibold text-accent uppercase tracking-wide">
               Catálogo completo
             </span>
-            <h2 className="text-xl font-bold text-gray-800">Tienda</h2>
+            <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100">Tienda</h2>
           </div>
-          <Link to="/catalogo" className="text-sm font-medium text-primary hover:underline">
+          <Link to="/catalogo" className="text-sm font-medium text-primary dark:text-accent hover:underline">
             Ver todo el catálogo →
           </Link>
         </motion.div>
@@ -174,7 +174,7 @@ export default function Home() {
       </section>
 
       <section>
-        <motion.h2 {...fadeUp} transition={{ duration: 0.5 }} className="text-xl font-bold text-gray-800 mb-5">
+        <motion.h2 {...fadeUp} transition={{ duration: 0.5 }} className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-5">
           Lo que dicen nuestros clientes
         </motion.h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
@@ -183,14 +183,14 @@ export default function Home() {
               key={testimonio.nombre}
               {...fadeUp}
               transition={{ duration: 0.4, delay: i * 0.1 }}
-              className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 flex flex-col gap-3"
+              className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm dark:shadow-none p-5 flex flex-col gap-3"
             >
               <div className="text-yellow-500 text-sm">
                 {'★'.repeat(testimonio.rating)}
-                <span className="text-gray-300">{'★'.repeat(5 - testimonio.rating)}</span>
+                <span className="text-gray-300 dark:text-gray-600">{'★'.repeat(5 - testimonio.rating)}</span>
               </div>
-              <p className="text-sm text-gray-600 flex-1">“{testimonio.texto}”</p>
-              <p className="text-sm font-semibold text-gray-800">{testimonio.nombre}</p>
+              <p className="text-sm text-gray-600 dark:text-gray-300 flex-1">“{testimonio.texto}”</p>
+              <p className="text-sm font-semibold text-gray-800 dark:text-gray-100">{testimonio.nombre}</p>
             </motion.div>
           ))}
         </div>

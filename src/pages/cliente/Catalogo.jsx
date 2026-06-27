@@ -29,7 +29,7 @@ export default function Catalogo() {
 
   return (
     <div className="flex flex-col gap-6">
-      <h1 className="text-2xl font-bold text-gray-800">Catálogo de plantas</h1>
+      <h1 className="text-2xl font-bold text-gray-800 dark:text-white">Catálogo de plantas</h1>
 
       <FiltrosCatalogo filtros={filtros} onChange={setFiltros} categorias={categorias} />
 

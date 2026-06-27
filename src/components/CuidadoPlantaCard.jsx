@@ -14,23 +14,23 @@ export default function CuidadoPlantaCard({ planta, email }) {
   const handleRegar = () => setUltimoRiego(registrarRiego(email, planta.id))
 
   return (
-    <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 flex flex-col sm:flex-row gap-4 sm:items-center">
+    <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm dark:shadow-none p-4 flex flex-col sm:flex-row gap-4 sm:items-center">
       <img
         src={planta.imagen}
         alt={planta.nombre}
         className="w-full sm:w-20 h-32 sm:h-20 rounded-xl object-cover shrink-0"
       />
       <div className="flex-1 min-w-0 flex flex-col gap-1.5">
-        <h3 className="font-semibold text-gray-800">{planta.nombre}</h3>
-        <p className="text-xs text-gray-500 flex items-center gap-1.5">
+        <h3 className="font-semibold text-gray-800 dark:text-gray-100">{planta.nombre}</h3>
+        <p className="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-1.5">
           <Droplet className="w-3.5 h-3.5 text-blue-400 shrink-0" />
           {planta.guia_cuidado?.riego || 'Sin datos de riego'}
         </p>
-        <p className="text-xs text-gray-500 flex items-center gap-1.5">
+        <p className="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-1.5">
           <Sun className="w-3.5 h-3.5 text-yellow-500 shrink-0" />
           {planta.guia_cuidado?.luz || 'Sin datos de luz'}
         </p>
-        <p className={`text-sm font-medium ${necesitaRiego ? 'text-red-500' : 'text-green-600'}`}>
+        <p className={`text-sm font-medium ${necesitaRiego ? 'text-red-500 dark:text-red-400' : 'text-green-600 dark:text-green-400'}`}>
           {ultimoRiego
             ? `Regada hace ${diasTranscurridos} día${diasTranscurridos === 1 ? '' : 's'}`
             : 'Todavía no registraste el riego'}

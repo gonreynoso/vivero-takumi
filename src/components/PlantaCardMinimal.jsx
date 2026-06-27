@@ -27,9 +27,9 @@ export default function PlantaCardMinimal({ planta }) {
         )}
       </div>
       <div className="flex flex-col gap-1">
-        <h3 className="text-base font-bold uppercase tracking-wide text-gray-800">{planta.nombre}</h3>
-        <p className="text-base font-semibold text-gray-700">${formatoEntero.format(planta.precio)}</p>
-        <p className="text-xs text-gray-400">
+        <h3 className="text-base font-bold uppercase tracking-wide text-gray-800 dark:text-gray-100">{planta.nombre}</h3>
+        <p className="text-base font-semibold text-gray-700 dark:text-gray-200">${formatoEntero.format(planta.precio)}</p>
+        <p className="text-xs text-gray-400 dark:text-gray-500">
           {CUOTAS} cuotas sin interés de ${formatoDecimal.format(planta.precio / CUOTAS)}
         </p>
       </div>

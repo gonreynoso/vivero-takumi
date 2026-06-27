@@ -14,13 +14,24 @@ const estadoInicial = {
   categorias: categoriasIniciales,
 }
 
+// Completa claves faltantes (p. ej. plantas/categorías antes vivían fuera de localStorage)
+function normalizarEstado(guardado, estadoPorDefecto) {
+  if (!guardado || typeof guardado !== 'object') return estadoPorDefecto
+  return {
+    pedidos: guardado.pedidos ?? estadoPorDefecto.pedidos,
+    usuarios: guardado.usuarios ?? estadoPorDefecto.usuarios,
+    plantas: guardado.plantas ?? estadoPorDefecto.plantas,
+    categorias: guardado.categorias ?? estadoPorDefecto.categorias,
+  }
+}
+
 // Hidrata desde localStorage si existe (persiste entre recargas y se sincroniza entre
 // pestañas, ya que no hay backend: todo el estado vive en el cliente)
 function cargarEstadoInicial(estadoPorDefecto) {
   try {
     const guardado = localStorage.getItem(CLAVE_STORAGE)
     if (!guardado) return estadoPorDefecto
-    return JSON.parse(guardado)
+    return normalizarEstado(JSON.parse(guardado), estadoPorDefecto)
   } catch {
     return estadoPorDefecto
   }
@@ -129,7 +140,7 @@ function dataReducer(state, action) {
         categorias: state.categorias.filter((c) => c !== action.payload),
       }
     case 'SINCRONIZAR':
-      return action.payload
+      return normalizarEstado(action.payload, estadoInicial)
     default:
       return state
   }

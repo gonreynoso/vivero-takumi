@@ -9,7 +9,7 @@ const itemsCliente = [
   { to: '/', icon: Home, label: 'Inicio' },
   { to: '/catalogo', icon: Leaf, label: 'Catálogo' },
   { to: '/carrito', icon: ShoppingCart, label: 'Carrito' },
-  { to: '/mis-pedidos', icon: Package, label: 'Pedidos' },
+  { to: '/mis-pedidos', icon: Package, label: 'Mis compras' },
 ]
 
 const itemsInvitado = [
@@ -53,7 +53,7 @@ export default function MobileFloatingNav() {
     <div className="md:hidden fixed bottom-4 left-1/2 -translate-x-1/2 z-50 w-full max-w-sm px-4">
       <div
         ref={containerRef}
-        className="relative flex items-center justify-between bg-white shadow-xl rounded-full px-1 py-2 border border-gray-100"
+        className="relative flex items-center justify-between bg-white dark:bg-gray-800 shadow-xl dark:shadow-black/50 rounded-full px-1 py-2 border border-gray-100 dark:border-gray-600"
       >
         {items.map((item, index) => {
           const Icon = item.icon
@@ -64,7 +64,7 @@ export default function MobileFloatingNav() {
               ref={(el) => (btnRefs.current[index] = el)}
               onClick={() => navigate(item.to)}
               className={`relative flex flex-col items-center justify-center flex-1 px-2 py-2 text-xs font-medium transition-colors ${
-                esActivo ? 'text-primary' : 'text-gray-400'
+                esActivo ? 'text-primary dark:text-accent' : 'text-gray-400 dark:text-gray-300'
               }`}
             >
               <div className="z-10 relative">
@@ -83,7 +83,7 @@ export default function MobileFloatingNav() {
         <motion.div
           animate={indicatorStyle}
           transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-          className="absolute top-1 bottom-1 rounded-full bg-primary/10 z-0"
+          className="absolute top-1 bottom-1 rounded-full bg-primary/10 dark:bg-accent/25 z-0"
         />
       </div>
     </div>

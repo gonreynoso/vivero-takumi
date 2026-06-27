@@ -3,13 +3,17 @@ import { createContext, useContext, useEffect, useState } from 'react'
 const ThemeContext = createContext(null)
 const CLAVE_STORAGE = 'vivero-takumi:tema'
 
-// Tema oscuro exclusivo del panel de admin/empleado. La clase "dark" se aplica
-// solo al contenedor de Layout (no a <html>), así el storefront nunca se ve afectado.
+// Tema claro/oscuro global. La clase "dark" se aplica en <html> y persiste en localStorage.
 export function ThemeProvider({ children }) {
-  const [oscuro, setOscuro] = useState(() => localStorage.getItem(CLAVE_STORAGE) === 'true')
+  const [oscuro, setOscuro] = useState(() => {
+    const guardado = localStorage.getItem(CLAVE_STORAGE) === 'true'
+    document.documentElement.classList.toggle('dark', guardado)
+    return guardado
+  })
 
   useEffect(() => {
     localStorage.setItem(CLAVE_STORAGE, String(oscuro))
+    document.documentElement.classList.toggle('dark', oscuro)
   }, [oscuro])
 
   const toggleTema = () => setOscuro((v) => !v)

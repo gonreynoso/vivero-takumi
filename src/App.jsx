@@ -30,7 +30,6 @@ import Carrito from './pages/cliente/Carrito'
 import Checkout from './pages/cliente/Checkout'
 import PedidoConfirmado from './pages/cliente/PedidoConfirmado'
 import MisPedidos from './pages/cliente/MisPedidos'
-import MisPlantas from './pages/cliente/MisPlantas'
 import Recomendador from './pages/Recomendador'
 
 // Define toda la navegación de la app y los guards de rol por sección
@@ -79,7 +78,7 @@ function AppRoutes() {
       <Route element={<ProtectedRoute rolesPermitidos={['cliente']} />}>
         <Route element={<StoreLayout />}>
           <Route path="/mis-pedidos" element={<MisPedidos />} />
-          <Route path="/mis-plantas" element={<MisPlantas />} />
+          <Route path="/mis-plantas" element={<Navigate to="/mis-pedidos" replace />} />
         </Route>
       </Route>
 

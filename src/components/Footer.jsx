@@ -44,32 +44,32 @@ export default function Footer() {
   const { categorias } = useData();
 
   return (
-    <footer className="bg-primary text-white/70 relative overflow-hidden mt-16">
+    <footer className="bg-primary dark:bg-gray-900 relative overflow-hidden mt-16 pb-24 md:pb-0 border-t border-transparent dark:border-gray-800">
       <FooterBackgroundGradient />
 
-      <div className="max-w-7xl mx-auto px-6 py-14 relative z-10">
+      <div className="max-w-7xl mx-auto px-6 py-12 md:py-14 relative z-10">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
           <div className="flex flex-col gap-3">
             <div className="flex items-center gap-2 text-white text-2xl font-bold">
               <span>🌿</span>
               Vivero Takumi
             </div>
-            <p className="text-sm leading-relaxed">
+            <p className="text-sm leading-relaxed text-white/70 dark:text-gray-400">
               Tu vivero de confianza: plantas de interior, exterior, suculentas,
               aromáticas y frutales para llenar de vida tu hogar.
             </p>
           </div>
 
           <div>
-            <h4 className="text-white text-sm font-semibold uppercase tracking-wide mb-4">
+            <h4 className="text-sm font-bold uppercase tracking-wide mb-4 text-white">
               Categorías
             </h4>
-            <ul className="space-y-3 text-sm">
+            <ul className="space-y-3 text-sm text-white/70 dark:text-gray-400">
               {categorias.map((categoria) => (
                 <li key={categoria}>
                   <Link
                     to={`/catalogo?categoria=${encodeURIComponent(categoria)}`}
-                    className="hover:text-white transition-colors"
+                    className="text-white/70 dark:text-gray-400 hover:text-white dark:hover:text-white transition-colors"
                   >
                     {categoria}
                   </Link>
@@ -79,15 +79,15 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4 className="text-white text-sm font-semibold uppercase tracking-wide mb-4">
+            <h4 className="text-sm font-bold uppercase tracking-wide mb-4 text-white">
               Ayuda
             </h4>
-            <ul className="space-y-3 text-sm">
+            <ul className="space-y-3 text-sm text-white/70 dark:text-gray-400">
               {linksAyuda.map((link) => (
                 <li key={link.label}>
                   <Link
                     to={link.href}
-                    className="hover:text-white transition-colors"
+                    className="text-white/70 dark:text-gray-400 hover:text-white dark:hover:text-white transition-colors"
                   >
                     {link.label}
                   </Link>
@@ -97,17 +97,17 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4 className="text-white text-sm font-semibold uppercase tracking-wide mb-4">
+            <h4 className="text-sm font-bold uppercase tracking-wide mb-4 text-white">
               Contacto
             </h4>
-            <ul className="space-y-4 text-sm">
+            <ul className="space-y-4 text-sm text-white/70 dark:text-gray-400">
               {contactInfo.map((item) => (
                 <li key={item.text} className="flex items-center gap-3">
                   {item.icon}
                   {item.href ? (
                     <a
                       href={item.href}
-                      className="hover:text-white transition-colors"
+                      className="text-white/70 dark:text-gray-400 hover:text-white dark:hover:text-white transition-colors"
                     >
                       {item.text}
                     </a>
@@ -120,7 +120,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <hr className="border-t border-white/10 my-8" />
+        <hr className="border-t border-white/10 dark:border-gray-700 my-8" />
 
         <div className="flex flex-col sm:flex-row justify-between items-center gap-4 text-sm">
           <div className="flex gap-5">
@@ -129,13 +129,13 @@ export default function Footer() {
                 key={social.label}
                 href={social.href}
                 aria-label={social.label}
-                className="hover:text-white transition-colors"
+                className="text-white/70 dark:text-gray-400 hover:text-white dark:hover:text-white transition-colors"
               >
                 {social.icon}
               </a>
             ))}
           </div>
-          <p>Vivero Takumi. Todos los derechos reservados.</p>
+          <p className="text-white/70 dark:text-gray-400">Vivero Takumi. Todos los derechos reservados.</p>
         </div>
       </div>
 

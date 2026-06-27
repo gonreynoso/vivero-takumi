@@ -25,7 +25,7 @@ const faqItemsDefault = [
     id: 'faq-4',
     pregunta: '¿Puedo ver el estado de mi pedido?',
     respuesta:
-      'Sí, iniciando sesión con tu cuenta podés ver el historial completo de tus pedidos y su estado actual en "Mis pedidos".',
+      'Sí, iniciando sesión con tu cuenta podés ver el historial completo de tus pedidos y su estado actual en "Mis compras".',
   },
   {
     id: 'faq-5',
@@ -50,38 +50,47 @@ export default function Faq({
 }) {
   const { hash } = useLocation()
   const idDesdeHash = hash.replace('#', '')
-  const [abierto, setAbierto] = useState(
-    () => items.find((item) => item.id === idDesdeHash)?.id ?? items[0]?.id ?? null
-  )
+  const [abierto, setAbierto] = useState(() => {
+    const item = items.find((i) => i.id === idDesdeHash)
+    return item?.id ?? (idDesdeHash === 'faq' ? null : items[0]?.id ?? null)
+  })
 
   useEffect(() => {
     if (!idDesdeHash) return
-    const elemento = document.getElementById(idDesdeHash)
-    if (!elemento) return
-    const timeout = setTimeout(() => elemento.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100)
+
+    const item = items.find((i) => i.id === idDesdeHash)
+    if (item) setAbierto(item.id)
+
+    const delay = item ? 320 : 80
+    const timeout = setTimeout(() => {
+      const elemento = document.getElementById(idDesdeHash)
+      if (!elemento) return
+      elemento.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }, delay)
+
     return () => clearTimeout(timeout)
-  }, [idDesdeHash])
+  }, [idDesdeHash, items])
 
   return (
-    <section id="faq">
+    <section id="faq" className="scroll-mt-24">
       <div className="flex flex-col text-center gap-3 mb-8">
-        <h2 className="text-2xl font-bold text-gray-800">{heading}</h2>
-        <p className="text-gray-500">{description}</p>
+        <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100">{heading}</h2>
+        <p className="text-gray-500 dark:text-gray-400">{description}</p>
       </div>
 
-      <div className="w-full flex flex-col divide-y divide-gray-100 bg-white rounded-2xl border border-gray-100 shadow-sm">
+      <div className="w-full flex flex-col divide-y divide-gray-100 dark:divide-gray-700 bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm dark:shadow-none">
         {items.map((item) => {
           const estaAbierto = abierto === item.id
           return (
-            <div key={item.id} id={item.id} className="px-5">
+            <div key={item.id} id={item.id} className="px-5 scroll-mt-24">
               <button
                 onClick={() => setAbierto(estaAbierto ? null : item.id)}
-                className="w-full flex items-center justify-between gap-4 py-4 text-left font-medium text-gray-800 hover:opacity-70 transition-opacity"
+                className="w-full flex items-center justify-between gap-4 py-4 text-left font-medium text-gray-800 dark:text-gray-100 hover:opacity-70 transition-opacity"
               >
                 {item.pregunta}
                 <ChevronDown
                   size={18}
-                  className={`flex-shrink-0 text-gray-400 transition-transform duration-200 ${
+                  className={`flex-shrink-0 text-gray-400 dark:text-gray-500 transition-transform duration-200 ${
                     estaAbierto ? 'rotate-180' : ''
                   }`}
                 />
@@ -92,7 +101,7 @@ export default function Faq({
                 }`}
               >
                 <div className="overflow-hidden">
-                  <p className="text-gray-500 text-sm pb-4 pr-8">{item.respuesta}</p>
+                  <p className="text-gray-500 dark:text-gray-400 text-sm pb-4 pr-8">{item.respuesta}</p>
                 </div>
               </div>
             </div>

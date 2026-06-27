@@ -104,11 +104,19 @@ export function TextHoverEffect({ text, duration, className }) {
 // Fondo con gradiente radial decorativo para el footer
 export function FooterBackgroundGradient() {
   return (
-    <div
-      className="absolute inset-0 z-0"
-      style={{
-        background: 'radial-gradient(125% 125% at 50% 10%, #1b4332aa 50%, #52b78833 100%)',
-      }}
-    />
+    <>
+      <div
+        className="absolute inset-0 z-0 dark:hidden"
+        style={{
+          background: 'radial-gradient(125% 125% at 50% 10%, #1b4332aa 50%, #52b78833 100%)',
+        }}
+      />
+      <div
+        className="absolute inset-0 z-0 hidden dark:block"
+        style={{
+          background: 'radial-gradient(125% 125% at 50% 0%, #1f2937 40%, #030712 100%)',
+        }}
+      />
+    </>
   )
 }

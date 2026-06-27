@@ -3,18 +3,14 @@ import { Outlet } from 'react-router-dom'
 import { Menu } from 'lucide-react'
 import Sidebar from './Sidebar'
 import { useAuth } from '../context/AuthContext'
-import { useTheme } from '../context/ThemeContext'
 
 // Layout para las vistas autenticadas de admin/empleado: sidebar fijo con perfil + navegación.
-// La clase "dark" se aplica acá (no en <html>), así el modo oscuro queda exclusivo del admin.
 export default function Layout() {
   const { usuario } = useAuth()
-  const { oscuro } = useTheme()
   const [sidebarAbierto, setSidebarAbierto] = useState(false)
 
   return (
-    <div className={oscuro ? 'dark' : ''}>
-      <div className="min-h-screen bg-background dark:bg-gray-900">
+    <div className="min-h-screen bg-background dark:bg-gray-900">
         <Sidebar
           rol={usuario?.rol}
           abierto={sidebarAbierto}
@@ -34,7 +30,6 @@ export default function Layout() {
         <main className="p-6 sm:pl-[19.5rem]">
           <Outlet />
         </main>
-      </div>
     </div>
   )
 }

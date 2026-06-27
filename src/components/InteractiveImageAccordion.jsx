@@ -8,7 +8,10 @@ function AccordionItem({ item, isActive, onMouseEnter, onClick }) {
         isActive ? 'md:w-[380px]' : 'md:w-[60px]'
       }`}
       onMouseEnter={onMouseEnter}
-      onClick={onClick}
+      onClick={() => {
+        onMouseEnter()
+        onClick?.()
+      }}
     >
       <img
         src={item.imagen}
@@ -42,18 +45,18 @@ export default function InteractiveImageAccordion({
   const [activeIndex, setActiveIndex] = useState(items.length - 1)
 
   return (
-    <section className="min-h-[calc(100vh-4rem)] flex flex-col items-center justify-center gap-10 py-10">
-      <div className="w-full flex flex-col md:flex-row items-center justify-between gap-10">
+    <section className="min-h-[calc(100vh-4rem)] flex flex-col items-center justify-center gap-10 py-10 overflow-x-hidden">
+      <div className="w-full flex flex-col md:flex-row items-center justify-between gap-10 min-w-0">
         <div className="w-full md:w-1/2 text-center md:text-left">
           {topText && (
-            <span className="inline-flex bg-primary/10 text-primary text-xs font-medium px-3 py-1.5 rounded-full mb-4">
+            <span className="inline-flex bg-primary/10 dark:bg-primary/20 text-primary dark:text-accent text-xs font-medium px-3 py-1.5 rounded-full mb-4">
               {topText}
             </span>
           )}
-          <h1 className="text-4xl md:text-6xl font-bold text-gray-900 leading-tight tracking-tight">
+          <h1 className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-gray-100 leading-tight tracking-tight">
             {mainText}
           </h1>
-          <p className="mt-6 text-lg text-gray-600 max-w-xl mx-auto md:mx-0">{subText}</p>
+          <p className="mt-6 text-lg text-gray-600 dark:text-gray-300 max-w-xl mx-auto md:mx-0">{subText}</p>
           <div className="mt-8">
             <button
               onClick={onButtonClick}
@@ -64,8 +67,8 @@ export default function InteractiveImageAccordion({
           </div>
         </div>
 
-        <div className="w-full md:w-1/2">
-          <div className="flex flex-row items-center md:justify-center gap-3 overflow-x-auto snap-x snap-mandatory p-4">
+        <div className="w-full md:w-1/2 min-w-0">
+          <div className="flex flex-row items-center md:justify-center gap-3 overflow-x-auto md:overflow-x-hidden snap-x snap-mandatory md:snap-none py-2 px-1 max-w-full scrollbar-hide">
             {items.map((item, index) => (
               <AccordionItem
                 key={item.titulo}
@@ -80,15 +83,15 @@ export default function InteractiveImageAccordion({
       </div>
 
       {beneficios && (
-        <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div className="w-full grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
           {beneficios.map((beneficio) => (
             <div
               key={beneficio.titulo}
-              className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 flex flex-col items-center text-center gap-2"
+              className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm dark:shadow-none p-4 sm:p-5 flex flex-col items-center text-center gap-1.5 sm:gap-2"
             >
-              <span className="text-3xl">{beneficio.icono}</span>
-              <h3 className="font-semibold text-gray-800">{beneficio.titulo}</h3>
-              <p className="text-sm text-gray-500">{beneficio.descripcion}</p>
+              <span className="text-2xl sm:text-3xl">{beneficio.icono}</span>
+              <h3 className="font-semibold text-gray-800 dark:text-gray-100 text-sm sm:text-base">{beneficio.titulo}</h3>
+              <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 leading-snug">{beneficio.descripcion}</p>
             </div>
           ))}
         </div>

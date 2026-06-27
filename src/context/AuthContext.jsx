@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
 import { useData } from './DataContext'
 
 const AuthContext = createContext(null)
@@ -9,6 +9,12 @@ const AuthContext = createContext(null)
 export function AuthProvider({ children }) {
   const { usuarios } = useData()
   const [usuario, setUsuario] = useState(null)
+
+  useEffect(() => {
+    if (!usuario?.id) return
+    const actualizado = usuarios.find((u) => u.id === usuario.id)
+    if (actualizado) setUsuario(actualizado)
+  }, [usuarios, usuario?.id])
 
   const login = async (email, password) => {
     const encontrado = usuarios.find(

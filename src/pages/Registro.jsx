@@ -1,33 +1,17 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import {
-  UserPlus,
-  User,
-  Mail,
-  Lock,
-  MailCheck,
-  Phone,
-  MapPin,
-  Building2,
-  IdCard,
-} from "lucide-react";
+import { UserPlus, User, Mail, Lock, MailCheck } from "lucide-react";
 import { useData } from "../context/DataContext";
 
 const camposIniciales = {
   nombre: "",
-  apellido: "",
-  telefono: "",
   email: "",
   repetirEmail: "",
   password: "",
   repetirPassword: "",
-  direccion: "",
-  ciudad: "",
-  dni: "",
 };
 
-// Alta de cuenta pública. El rol siempre queda "cliente"; se guarda en el array
-// de usuarios local (sin backend) y queda lista para iniciar sesión de inmediato.
+// Alta mínima: el resto de datos (teléfono, DNI, dirección) se completan en el checkout si hacen falta.
 export default function Registro() {
   const { usuarios, agregarUsuario } = useData();
   const [form, setForm] = useState(camposIniciales);
@@ -39,7 +23,7 @@ export default function Registro() {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     setError("");
 
@@ -59,11 +43,6 @@ export default function Registro() {
     setEnviando(true);
     agregarUsuario({
       nombre: form.nombre,
-      apellido: form.apellido,
-      telefono: form.telefono,
-      direccion: form.direccion,
-      ciudad: form.ciudad,
-      dni: form.dni,
       email: form.email,
       password: form.password,
       rol: "cliente",
@@ -99,62 +78,18 @@ export default function Registro() {
         </div>
         <h2 className="text-2xl font-semibold mb-2 text-center text-gray-800">Creá tu cuenta</h2>
         <p className="text-gray-500 text-sm mb-6 text-center">
-          Sumate a Vivero Takumi para comprar y seguir tus pedidos.
+          Solo necesitás lo básico. Completás el resto al hacer tu primera compra.
         </p>
 
         <form onSubmit={handleSubmit} className="w-full flex flex-col gap-3">
-          <div className="grid sm:grid-cols-2 gap-3">
-            <div className="relative">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
-                <User className="w-4 h-4" />
-              </span>
-              <input
-                name="nombre"
-                placeholder="Nombre"
-                value={form.nombre}
-                onChange={handleChange}
-                required
-                className="w-full pl-10 pr-3 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-accent bg-gray-50 text-sm"
-              />
-            </div>
-            <div className="relative">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
-                <User className="w-4 h-4" />
-              </span>
-              <input
-                name="apellido"
-                placeholder="Apellido"
-                value={form.apellido}
-                onChange={handleChange}
-                required
-                className="w-full pl-10 pr-3 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-accent bg-gray-50 text-sm"
-              />
-            </div>
-          </div>
-
           <div className="relative">
             <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
-              <IdCard className="w-4 h-4" />
+              <User className="w-4 h-4" />
             </span>
             <input
-              name="dni"
-              placeholder="DNI"
-              value={form.dni}
-              onChange={handleChange}
-              required
-              className="w-full pl-10 pr-3 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-accent bg-gray-50 text-sm"
-            />
-          </div>
-
-          <div className="relative">
-            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
-              <Phone className="w-4 h-4" />
-            </span>
-            <input
-              type="tel"
-              name="telefono"
-              placeholder="Teléfono"
-              value={form.telefono}
+              name="nombre"
+              placeholder="Nombre"
+              value={form.nombre}
               onChange={handleChange}
               required
               className="w-full pl-10 pr-3 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-accent bg-gray-50 text-sm"
@@ -185,34 +120,6 @@ export default function Registro() {
               name="repetirEmail"
               placeholder="Repetir email"
               value={form.repetirEmail}
-              onChange={handleChange}
-              required
-              className="w-full pl-10 pr-3 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-accent bg-gray-50 text-sm"
-            />
-          </div>
-
-          <div className="relative">
-            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
-              <MapPin className="w-4 h-4" />
-            </span>
-            <input
-              name="direccion"
-              placeholder="Dirección"
-              value={form.direccion}
-              onChange={handleChange}
-              required
-              className="w-full pl-10 pr-3 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-accent bg-gray-50 text-sm"
-            />
-          </div>
-
-          <div className="relative">
-            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
-              <Building2 className="w-4 h-4" />
-            </span>
-            <input
-              name="ciudad"
-              placeholder="Ciudad"
-              value={form.ciudad}
               onChange={handleChange}
               required
               className="w-full pl-10 pr-3 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-accent bg-gray-50 text-sm"

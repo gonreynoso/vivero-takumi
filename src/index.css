@@ -2,8 +2,27 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  scroll-padding-top: 5.5rem;
+}
+
 body {
   margin: 0;
   background-color: #f0faf4;
   font-family: system-ui, 'Segoe UI', Roboto, sans-serif;
+}
+
+.dark body {
+  background-color: #030712;
+}
+
+@layer utilities {
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
 }

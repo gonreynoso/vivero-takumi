@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Navigate, useNavigate } from 'react-router-dom'
-import { Check, CreditCard, Lock, Mail, MapPin, ShieldCheck, Store, Truck, User } from 'lucide-react'
+import { Check, CreditCard, IdCard, Lock, Mail, MapPin, Phone, ShieldCheck, Store, Truck, User } from 'lucide-react'
 import { useCart } from '../../context/CartContext'
 import { useData } from '../../context/DataContext'
 import { useAuth } from '../../context/AuthContext'
@@ -27,12 +27,22 @@ const METODOS_ENVIO = [
 ]
 
 function datosEnvioIniciales(usuario) {
+  const nombreCompleto = usuario
+    ? `${usuario.nombre}${usuario.apellido ? ` ${usuario.apellido}` : ''}`
+    : ''
   return {
-    nombre: usuario ? `${usuario.nombre}${usuario.apellido ? ` ${usuario.apellido}` : ''}` : '',
+    nombre: nombreCompleto,
     email: usuario?.email || '',
+    telefono: usuario?.telefono || '',
+    dni: usuario?.dni || '',
     direccion: usuario?.direccion || '',
     ciudad: usuario?.ciudad || '',
   }
+}
+
+function necesitaCampo(usuario, campo) {
+  if (!usuario) return true
+  return !usuario[campo]?.trim()
 }
 
 function datosPagoIniciales(usuario) {
@@ -82,7 +92,7 @@ function Campo({ icono: Icono, ...props }) {
 // antes de confirmar el pedido. Solo se procesan los items seleccionados en el carrito
 export default function Checkout() {
   const { itemsSeleccionados, totalSeleccionado, quitarVarios } = useCart()
-  const { agregarPedido, descontarStock } = useData()
+  const { agregarPedido, descontarStock, editarUsuario } = useData()
   const { usuario } = useAuth()
   const { mostrarToast } = useToast()
   const navigate = useNavigate()
@@ -100,17 +110,40 @@ export default function Checkout() {
   const costoEnvio = METODOS_ENVIO.find((metodo) => metodo.id === metodoEnvio)?.costo ?? 0
   const totalConEnvio = totalSeleccionado + costoEnvio
 
+  const pedirTelefono = necesitaCampo(usuario, 'telefono')
+  const pedirDni = !esRetiro && necesitaCampo(usuario, 'dni')
+  const pedirDireccion = !esRetiro && necesitaCampo(usuario, 'direccion')
+  const pedirCiudad = !esRetiro && necesitaCampo(usuario, 'ciudad')
+  const pedirNombre = necesitaCampo(usuario, 'nombre')
+  const pedirEmail = necesitaCampo(usuario, 'email')
+  const datosCompletos = usuario && !pedirNombre && !pedirEmail && !pedirTelefono && !pedirDni && !pedirDireccion && !pedirCiudad
+
   const handleConfirmar = async (e) => {
     e.preventDefault()
     setConfirmado(true)
     const hoy = new Date().toISOString().slice(0, 10)
+    const telefono = datosEnvio.telefono || usuario?.telefono || ''
+    const dni = datosEnvio.dni || usuario?.dni || ''
+    const direccion = esRetiro ? '' : datosEnvio.direccion || usuario?.direccion || ''
+    const ciudad = esRetiro ? '' : datosEnvio.ciudad || usuario?.ciudad || ''
+
+    if (usuario) {
+      editarUsuario({
+        ...usuario,
+        telefono: telefono || usuario.telefono,
+        dni: dni || usuario.dni,
+        direccion: direccion || usuario.direccion,
+        ciudad: ciudad || usuario.ciudad,
+      })
+    }
+
     const pedido = {
       clienteEmail: usuario?.email || datosEnvio.email,
       clienteNombre: usuario?.nombre || datosEnvio.nombre,
-      clienteTelefono: usuario?.telefono || '',
-      clienteDni: usuario?.dni || '',
-      clienteDireccion: esRetiro ? '' : datosEnvio.direccion,
-      clienteCiudad: esRetiro ? '' : datosEnvio.ciudad,
+      clienteTelefono: telefono,
+      clienteDni: dni,
+      clienteDireccion: direccion,
+      clienteCiudad: ciudad,
       ultimosDigitos: datosPago.numero.replace(/\s/g, '').slice(-4),
       items: itemsSeleccionados.map(({ plantaId, nombre, precio, cantidad, imagen, categoria }) => ({
         plantaId,
@@ -218,39 +251,71 @@ export default function Checkout() {
             <PasoHeader
               numero={2}
               titulo={esRetiro ? 'Datos de contacto' : 'Datos de envío'}
-              nota={usuario ? '(precargados de tu cuenta, podés editarlos)' : null}
+              nota={usuario ? '(completá solo lo que falte en tu cuenta)' : null}
             />
-            <Campo
-              icono={User}
-              value={datosEnvio.nombre}
-              onChange={(e) => setDatosEnvio({ ...datosEnvio, nombre: e.target.value })}
-              required
-              placeholder="Nombre y apellido"
-            />
-            <Campo
-              icono={Mail}
-              type="email"
-              value={datosEnvio.email}
-              onChange={(e) => setDatosEnvio({ ...datosEnvio, email: e.target.value })}
-              required
-              placeholder={esRetiro ? 'Email, para avisarte cuando esté listo' : 'Email, para coordinar la entrega'}
-            />
-            {!esRetiro && (
+            {datosCompletos ? (
+              <p className="text-sm text-gray-500">
+                Usamos los datos de tu cuenta ({usuario.email}
+                {!esRetiro && usuario.direccion ? ` · ${usuario.direccion}, ${usuario.ciudad}` : ''}).
+              </p>
+            ) : (
               <>
-                <Campo
-                  icono={MapPin}
-                  value={datosEnvio.direccion}
-                  onChange={(e) => setDatosEnvio({ ...datosEnvio, direccion: e.target.value })}
-                  required
-                  placeholder="Dirección de entrega"
-                />
-                <Campo
-                  icono={MapPin}
-                  value={datosEnvio.ciudad}
-                  onChange={(e) => setDatosEnvio({ ...datosEnvio, ciudad: e.target.value })}
-                  required
-                  placeholder="Ciudad"
-                />
+            {pedirNombre && (
+              <Campo
+                icono={User}
+                value={datosEnvio.nombre}
+                onChange={(e) => setDatosEnvio({ ...datosEnvio, nombre: e.target.value })}
+                required
+                placeholder="Nombre y apellido"
+              />
+            )}
+            {pedirEmail && (
+              <Campo
+                icono={Mail}
+                type="email"
+                value={datosEnvio.email}
+                onChange={(e) => setDatosEnvio({ ...datosEnvio, email: e.target.value })}
+                required
+                placeholder={esRetiro ? 'Email, para avisarte cuando esté listo' : 'Email, para coordinar la entrega'}
+              />
+            )}
+            {pedirTelefono && (
+              <Campo
+                icono={Phone}
+                type="tel"
+                value={datosEnvio.telefono}
+                onChange={(e) => setDatosEnvio({ ...datosEnvio, telefono: e.target.value })}
+                required
+                placeholder="Teléfono de contacto"
+              />
+            )}
+            {pedirDni && (
+              <Campo
+                icono={IdCard}
+                value={datosEnvio.dni}
+                onChange={(e) => setDatosEnvio({ ...datosEnvio, dni: e.target.value })}
+                required
+                placeholder="DNI"
+              />
+            )}
+            {pedirDireccion && (
+              <Campo
+                icono={MapPin}
+                value={datosEnvio.direccion}
+                onChange={(e) => setDatosEnvio({ ...datosEnvio, direccion: e.target.value })}
+                required
+                placeholder="Dirección de entrega"
+              />
+            )}
+            {pedirCiudad && (
+              <Campo
+                icono={MapPin}
+                value={datosEnvio.ciudad}
+                onChange={(e) => setDatosEnvio({ ...datosEnvio, ciudad: e.target.value })}
+                required
+                placeholder="Ciudad"
+              />
+            )}
               </>
             )}
           </div>
