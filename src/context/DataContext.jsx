@@ -1,8 +1,7 @@
-import { createContext, useContext, useEffect, useReducer, useState } from 'react'
+import { createContext, useContext, useEffect, useReducer } from 'react'
 import { pedidosIniciales } from '../data/pedidos'
 import { usuariosIniciales } from '../data/usuarios'
-import { plantasIniciales } from '../data/plantas'
-import { categoriasIniciales } from '../data/categorias'
+import { categoriasIniciales, plantasIniciales } from '../data/plantas'
 
 const DataContext = createContext(null)
 
@@ -11,19 +10,17 @@ const CLAVE_STORAGE = 'vivero-takumi:data'
 const estadoInicial = {
   pedidos: pedidosIniciales,
   usuarios: usuariosIniciales,
+  plantas: plantasIniciales,
+  categorias: categoriasIniciales,
 }
 
-// Hidrata desde localStorage si existe (persiste entre recargas y se sincroniza entre pestañas,
-// ya que pedidos y usuarios todavía no viven en una base de datos real)
+// Hidrata desde localStorage si existe (persiste entre recargas y se sincroniza entre
+// pestañas, ya que no hay backend: todo el estado vive en el cliente)
 function cargarEstadoInicial(estadoPorDefecto) {
   try {
     const guardado = localStorage.getItem(CLAVE_STORAGE)
     if (!guardado) return estadoPorDefecto
-    const estado = JSON.parse(guardado)
-    // Navegadores con datos cacheados de antes de migrar el super admin a Supabase
-    // todavía pueden tener este usuario hardcodeado guardado localmente; se descarta acá.
-    estado.usuarios = (estado.usuarios || []).filter((u) => u.email !== 'admin@viverotakumi.com')
-    return estado
+    return JSON.parse(guardado)
   } catch {
     return estadoPorDefecto
   }
@@ -31,6 +28,13 @@ function cargarEstadoInicial(estadoPorDefecto) {
 
 function dataReducer(state, action) {
   switch (action.type) {
+    case 'AGREGAR_USUARIO': {
+      const nuevoId = Math.max(0, ...state.usuarios.map((u) => u.id)) + 1
+      return {
+        ...state,
+        usuarios: [...state.usuarios, { ...action.payload, id: nuevoId, rol: action.payload.rol || 'cliente' }],
+      }
+    }
     case 'EDITAR_USUARIO':
       return {
         ...state,
@@ -43,13 +47,6 @@ function dataReducer(state, action) {
         ...state,
         usuarios: state.usuarios.filter((u) => u.id !== action.payload),
       }
-    case 'AGREGAR_USUARIO': {
-      const nuevoId = Math.max(0, ...state.usuarios.map((u) => u.id)) + 1
-      return {
-        ...state,
-        usuarios: [...state.usuarios, { ...action.payload, id: nuevoId }],
-      }
-    }
     case 'AGREGAR_PEDIDO': {
       const nuevoId = Math.max(0, ...state.pedidos.map((p) => p.id)) + 1
       return {
@@ -71,6 +68,66 @@ function dataReducer(state, action) {
           p.id === action.payload.id ? { ...p, ...action.payload } : p
         ),
       }
+    case 'AGREGAR_PLANTA': {
+      const nuevoId = Math.max(0, ...state.plantas.map((p) => p.id)) + 1
+      return {
+        ...state,
+        plantas: [...state.plantas, { ...action.payload, id: nuevoId, habilitada: true }],
+      }
+    }
+    case 'EDITAR_PLANTA':
+      return {
+        ...state,
+        plantas: state.plantas.map((p) =>
+          p.id === action.payload.id ? { ...p, ...action.payload } : p
+        ),
+      }
+    case 'ELIMINAR_PLANTA':
+      return {
+        ...state,
+        plantas: state.plantas.filter((p) => p.id !== action.payload),
+      }
+    case 'ACTUALIZAR_STOCK':
+      return {
+        ...state,
+        plantas: state.plantas.map((p) =>
+          p.id === action.payload.id ? { ...p, stock: action.payload.stock } : p
+        ),
+      }
+    case 'DESCONTAR_STOCK':
+      return {
+        ...state,
+        plantas: state.plantas.map((p) => {
+          const item = action.payload.find((i) => i.plantaId === p.id)
+          if (!item) return p
+          return { ...p, stock: Math.max(0, p.stock - item.cantidad) }
+        }),
+      }
+    case 'TOGGLE_HABILITADA':
+      return {
+        ...state,
+        plantas: state.plantas.map((p) =>
+          p.id === action.payload ? { ...p, habilitada: p.habilitada === false } : p
+        ),
+      }
+    case 'AGREGAR_CATEGORIA':
+      return {
+        ...state,
+        categorias: [...state.categorias, action.payload],
+      }
+    case 'EDITAR_CATEGORIA':
+      return {
+        ...state,
+        categorias: state.categorias.map((c) => (c === action.payload.anterior ? action.payload.nueva : c)),
+        plantas: state.plantas.map((p) =>
+          p.categoria === action.payload.anterior ? { ...p, categoria: action.payload.nueva } : p
+        ),
+      }
+    case 'ELIMINAR_CATEGORIA':
+      return {
+        ...state,
+        categorias: state.categorias.filter((c) => c !== action.payload),
+      }
     case 'SINCRONIZAR':
       return action.payload
     default:
@@ -78,12 +135,10 @@ function dataReducer(state, action) {
   }
 }
 
-// Provee pedidos, usuarios, plantas y categorías — todo en memoria (sin backend)
+// Provee pedidos, usuarios, plantas y categorías. Todo vive en este estado en memoria
+// y se persiste en localStorage: no hay backend ni base de datos real.
 export function DataProvider({ children }) {
   const [state, dispatch] = useReducer(dataReducer, estadoInicial, cargarEstadoInicial)
-  const [plantas, setPlantas] = useState(plantasIniciales)
-  const [categorias, setCategorias] = useState(categoriasIniciales)
-  const cargandoPlantas = false
 
   useEffect(() => {
     localStorage.setItem(CLAVE_STORAGE, JSON.stringify(state))
@@ -99,37 +154,6 @@ export function DataProvider({ children }) {
     return () => window.removeEventListener('storage', handleStorage)
   }, [])
 
-  const agregarPlanta = (planta) => {
-    const nuevoId = Math.max(0, ...plantas.map((p) => p.id)) + 1
-    setPlantas((prev) => [...prev, { ...planta, id: nuevoId, habilitada: true }])
-  }
-
-  const editarPlanta = (planta) => {
-    setPlantas((prev) => prev.map((p) => (p.id === planta.id ? { ...p, ...planta } : p)))
-  }
-
-  const eliminarPlanta = (id) => {
-    setPlantas((prev) => prev.filter((p) => p.id !== id))
-  }
-
-  const actualizarStock = (id, stock) => {
-    setPlantas((prev) => prev.map((p) => (p.id === id ? { ...p, stock } : p)))
-  }
-
-  const descontarStock = (items) => {
-    setPlantas((prev) =>
-      prev.map((p) => {
-        const item = items.find((i) => i.plantaId === p.id)
-        if (!item) return p
-        return { ...p, stock: Math.max(0, p.stock - item.cantidad) }
-      })
-    )
-  }
-
-  const toggleHabilitada = (id) => {
-    setPlantas((prev) => prev.map((p) => (p.id === id ? { ...p, habilitada: !p.habilitada } : p)))
-  }
-
   const agregarUsuario = (usuario) => dispatch({ type: 'AGREGAR_USUARIO', payload: usuario })
   const editarUsuario = (usuario) => dispatch({ type: 'EDITAR_USUARIO', payload: usuario })
   const eliminarUsuario = (id) => dispatch({ type: 'ELIMINAR_USUARIO', payload: id })
@@ -138,6 +162,7 @@ export function DataProvider({ children }) {
   const actualizarEstadoPedido = (id, estado) =>
     dispatch({ type: 'ACTUALIZAR_ESTADO_PEDIDO', payload: { id, estado } })
 
+  // Si vienen items, recalcula el total en base a precio*cantidad de cada uno
   const editarPedido = (pedido) => {
     const total = pedido.items
       ? pedido.items.reduce((acc, item) => acc + item.precio * item.cantidad, 0)
@@ -145,34 +170,33 @@ export function DataProvider({ children }) {
     dispatch({ type: 'EDITAR_PEDIDO', payload: { ...pedido, total } })
   }
 
-  const agregarCategoria = (nombre) => {
-    setCategorias((prev) => [...prev, nombre])
-  }
+  const agregarPlanta = (planta) => dispatch({ type: 'AGREGAR_PLANTA', payload: planta })
+  const editarPlanta = (planta) => dispatch({ type: 'EDITAR_PLANTA', payload: planta })
+  const eliminarPlanta = (id) => dispatch({ type: 'ELIMINAR_PLANTA', payload: id })
+  const actualizarStock = (id, stock) => dispatch({ type: 'ACTUALIZAR_STOCK', payload: { id, stock } })
+  const descontarStock = (items) => dispatch({ type: 'DESCONTAR_STOCK', payload: items })
+  const toggleHabilitada = (id) => dispatch({ type: 'TOGGLE_HABILITADA', payload: id })
 
-  const editarCategoria = (anterior, nueva) => {
-    setCategorias((prev) => prev.map((c) => (c === anterior ? nueva : c)))
-    setPlantas((prev) => prev.map((p) => (p.categoria === anterior ? { ...p, categoria: nueva } : p)))
-  }
-
-  const eliminarCategoria = (nombre) => {
-    setCategorias((prev) => prev.filter((c) => c !== nombre))
-  }
+  const agregarCategoria = (nombre) => dispatch({ type: 'AGREGAR_CATEGORIA', payload: nombre })
+  const editarCategoria = (anterior, nueva) =>
+    dispatch({ type: 'EDITAR_CATEGORIA', payload: { anterior, nueva } })
+  const eliminarCategoria = (nombre) => dispatch({ type: 'ELIMINAR_CATEGORIA', payload: nombre })
 
   return (
     <DataContext.Provider
       value={{
-        plantas,
-        categorias,
-        cargandoPlantas,
+        plantas: state.plantas,
+        categorias: state.categorias,
+        cargandoPlantas: false,
         pedidos: state.pedidos,
         usuarios: state.usuarios,
+        agregarUsuario,
         agregarPlanta,
         editarPlanta,
         eliminarPlanta,
         actualizarStock,
         descontarStock,
         toggleHabilitada,
-        agregarUsuario,
         editarUsuario,
         eliminarUsuario,
         agregarPedido,

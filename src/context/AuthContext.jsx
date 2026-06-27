@@ -3,6 +3,9 @@ import { useData } from './DataContext'
 
 const AuthContext = createContext(null)
 
+// Provee el usuario logueado y las acciones de login/logout.
+// Debe montarse dentro de DataProvider para acceder a la lista de usuarios actualizada.
+// Login valida contra el array de usuarios local (no hay backend de autenticación).
 export function AuthProvider({ children }) {
   const { usuarios } = useData()
   const [usuario, setUsuario] = useState(null)
