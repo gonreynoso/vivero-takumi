@@ -1,6 +1,11 @@
-// Usuarios hardcodeados del sistema, con sus roles.
-// El super admin real ya no vive acá: es una cuenta auténtica en Supabase Auth + tabla profiles.
 export const usuariosIniciales = [
+  {
+    id: 1,
+    nombre: 'Gonzalo',
+    email: 'gonzalo.reynoso9@gmail.com',
+    password: 'nmb_yxa8pxa_EFD7hzn',
+    rol: 'admin',
+  },
   {
     id: 2,
     nombre: 'Empleado Vivero',

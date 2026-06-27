@@ -11,7 +11,7 @@ import {
   Building2,
   IdCard,
 } from "lucide-react";
-import { supabase } from "../lib/supabaseClient";
+import { useData } from "../context/DataContext";
 
 const camposIniciales = {
   nombre: "",
@@ -29,6 +29,7 @@ const camposIniciales = {
 // Alta de cuenta pública. El rol siempre queda "cliente" (lo fuerza el trigger
 // on_auth_user_created en Supabase) y la cuenta se activa al confirmar el mail.
 export default function Registro() {
+  const { usuarios, agregarUsuario } = useData();
   const [form, setForm] = useState(camposIniciales);
   const [error, setError] = useState("");
   const [enviando, setEnviando] = useState(false);
@@ -38,7 +39,7 @@ export default function Registro() {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     setError("");
 
@@ -50,28 +51,24 @@ export default function Registro() {
       setError("Las contraseñas no coinciden");
       return;
     }
-
-    setEnviando(true);
-    const { error: errorSignUp } = await supabase.auth.signUp({
-      email: form.email,
-      password: form.password,
-      options: {
-        data: {
-          nombre: form.nombre,
-          apellido: form.apellido,
-          telefono: form.telefono,
-          direccion: form.direccion,
-          ciudad: form.ciudad,
-          dni: form.dni,
-        },
-        emailRedirectTo: `${window.location.origin}/login`,
-      },
-    });
-    setEnviando(false);
-    if (errorSignUp) {
-      setError(errorSignUp.message);
+    if (usuarios.some((u) => u.email === form.email)) {
+      setError("Ya existe una cuenta con ese email");
       return;
     }
+
+    setEnviando(true);
+    agregarUsuario({
+      nombre: form.nombre,
+      apellido: form.apellido,
+      telefono: form.telefono,
+      email: form.email,
+      password: form.password,
+      direccion: form.direccion,
+      ciudad: form.ciudad,
+      dni: form.dni,
+      rol: 'cliente',
+    });
+    setEnviando(false);
     setEnviado(true);
   };
 

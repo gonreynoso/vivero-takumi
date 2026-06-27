@@ -1,8 +1,15 @@
-import { createClient } from '@supabase/supabase-js'
-
-// Cliente único de Supabase. La "publishable key" es segura para usar en el navegador
-// (equivalente a la anon key), la seguridad real de escritura se controla con RLS en la base.
-export const supabase = createClient(
-  import.meta.env.VITE_SUPABASE_URL,
-  import.meta.env.VITE_SUPABASE_ANON_KEY
-)
+// Mock de Supabase — sin backend para el TP
+export const supabase = {
+  auth: {
+    signInWithPassword: async () => ({ data: null, error: { message: 'Sin backend' } }),
+    signUp: async () => ({ data: null, error: null }),
+    signOut: async () => {},
+    getSession: async () => ({ data: { session: null } }),
+  },
+  from: () => ({
+    select: () => ({ order: async () => ({ data: [], error: null }), eq: () => ({ single: async () => ({ data: null, error: null }) }) }),
+    insert: () => ({ select: () => ({ single: async () => ({ data: null, error: null }) }) }),
+    update: () => ({ eq: () => ({ select: () => ({ single: async () => ({ data: null, error: null }) }) }) }),
+    delete: () => ({ eq: async () => ({ error: null }) }),
+  }),
+}
