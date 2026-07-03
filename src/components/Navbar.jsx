@@ -34,8 +34,7 @@ export default function Navbar() {
     navigate('/login')
   }
 
-  const esTienda = !usuario || usuario.rol === 'cliente'
-  const items = itemsPorRol[usuario?.rol] || (!usuario ? itemsPorRol.invitado : null)
+  const items = itemsPorRol[usuario?.rol] ?? itemsPorRol.invitado
   const activeItem = items?.find((item) =>
     item.to === '/' ? location.pathname === '/' : location.pathname.startsWith(item.to)
   )?.label
@@ -51,36 +50,32 @@ export default function Navbar() {
     <header className="bg-white dark:bg-gray-900 border-b border-gray-100 dark:border-gray-800 sticky top-0 z-20">
       <div className="h-16 max-w-7xl mx-auto grid grid-cols-[auto_1fr_auto] items-center px-4 sm:px-6 gap-3 sm:gap-6">
         <div className="flex items-center gap-2">
-          {esTienda ? <Link to="/">{logo}</Link> : logo}
+          <Link to="/">{logo}</Link>
         </div>
 
         <div className="hidden md:flex justify-center">
-          {items && (
-            <GlowMenu
-              items={items}
-              activeItem={activeItem}
-              onItemClick={(item) => navigate(item.to)}
-            />
-          )}
+          <GlowMenu
+            items={items}
+            activeItem={activeItem}
+            onItemClick={(item) => navigate(item.to)}
+          />
         </div>
 
         <div className="flex items-center gap-2 sm:gap-3 justify-end">
           <ThemeToggle />
 
-          {esTienda && (
-            <button
-              onClick={() => navigate('/carrito')}
-              className="relative flex items-center text-gray-600 dark:text-gray-300 hover:text-primary transition-colors"
-              aria-label="Carrito"
-            >
-              <ShoppingCart className="w-6 h-6" />
-              {cart.cantidadTotal > 0 && (
-                <span className="absolute -top-2 -right-2 bg-accent text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                  {cart.cantidadTotal}
-                </span>
-              )}
-            </button>
-          )}
+          <button
+            onClick={() => navigate('/carrito')}
+            className="relative flex items-center text-gray-600 dark:text-gray-300 hover:text-primary transition-colors"
+            aria-label="Carrito"
+          >
+            <ShoppingCart className="w-6 h-6" />
+            {cart.cantidadTotal > 0 && (
+              <span className="absolute -top-2 -right-2 bg-accent text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                {cart.cantidadTotal}
+              </span>
+            )}
+          </button>
 
           {usuario ? (
             <>

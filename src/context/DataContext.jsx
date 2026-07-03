@@ -193,7 +193,6 @@ export function DataProvider({ children }) {
       value={{
         plantas: state.plantas,
         categorias: state.categorias,
-        cargandoPlantas: false,
         pedidos: state.pedidos,
         usuarios: state.usuarios,
         agregarUsuario,

@@ -5,7 +5,7 @@ import { useToast } from '../../context/ToastContext'
 import EmptyState from '../../components/EmptyState'
 
 export default function Categorias() {
-  const { categorias, plantas, cargandoPlantas, agregarCategoria, editarCategoria, eliminarCategoria } =
+  const { categorias, plantas, agregarCategoria, editarCategoria, eliminarCategoria } =
     useData()
   const { mostrarToast } = useToast()
   const [nueva, setNueva] = useState('')
@@ -89,9 +89,7 @@ export default function Categorias() {
         </button>
       </form>
 
-      {cargandoPlantas ? (
-        <p className="text-sm text-gray-400 dark:text-gray-500">Cargando categorías...</p>
-      ) : categorias.length === 0 ? (
+      {categorias.length === 0 ? (
         <EmptyState mensaje="Todavía no hay categorías creadas." />
       ) : (
         <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 divide-y divide-gray-100 dark:divide-gray-700">

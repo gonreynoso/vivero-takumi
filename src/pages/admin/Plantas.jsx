@@ -13,7 +13,6 @@ export default function Plantas() {
   const {
     plantas,
     categorias,
-    cargandoPlantas,
     agregarPlanta,
     editarPlanta,
     eliminarPlanta,
@@ -77,9 +76,7 @@ export default function Plantas() {
         </button>
       </div>
 
-      {cargandoPlantas ? (
-        <p className="text-sm text-gray-400 dark:text-gray-500">Cargando plantas...</p>
-      ) : plantas.length === 0 ? (
+      {plantas.length === 0 ? (
         <EmptyState mensaje="Todavía no hay plantas cargadas en el vivero." />
       ) : (
         <>
