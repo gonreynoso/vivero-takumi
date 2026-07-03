@@ -30,7 +30,6 @@ const navegacionPorRol = {
 
 const estadosPedido = ['todos', 'pendiente', 'confirmado', 'entregado']
 
-// Submenú colapsable con links anidados (usado para filtrar pedidos por estado)
 function SubMenu({ children, icon: Icon, items, onNavigate }) {
   const [abierto, setAbierto] = useState(false)
 
@@ -71,7 +70,6 @@ function SubMenu({ children, icon: Icon, items, onNavigate }) {
   )
 }
 
-// Sidebar del panel de admin/empleado: fijo en desktop, drawer deslizable en mobile
 export default function Sidebar({ rol, abierto, onCerrar }) {
   const { usuario, logout } = useAuth()
   const { oscuro, toggleTema } = useTheme()

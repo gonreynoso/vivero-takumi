@@ -3,7 +3,6 @@ import Navbar from './Navbar'
 import Footer from './Footer'
 import MobileFloatingNav from './MobileFloatingNav'
 
-// Layout para la tienda (home, catálogo, carrito, etc): navbar horizontal, sin sidebar
 export default function StoreLayout() {
   return (
     <div className="min-h-screen bg-background dark:bg-gray-950 flex flex-col">

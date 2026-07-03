@@ -3,7 +3,6 @@ import Badge from './Badge'
 
 const colorDificultad = { fácil: 'verde', media: 'amarillo', difícil: 'rojo' }
 
-// Fila de lista para el CRUD de plantas del admin
 export default function PlantaFila({ planta, onToggleHabilitada, onEditar, onEliminar }) {
   const habilitada = planta.habilitada !== false
   const colorStock = planta.stock === 0 ? 'rojo' : planta.stock < 5 ? 'amarillo' : 'verde'

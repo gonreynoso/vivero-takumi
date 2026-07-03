@@ -1,6 +1,5 @@
 import { useState } from 'react'
 
-// Item individual del accordion de imágenes: se expande al pasar el mouse
 function AccordionItem({ item, isActive, onMouseEnter, onClick }) {
   return (
     <div
@@ -31,7 +30,6 @@ function AccordionItem({ item, isActive, onMouseEnter, onClick }) {
   )
 }
 
-// Hero con accordion de imágenes interactivo, pensado para ocupar la pantalla completa
 export default function InteractiveImageAccordion({
   topText,
   mainText,

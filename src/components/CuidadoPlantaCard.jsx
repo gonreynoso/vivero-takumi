@@ -2,8 +2,6 @@ import { useState } from 'react'
 import { CheckCircle2, Droplet, Sun } from 'lucide-react'
 import { diasDesde, diasEntreRiegos, obtenerUltimoRiego, registrarRiego } from '../lib/riego'
 
-// Tarjeta de seguimiento de riego de una planta comprada: estima cada cuántos días
-// regarla según su guía de cuidado y deja registrar "la regué hoy" (persiste en localStorage).
 export default function CuidadoPlantaCard({ planta, email }) {
   const [ultimoRiego, setUltimoRiego] = useState(() => obtenerUltimoRiego(email, planta.id))
 

@@ -8,12 +8,11 @@ import EmptyState from '../../components/EmptyState'
 
 const rolesDisponibles = ['admin', 'manager', 'empleado', 'cliente']
 
-// CRUD de usuarios, todo contra el array local en DataContext (sin backend).
 export default function Usuarios() {
   const { usuarios, agregarUsuario, editarUsuario, eliminarUsuario } = useData()
   const { mostrarToast } = useToast()
 
-  const [modalForm, setModalForm] = useState(null) // null | 'crear' | usuario a editar
+  const [modalForm, setModalForm] = useState(null)
   const [usuarioAEliminar, setUsuarioAEliminar] = useState(null)
   const [form, setForm] = useState({ nombre: '', email: '', password: '', rol: 'empleado' })
 

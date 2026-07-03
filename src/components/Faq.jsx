@@ -41,8 +41,6 @@ const faqItemsDefault = [
   },
 ]
 
-// Sección de preguntas frecuentes con acordeón simple (sin dependencias externas)
-// Soporta deep-linking: /#faq enfoca la sección, /#faq-N abre y desplaza a esa pregunta puntual
 export default function Faq({
   heading = 'Preguntas frecuentes',
   description = '¿Tenés dudas sobre tu pedido, el cuidado de tus plantas o los envíos? Acá respondemos las consultas más comunes.',

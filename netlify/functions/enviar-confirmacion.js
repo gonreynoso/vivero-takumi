@@ -1,5 +1,5 @@
-// Netlify Function (formato v2): envía el mail de confirmación de pedido vía Resend.
-// La API key vive solo en el servidor (variable de entorno RESEND_API_KEY), nunca en el cliente.
+
+
 export default async (req) => {
   if (req.method !== 'POST') {
     return new Response('Method not allowed', { status: 405 })

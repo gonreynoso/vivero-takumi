@@ -7,7 +7,6 @@ import EmptyState from '../../components/EmptyState'
 
 const estados = ['todos', 'pendiente', 'confirmado', 'entregado']
 
-// El empleado puede ver todos los pedidos y avanzar su estado
 export default function Pedidos() {
   const { pedidos, actualizarEstadoPedido } = useData()
   const { mostrarToast } = useToast()

@@ -4,7 +4,6 @@ import { useData } from '../../context/DataContext'
 import { useToast } from '../../context/ToastContext'
 import EmptyState from '../../components/EmptyState'
 
-// Gestión de categorías de plantas: crear, renombrar (con cascada a las plantas que la usan) y eliminar
 export default function Categorias() {
   const { categorias, plantas, cargandoPlantas, agregarCategoria, editarCategoria, eliminarCategoria } =
     useData()

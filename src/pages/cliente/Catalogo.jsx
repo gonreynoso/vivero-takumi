@@ -7,7 +7,7 @@ import EmptyState from '../../components/EmptyState'
 
 const filtrosIniciales = { busqueda: '', categoria: '', dificultad: '', precioMax: 10000 }
 
-// Catálogo de plantas, navegable y comprable sin necesidad de login
+
 export default function Catalogo() {
   const { plantas, categorias } = useData()
   const [searchParams] = useSearchParams()

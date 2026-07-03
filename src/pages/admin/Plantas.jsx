@@ -9,7 +9,6 @@ import Paginador from '../../components/Paginador'
 
 const POR_PAGINA = 8
 
-// CRUD completo de plantas para el admin
 export default function Plantas() {
   const {
     plantas,
@@ -21,7 +20,7 @@ export default function Plantas() {
     toggleHabilitada,
   } = useData()
   const { mostrarToast } = useToast()
-  const [modalForm, setModalForm] = useState(null) // null | 'crear' | planta a editar
+  const [modalForm, setModalForm] = useState(null)
   const [plantaAEliminar, setPlantaAEliminar] = useState(null)
   const [pagina, setPagina] = useState(1)
 

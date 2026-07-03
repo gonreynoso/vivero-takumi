@@ -26,4 +26,10 @@ export default defineConfig([
       globals: globals.node,
     },
   },
+  {
+    files: ['src/context/**/*.{js,jsx}'],
+    rules: {
+      'react-refresh/only-export-components': 'off',
+    },
+  },
 ])

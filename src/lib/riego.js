@@ -22,14 +22,10 @@ export function registrarRiego(email, plantaId) {
 
 const MS_POR_DIA = 1000 * 60 * 60 * 24
 
-// Días transcurridos desde una fecha ISO hasta hoy. Aislado en este módulo (en vez de
-// llamar Date.now() directo en el componente) para no romper la regla de pureza del render.
 export function diasDesde(fechaIso) {
   return Math.floor((Date.now() - new Date(fechaIso).getTime()) / MS_POR_DIA)
 }
 
-// Estima cada cuántos días regar a partir del texto libre de la guía de cuidado.
-// Es una heurística (no toda la guía trae un número explícito), no una medición exacta.
 export function diasEntreRiegos(texto = '') {
   const t = texto.toLowerCase()
   const numero = t.match(/(\d+)/)

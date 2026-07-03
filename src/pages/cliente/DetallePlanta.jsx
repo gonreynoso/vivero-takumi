@@ -14,8 +14,6 @@ const CUOTAS = 6
 const formatoEntero = new Intl.NumberFormat('es-AR', { maximumFractionDigits: 0 })
 const formatoDecimal = new Intl.NumberFormat('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
 
-// Detalle de una planta: galería de imágenes con zoom, guía de cuidado completa,
-// navegable y comprable sin login
 export default function DetallePlanta() {
   const { id } = useParams()
   const navigate = useNavigate()

@@ -9,7 +9,6 @@ import Paginador from '../../components/Paginador'
 const estados = ['todos', 'pendiente', 'confirmado', 'entregado']
 const POR_PAGINA = 6
 
-// Vista del admin para ver y gestionar todos los pedidos del vivero
 export default function Pedidos() {
   const { pedidos, actualizarEstadoPedido, editarPedido } = useData()
   const { mostrarToast } = useToast()

@@ -4,7 +4,6 @@ import { useToast } from '../../context/ToastContext'
 import Badge from '../../components/Badge'
 import EmptyState from '../../components/EmptyState'
 
-// Catálogo completo con stock real, el empleado puede actualizar las cantidades
 export default function Stock() {
   const { plantas, actualizarStock } = useData()
   const { mostrarToast } = useToast()

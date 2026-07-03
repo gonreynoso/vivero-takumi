@@ -16,8 +16,6 @@ import Badge from './Badge'
 const colorEstado = { pendiente: 'amarillo', confirmado: 'azul', entregado: 'verde' }
 const estadosDisponibles = ['pendiente', 'confirmado', 'entregado']
 
-// Una fila de la tabla de pedidos del admin. Al hacer clic se expande con el detalle
-// completo del comprador y los productos, con opción de editar ambos.
 export default function PedidoFila({ pedido, onCambiarEstado, onGuardarEdicion }) {
   const [abierto, setAbierto] = useState(false)
   const [editando, setEditando] = useState(false)

@@ -9,7 +9,6 @@ function formatearKb(bytes) {
   return `${Math.max(1, Math.round(bytes / 1024))} KB`
 }
 
-// Formulario para crear o editar una planta, usado dentro de un Modal
 export default function PlantaForm({ plantaInicial, categorias, onGuardar, onCancelar }) {
   const [form, setForm] = useState(
     plantaInicial || {

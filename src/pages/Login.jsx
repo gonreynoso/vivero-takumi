@@ -11,7 +11,6 @@ const rutaPorRol = {
   cliente: "/catalogo",
 };
 
-// Página de login, único punto de entrada público de la app
 export default function Login() {
   const { login } = useAuth();
   const navigate = useNavigate();

@@ -11,7 +11,6 @@ const camposIniciales = {
   repetirPassword: "",
 };
 
-// Alta mínima: el resto de datos (teléfono, DNI, dirección) se completan en el checkout si hacen falta.
 export default function Registro() {
   const { usuarios, agregarUsuario } = useData();
   const [form, setForm] = useState(camposIniciales);

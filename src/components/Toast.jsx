@@ -1,4 +1,4 @@
-// Notificación flotante simple para feedback de acciones
+
 const estilos = {
   success: 'bg-primary text-white',
   error: 'bg-red-600 text-white',

@@ -5,8 +5,6 @@ import { useData } from '../../context/DataContext'
 import CartItem from '../../components/CartItem'
 import EmptyState from '../../components/EmptyState'
 
-// Carrito de compras estilo Mercado Libre: los items se seleccionan individualmente y solo
-// los seleccionados pasan al checkout; el resto queda guardado en el carrito
 export default function Carrito() {
   const {
     items,

@@ -4,7 +4,6 @@ import { Menu } from 'lucide-react'
 import Sidebar from './Sidebar'
 import { useAuth } from '../context/AuthContext'
 
-// Layout para las vistas autenticadas de admin/empleado: sidebar fijo con perfil + navegación.
 export default function Layout() {
   const { usuario } = useAuth()
   const [sidebarAbierto, setSidebarAbierto] = useState(false)

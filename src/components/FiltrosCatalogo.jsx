@@ -3,8 +3,6 @@ import { ChevronDown, DollarSign, Gauge, Search, SlidersHorizontal, Tag } from '
 
 const dificultades = ['fácil', 'media', 'difícil']
 
-// Filtros del catálogo: búsqueda, categoría, dificultad y rango de precio.
-// En mobile quedan colapsados detrás de un botón "Filtros" para no ocupar tanto espacio.
 export default function FiltrosCatalogo({ filtros, onChange, categorias }) {
   const [abierto, setAbierto] = useState(false)
 

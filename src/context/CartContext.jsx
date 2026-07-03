@@ -4,8 +4,6 @@ const CartContext = createContext(null)
 
 const estadoInicial = { items: [], seleccionados: [] }
 
-// Al estilo Mercado Libre: cada item agregado queda seleccionado para la compra por defecto,
-// y el comprador puede desmarcar items que quiera dejar en el carrito para después
 function cartReducer(state, action) {
   switch (action.type) {
     case 'AGREGAR': {
@@ -74,7 +72,6 @@ function cartReducer(state, action) {
   }
 }
 
-// Provee el carrito de compras, vive en memoria durante toda la sesión
 export function CartProvider({ children }) {
   const [state, dispatch] = useReducer(cartReducer, estadoInicial)
   const { items, seleccionados } = state
@@ -124,7 +121,6 @@ export function CartProvider({ children }) {
   )
 }
 
-// eslint-disable-next-line react-refresh/only-export-components -- el hook vive junto a su Provider a propósito
 export function useCart() {
   return useContext(CartContext)
 }

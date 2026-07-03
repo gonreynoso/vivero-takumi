@@ -14,7 +14,6 @@ const estadoInicial = {
   categorias: categoriasIniciales,
 }
 
-// Completa claves faltantes (p. ej. plantas/categorías antes vivían fuera de localStorage)
 function normalizarEstado(guardado, estadoPorDefecto) {
   if (!guardado || typeof guardado !== 'object') return estadoPorDefecto
   return {
@@ -25,8 +24,6 @@ function normalizarEstado(guardado, estadoPorDefecto) {
   }
 }
 
-// Hidrata desde localStorage si existe (persiste entre recargas y se sincroniza entre
-// pestañas, ya que no hay backend: todo el estado vive en el cliente)
 function cargarEstadoInicial(estadoPorDefecto) {
   try {
     const guardado = localStorage.getItem(CLAVE_STORAGE)
@@ -146,8 +143,6 @@ function dataReducer(state, action) {
   }
 }
 
-// Provee pedidos, usuarios, plantas y categorías. Todo vive en este estado en memoria
-// y se persiste en localStorage: no hay backend ni base de datos real.
 export function DataProvider({ children }) {
   const [state, dispatch] = useReducer(dataReducer, estadoInicial, cargarEstadoInicial)
 
@@ -173,7 +168,7 @@ export function DataProvider({ children }) {
   const actualizarEstadoPedido = (id, estado) =>
     dispatch({ type: 'ACTUALIZAR_ESTADO_PEDIDO', payload: { id, estado } })
 
-  // Si vienen items, recalcula el total en base a precio*cantidad de cada uno
+
   const editarPedido = (pedido) => {
     const total = pedido.items
       ? pedido.items.reduce((acc, item) => acc + item.precio * item.cantidad, 0)
@@ -223,7 +218,6 @@ export function DataProvider({ children }) {
   )
 }
 
-// eslint-disable-next-line react-refresh/only-export-components -- el hook vive junto a su Provider a propósito
 export function useData() {
   return useContext(DataContext)
 }

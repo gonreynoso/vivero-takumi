@@ -1,4 +1,4 @@
-// Muestra la guía de cuidado completa de una planta
+
 export default function GuiaCuidado({ guia }) {
   const items = [
     { label: 'Riego', valor: guia.riego, icono: '💧' },

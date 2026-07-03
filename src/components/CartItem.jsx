@@ -4,7 +4,6 @@ import Badge from './Badge'
 
 const colorDificultad = { fácil: 'verde', media: 'amarillo', difícil: 'rojo' }
 
-// Item individual del carrito, estilo Mercado Libre: checkbox de selección + stepper de cantidad + link de eliminar
 export default function CartItem({ item, stockDisponible, seleccionado, onToggleSeleccion, onCambiarCantidad, onQuitar }) {
   return (
     <div className="group flex gap-4 bg-white rounded-2xl border border-gray-100 p-4 hover:shadow-md hover:border-accent/30 transition-all">

@@ -20,7 +20,6 @@ import StatsCard from '../../components/StatsCard'
 
 const COLORES_ESTADO = { pendiente: '#eab308', confirmado: '#3b82f6', entregado: '#52b788' }
 
-// Dashboard del admin con métricas generales del vivero y gráficos de ventas
 export default function Dashboard() {
   const { plantas, pedidos, usuarios } = useData()
   const { oscuro } = useTheme()

@@ -31,7 +31,6 @@ const navGlowVariants = {
 
 const sharedTransition = { type: 'spring', stiffness: 100, damping: 20, duration: 0.5 }
 
-// Menú con efecto "glow" y flip 3D al pasar el mouse, usado en la navbar de la tienda
 export const GlowMenu = forwardRef(({ className, items, activeItem, onItemClick, ...props }, ref) => {
   return (
     <motion.nav

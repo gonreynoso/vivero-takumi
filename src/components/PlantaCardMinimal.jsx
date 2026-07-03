@@ -5,8 +5,6 @@ const CUOTAS = 6
 const formatoEntero = new Intl.NumberFormat('es-AR', { maximumFractionDigits: 0 })
 const formatoDecimal = new Intl.NumberFormat('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
 
-// Card minimalista estilo "lookbook" para grillas del storefront: imagen a pantalla completa
-// sin card/borde/sombra, info debajo. Para agregar al carrito hay que entrar al detalle.
 export default function PlantaCardMinimal({ planta }) {
   const habilitada = planta.habilitada !== false
 

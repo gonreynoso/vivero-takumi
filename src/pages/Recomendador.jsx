@@ -1,7 +1,6 @@
 import { useData } from '../context/DataContext'
 import QuizRecomendador from '../components/QuizRecomendador'
 
-// Página pública con el wizard que recomienda plantas según gustos y nivel de experiencia
 export default function Recomendador() {
   const { plantas } = useData()
 

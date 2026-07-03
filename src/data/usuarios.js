@@ -1,4 +1,4 @@
-// Usuarios hardcodeados del sistema, con sus roles. Sin backend: el login valida contra este array.
+
 export const usuariosIniciales = [
   {
     id: 1,

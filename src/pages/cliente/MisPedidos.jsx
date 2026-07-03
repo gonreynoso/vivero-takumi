@@ -24,7 +24,6 @@ function necesitaRiego(planta, email) {
   return diasDesde(ultimo) >= frecuencia
 }
 
-// Historial de pedidos y seguimiento de riego de plantas compradas, en una sola vista
 export default function MisPedidos() {
   const { pedidos, plantas } = useData()
   const { usuario } = useAuth()

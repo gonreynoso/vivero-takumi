@@ -1,7 +1,6 @@
 import { useEffect } from 'react'
 import { ChevronLeft, ChevronRight, X } from 'lucide-react'
 
-// Visor de imagen a pantalla completa con navegación entre las imágenes de la galería
 export default function ImageLightbox({ imagenes, indice, onClose, onCambiarIndice }) {
   useEffect(() => {
     const handleKeyDown = (e) => {

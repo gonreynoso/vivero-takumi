@@ -8,7 +8,6 @@ const colorRol = {
   cliente: 'verde',
 }
 
-// Card de usuario para la gestión de empleados/usuarios del admin
 export default function UserCard({ usuario, onEditar, onEliminar }) {
   return (
     <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">

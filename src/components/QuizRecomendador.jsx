@@ -4,7 +4,6 @@ import { preguntasRecomendador, recomendarPlantas } from '../data/quizRecomendad
 import PlantaCardMinimal from './PlantaCardMinimal'
 import EmptyState from './EmptyState'
 
-// Wizard de preguntas que recomienda plantas del catálogo según las respuestas elegidas
 export default function QuizRecomendador({ plantas }) {
   const [paso, setPaso] = useState(0)
   const [respuestas, setRespuestas] = useState({})

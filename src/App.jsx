@@ -32,7 +32,6 @@ import PedidoConfirmado from './pages/cliente/PedidoConfirmado'
 import MisPedidos from './pages/cliente/MisPedidos'
 import Recomendador from './pages/Recomendador'
 
-// Define toda la navegación de la app y los guards de rol por sección
 function AppRoutes() {
   return (
     <>

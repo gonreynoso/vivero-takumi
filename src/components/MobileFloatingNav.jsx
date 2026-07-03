@@ -19,7 +19,6 @@ const itemsInvitado = [
   { to: '/login', icon: User, label: 'Perfil' },
 ]
 
-// Menú de navegación flotante, solo visible en mobile, para las páginas de tienda
 export default function MobileFloatingNav() {
   const { usuario } = useAuth()
   const { cantidadTotal } = useCart()

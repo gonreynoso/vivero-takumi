@@ -8,7 +8,6 @@ const colorEstado = {
 
 const flujoEstados = ['pendiente', 'confirmado', 'entregado']
 
-// Card de pedido, muestra items, total y permite avanzar de estado si se pasa onCambiarEstado
 export default function PedidoCard({ pedido, onCambiarEstado, mostrarCliente }) {
   const indiceActual = flujoEstados.indexOf(pedido.estado)
   const siguienteEstado = flujoEstados[indiceActual + 1]

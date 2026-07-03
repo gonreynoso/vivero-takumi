@@ -54,7 +54,6 @@ function datosPagoIniciales(usuario) {
   }
 }
 
-// Deja solo dígitos (máx 4: MM + AA) e inserta la barra automáticamente
 function formatearVencimiento(valor) {
   const digitos = valor.replace(/\D/g, '').slice(0, 4)
   return digitos.length > 2 ? `${digitos.slice(0, 2)}/${digitos.slice(2)}` : digitos
@@ -88,8 +87,6 @@ function Campo({ icono: Icono, ...props }) {
   )
 }
 
-// Checkout estilo Mercado Libre: paso final donde se ingresan datos de envío y pago
-// antes de confirmar el pedido. Solo se procesan los items seleccionados en el carrito
 export default function Checkout() {
   const { itemsSeleccionados, totalSeleccionado, quitarVarios } = useCart()
   const { agregarPedido, descontarStock, editarUsuario } = useData()

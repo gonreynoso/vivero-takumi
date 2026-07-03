@@ -31,7 +31,6 @@ const stats = [
   { valor: '4.8★', etiqueta: 'Calificación promedio' },
 ]
 
-// Página "Sobre nosotros": historia, valores y estadísticas del vivero
 export default function Nosotros() {
   return (
     <div className="flex flex-col gap-16">

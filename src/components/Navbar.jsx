@@ -23,7 +23,6 @@ const itemsPorRol = {
   ],
 }
 
-// Barra superior blanca con el nombre de la app, menú con efecto glow, carrito y logout
 export default function Navbar() {
   const { usuario, logout } = useAuth()
   const cart = useCart()

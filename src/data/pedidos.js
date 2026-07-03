@@ -1,4 +1,4 @@
-// Pedidos de ejemplo con distintos estados
+
 export const pedidosIniciales = [
   {
     id: 1,

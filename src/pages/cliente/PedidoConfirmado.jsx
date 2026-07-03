@@ -2,8 +2,6 @@ import { Navigate, Link, useLocation } from 'react-router-dom'
 import { CheckCircle2, CreditCard, Mail, MapPin, Store, Truck, User } from 'lucide-react'
 import { useAuth } from '../../context/AuthContext'
 
-// Vista de éxito post-compra, estilo Mercado Libre: confirma el pedido y repasa
-// los datos de envío y pago que se usaron para esa compra puntual
 export default function PedidoConfirmado() {
   const location = useLocation()
   const { usuario } = useAuth()

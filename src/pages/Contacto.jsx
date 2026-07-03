@@ -8,13 +8,11 @@ const infoContacto = [
   { icon: MapPin, texto: 'Ruta 8 km 45, Buenos Aires' },
 ]
 
-// Codifica el formulario como x-www-form-urlencoded, formato que espera Netlify Forms
 const codificarFormulario = (data) =>
   Object.keys(data)
     .map((key) => `${encodeURIComponent(key)}=${encodeURIComponent(data[key])}`)
     .join('&')
 
-// Página de contacto con formulario conectado a Netlify Forms
 export default function Contacto() {
   const { mostrarToast } = useToast()
   const [form, setForm] = useState({ nombre: '', email: '', mensaje: '' })
@@ -24,8 +22,6 @@ export default function Contacto() {
   const handleSubmit = async (e) => {
     e.preventDefault()
 
-    // Honeypot: un campo invisible para personas pero visible para bots. Si llegó
-    // completo, es un bot — descartamos el envío sin avisarle que fue detectado.
     if (botField) {
       setForm({ nombre: '', email: '', mensaje: '' })
       mostrarToast('¡Gracias! Te vamos a responder a la brevedad.')

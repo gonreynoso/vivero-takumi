@@ -1,4 +1,4 @@
-// Card de estadística para el dashboard del admin
+
 export default function StatsCard({
   titulo,
   valor,

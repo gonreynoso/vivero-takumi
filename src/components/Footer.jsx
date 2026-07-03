@@ -39,7 +39,6 @@ const socialLinks = [
   { icon: <MessageCircle size={20} />, label: "WhatsApp", href: "#" },
 ];
 
-// Footer de la tienda con enlaces, contacto y efecto hover en el nombre de marca
 export default function Footer() {
   const { categorias } = useData();
 

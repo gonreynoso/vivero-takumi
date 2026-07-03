@@ -1,8 +1,6 @@
 const DIMENSION_MAXIMA = 1200
 const CALIDAD_WEBP = 0.85
 
-// Redimensiona (si excede la dimensión máxima) y convierte cualquier imagen a WebP usando
-// el canvas del navegador, para minimizar el peso sin pérdida visible de calidad
 export function convertirAWebp(archivo, calidad = CALIDAD_WEBP) {
   return new Promise((resolve, reject) => {
     const lector = new FileReader()

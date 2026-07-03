@@ -2,7 +2,6 @@ import { useRef, useEffect, useState } from 'react'
 import { motion } from 'motion/react'
 import { cn } from '../lib/utils'
 
-// Efecto de texto con gradiente que sigue al cursor al pasar por encima
 export function TextHoverEffect({ text, duration, className }) {
   const svgRef = useRef(null)
   const [cursor, setCursor] = useState({ x: 0, y: 0 })
@@ -101,7 +100,6 @@ export function TextHoverEffect({ text, duration, className }) {
   )
 }
 
-// Fondo con gradiente radial decorativo para el footer
 export function FooterBackgroundGradient() {
   return (
     <>

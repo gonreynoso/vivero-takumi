@@ -1,16 +1,57 @@
-# React + Vite
+# Vivero Takumi
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+SPA de e-commerce para un vivero de plantas. Proyecto de **Plataformas de Desarrollo** (ACN4AP).
 
-Currently, two official plugins are available:
+## Descripción
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Tienda online con catálogo, carrito, checkout y panel de administración. Los datos viven en memoria y `localStorage` (sin backend obligatorio). Incluye roles de usuario, gestión gráfica de plantas/categorías/pedidos/usuarios y funcionalidades propias del rubro: recomendador de plantas, guías de cuidado y seguimiento de riego.
 
-## React Compiler
+## Requisitos
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Node.js 18+
+- pnpm
 
-## Expanding the ESLint configuration
+## Instalación y desarrollo
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```bash
+pnpm install
+pnpm dev
+```
+
+Abrir http://localhost:5173
+
+## Build
+
+```bash
+pnpm build
+pnpm preview
+```
+
+## Usuarios de prueba
+
+| Rol | Email | Contraseña |
+|-----|-------|------------|
+| Cliente | cliente@viverotakumi.com | cli123 |
+| Empleado | empleado@viverotakumi.com | emp123 |
+| Manager | manager@viverotakumi.com | manager123 |
+| Admin | gonzalo.reynoso9@gmail.com | ver `src/data/usuarios.js` |
+
+## Estructura principal
+
+```
+src/
+├── components/     # UI reutilizable (Navbar, cards, formularios, etc.)
+├── context/        # Auth, datos, carrito, tema, toasts
+├── data/           # Seeds hardcodeados (plantas, usuarios, pedidos)
+├── pages/          # Rutas: tienda, admin, empleado
+├── routes/         # ProtectedRoute (guards por rol)
+└── lib/            # Utilidades (imágenes, riego)
+```
+
+## Documentación de entrega
+
+Ver [ENTREGA.md](./ENTREGA.md) para el documento completo del TP (temática, roles, funcionalidades, guía de exposición).
+
+## Repositorio
+
+https://github.com/gonreynoso/vivero-takumi

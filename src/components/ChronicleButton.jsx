@@ -57,7 +57,6 @@ const styles = `
 }
 `
 
-// Botón con efecto de texto "flip" al pasar el mouse
 export function ChronicleButton({
   text,
   onClick,

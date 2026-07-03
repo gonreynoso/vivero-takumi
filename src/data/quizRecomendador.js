@@ -1,4 +1,4 @@
-// Preguntas del recomendador de plantas y la lógica de puntaje contra el catálogo
+
 export const preguntasRecomendador = [
   {
     id: 'ubicacion',
@@ -43,8 +43,6 @@ const categoriasPorProposito = {
   frutal: ['Frutales'],
 }
 
-// Heurística simple de puntaje: suma puntos por cada respuesta que coincide con la planta.
-// No es una búsqueda exacta, es una recomendación orientativa basada en el catálogo hardcodeado.
 function calcularPuntaje(planta, respuestas) {
   let puntaje = 0
   const luz = (planta.guia_cuidado?.luz || '').toLowerCase()

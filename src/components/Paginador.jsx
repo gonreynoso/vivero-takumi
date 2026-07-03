@@ -1,6 +1,5 @@
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 
-// Paginador genérico: botones anterior/siguiente + números de página
 export default function Paginador({ paginaActual, totalPaginas, onCambiar }) {
   if (totalPaginas <= 1) return null
 

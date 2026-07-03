@@ -1,4 +1,4 @@
-// Catálogo de plantas y categorías hardcodeado (sin backend: todo vive y se edita en el cliente).
+
 export const categoriasIniciales = ['Interior', 'Exterior', 'Suculentas', 'Aromáticas', 'Frutales']
 
 export const plantasIniciales = [

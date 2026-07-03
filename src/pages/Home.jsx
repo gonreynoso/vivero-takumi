@@ -53,7 +53,6 @@ const testimonios = [
   },
 ]
 
-// Home pública con hero, categorías, destacados, beneficios, novedades y testimonios
 export default function Home() {
   const { plantas, categorias } = useData()
   const navigate = useNavigate()

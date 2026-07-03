@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from 'react'
 import { motion } from 'motion/react'
 import { ChronicleButton } from './ChronicleButton'
 
-// Hero con grid de imágenes "recortadas" en mosaico, usado como cierre de la home
 export function DicedHeroSection({
   topText,
   mainText,
