@@ -13,7 +13,15 @@ export function AuthProvider({ children }) {
 
     if (usuario?.id) {
       const actualizado = usuarios.find((u) => u.id === usuario.id)
-      if (actualizado) setUsuario(actualizado)
+      if (
+        actualizado &&
+        (actualizado.nombre !== usuario.nombre ||
+          actualizado.email !== usuario.email ||
+          actualizado.rol !== usuario.rol ||
+          actualizado.password !== usuario.password)
+      ) {
+        setUsuario(actualizado)
+      }
       return
     }
 

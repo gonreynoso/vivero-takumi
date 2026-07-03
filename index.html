@@ -44,6 +44,14 @@
       #root {
         min-height: 100vh;
       }
+      #app-splash {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+      }
+      html.app-ready #app-splash {
+        display: none;
+      }
       .app-loader {
         min-height: 100vh;
         display: flex;
@@ -67,7 +75,42 @@
         font-weight: 600;
         letter-spacing: 0.02em;
       }
+      .app-loader__retry {
+        margin-top: 0.5rem;
+        padding: 0.5rem 1rem;
+        border: 1px solid currentColor;
+        border-radius: 9999px;
+        background: transparent;
+        color: inherit;
+        font: inherit;
+        cursor: pointer;
+      }
     </style>
+
+    <script>
+      window.__APP_BOOTED__ = false
+      ;(function () {
+        var BOOT_KEY = 'vivero-takumi:boot-retry'
+        window.setTimeout(function () {
+          if (window.__APP_BOOTED__) return
+          if (!sessionStorage.getItem(BOOT_KEY)) {
+            sessionStorage.setItem(BOOT_KEY, '1')
+            window.location.reload()
+            return
+          }
+          sessionStorage.removeItem(BOOT_KEY)
+          var splash = document.getElementById('app-splash')
+          if (!splash) return
+          splash.setAttribute('aria-busy', 'false')
+          splash.innerHTML =
+            '<span class="app-loader__mark" aria-hidden="true">🌿</span>' +
+            '<span class="app-loader__text">No se pudo cargar la app</span>' +
+            '<button type="button" class="app-loader__retry" onclick="sessionStorage.removeItem(\'' +
+            BOOT_KEY +
+            '\'); location.reload()">Reintentar</button>'
+        }, 8000)
+      })()
+    </script>
 
 
     <meta property="og:type" content="website" />
@@ -106,12 +149,11 @@
     </script>
   </head>
   <body>
-    <div id="root">
-      <div class="app-loader" aria-busy="true" aria-label="Cargando Vivero Takumi">
-        <span class="app-loader__mark" aria-hidden="true">🌿</span>
-        <span class="app-loader__text">Vivero Takumi</span>
-      </div>
+    <div id="app-splash" class="app-loader" aria-busy="true" aria-label="Cargando Vivero Takumi">
+      <span class="app-loader__mark" aria-hidden="true">🌿</span>
+      <span class="app-loader__text">Vivero Takumi</span>
     </div>
+    <div id="root"></div>
 
     <noscript>
       <h1>Vivero Takumi</h1>
