@@ -14,11 +14,9 @@
 
 ## Integrantes
 
-| Nombre | Email |
-|--------|-------|
+| Nombre          | Email                      |
+| --------------- | -------------------------- |
 | Gonzalo Reynoso | gonzalo.reynoso9@gmail.com |
-
-*(Completar si el trabajo es grupal — máximo 3 integrantes.)*
 
 ---
 
@@ -32,21 +30,21 @@
 
 La aplicación define **cuatro roles** con permisos distintos:
 
-| Rol | Descripción | Acceso principal |
-|-----|-------------|------------------|
-| **admin** | Administrador del sistema | Dashboard, plantas, categorías, pedidos, usuarios |
-| **manager** | Encargado del vivero | Dashboard, plantas, categorías, pedidos |
-| **empleado** | Personal de depósito | Stock y pedidos (actualizar estados) |
-| **cliente** | Comprador registrado | Catálogo, carrito, checkout, historial de compras y riego |
+| Rol          | Descripción               | Acceso principal                                          |
+| ------------ | ------------------------- | --------------------------------------------------------- |
+| **admin**    | Administrador del sistema | Dashboard, plantas, categorías, pedidos, usuarios         |
+| **manager**  | Encargado del vivero      | Dashboard, plantas, categorías, pedidos                   |
+| **empleado** | Personal de depósito      | Stock y pedidos (actualizar estados)                      |
+| **cliente**  | Comprador registrado      | Catálogo, carrito, checkout, historial de compras y riego |
 
 ### Usuarios de prueba
 
-| Rol | Email | Contraseña |
-|-----|-------|------------|
-| Admin | gonzalo.reynoso9@gmail.com | *(ver `src/data/usuarios.js`)* |
-| Manager | manager@viverotakumi.com | manager123 |
-| Empleado | empleado@viverotakumi.com | emp123 |
-| Cliente | cliente@viverotakumi.com | cli123 |
+| Rol      | Email                      | Contraseña                     |
+| -------- | -------------------------- | ------------------------------ |
+| Admin    | gonzalo.reynoso9@gmail.com | _(ver `src/data/usuarios.js`)_ |
+| Manager  | manager@viverotakumi.com   | manager123                     |
+| Empleado | empleado@viverotakumi.com  | emp123                         |
+| Cliente  | cliente@viverotakumi.com   | cli123                         |
 
 ---
 
@@ -95,15 +93,15 @@ La aplicación define **cuatro roles** con permisos distintos:
 
 ## Tecnologías
 
-| Capa | Tecnología |
-|------|------------|
-| Framework | React 19 |
-| Build | Vite 8 |
-| Routing | React Router 7 |
-| Estilos | Tailwind CSS 3 |
-| Gráficos | Recharts |
-| Iconos | Lucide React |
-| Animaciones | Motion |
+| Capa         | Tecnología                      |
+| ------------ | ------------------------------- |
+| Framework    | React 19                        |
+| Build        | Vite 8                          |
+| Routing      | React Router 7                  |
+| Estilos      | Tailwind CSS 3                  |
+| Gráficos     | Recharts                        |
+| Iconos       | Lucide React                    |
+| Animaciones  | Motion                          |
 | Persistencia | `localStorage` (datos y sesión) |
 
 ---
@@ -115,7 +113,7 @@ pnpm install
 pnpm dev
 ```
 
-Abrir [http://localhost:5173](http://localhost:5173)
+Abrir [http://localhost:5173]
 
 ### Build de producción
 
@@ -130,29 +128,3 @@ Los archivos compilados quedan en la carpeta `dist/`.
 ## Repositorio
 
 **GitHub:** https://github.com/gonreynoso/vivero-takumi
-
-*(Puede reemplazar la carpeta `frontend` en el ZIP de entrega.)*
-
----
-
-## Estructura sugerida del ZIP de entrega
-
-```
-TP_GONZALO_REYNOSO.zip
-├── ENTREGA.md          (o documento Word con este contenido)
-├── frontend/           (código fuente — opcional si se adjunta URL de GitHub)
-│   └── ...repo...
-└── dist/               (build compilado — opcional)
-    └── index.html, assets/, ...
-```
-
----
-
-## Guía rápida para la exposición
-
-1. **Home** — presentar la temática del vivero
-2. **Catálogo + detalle** — mostrar productos y guía de cuidado
-3. **Login como cliente** — carrito, checkout, Mis compras
-4. **Login como admin** — dashboard, CRUD plantas, gestión usuarios
-5. **Login como empleado** — stock y pedidos
-6. **Logout** — demostrar cierre de sesión
