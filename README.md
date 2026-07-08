@@ -43,7 +43,7 @@ pnpm dev
 | Cliente | cliente@viverotakumi.com | cli123 |
 | Empleado | empleado@viverotakumi.com | emp123 |
 | Manager | manager@viverotakumi.com | manager123 |
-| Admin | gonzalo.reynoso9@gmail.com | ver seed / `frontend/src/data/usuarios.js` |
+| Admin | gonzalo.reynoso9@gmail.com | ver `backend/scripts/seed.js` |
 
 ## Repositorio
 
