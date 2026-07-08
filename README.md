@@ -1,30 +1,39 @@
 # Vivero Takumi
 
-SPA de e-commerce para un vivero de plantas. Proyecto de **Plataformas de Desarrollo** (ACN4AP).
+Proyecto de **Plataformas de Desarrollo** (ACN4AP) — Final con frontend React + backend Express.
 
-## Descripción
+## Estructura
 
-Tienda online con catálogo, carrito, checkout y panel de administración. Los datos viven en memoria y `localStorage` (sin backend obligatorio). Incluye roles de usuario, gestión gráfica de plantas/categorías/pedidos/usuarios y funcionalidades propias del rubro: recomendador de plantas, guías de cuidado y seguimiento de riego.
-
-## Requisitos
-
-- Node.js 18+
-- pnpm
-
-## Instalación y desarrollo
-
-```bash
-pnpm install
-pnpm dev
+```
+vivero-takumi/
+├── frontend/          # SPA React (Vite) — puerto 5173
+├── backend/           # API Express + MySQL — puerto 8888
+├── FINAL.md           # Guía del final y demo
+└── ENTREGA.md         # Documentación del TP
 ```
 
-Abrir http://localhost:5173
+## Levantar en desarrollo
 
-## Build
-
+**1. MySQL** (una vez):
 ```bash
-pnpm build
-pnpm preview
+sudo mysql < backend/sql/setup-local.sql
+cd backend && npm install && npm run seed
+```
+
+**2. Backend:**
+```bash
+cd backend
+npm run dev
+# http://localhost:8888 — Swagger: http://localhost:8888/api/docs
+```
+
+**3. Frontend:**
+```bash
+cd frontend
+cp .env.example .env
+pnpm install
+pnpm dev
+# http://localhost:5173
 ```
 
 ## Usuarios de prueba
@@ -34,23 +43,7 @@ pnpm preview
 | Cliente | cliente@viverotakumi.com | cli123 |
 | Empleado | empleado@viverotakumi.com | emp123 |
 | Manager | manager@viverotakumi.com | manager123 |
-| Admin | gonzalo.reynoso9@gmail.com | ver `src/data/usuarios.js` |
-
-## Estructura principal
-
-```
-src/
-├── components/     # UI reutilizable (Navbar, cards, formularios, etc.)
-├── context/        # Auth, datos, carrito, tema, toasts
-├── data/           # Seeds hardcodeados (plantas, usuarios, pedidos)
-├── pages/          # Rutas: tienda, admin, empleado
-├── routes/         # ProtectedRoute (guards por rol)
-└── lib/            # Utilidades (imágenes, riego)
-```
-
-## Documentación de entrega
-
-Ver [ENTREGA.md](./ENTREGA.md) para el documento completo del TP (temática, roles, funcionalidades, guía de exposición).
+| Admin | gonzalo.reynoso9@gmail.com | ver seed / `frontend/src/data/usuarios.js` |
 
 ## Repositorio
 
