@@ -1,68 +1,57 @@
 import { createContext, useContext, useEffect, useState } from 'react'
-import { useData } from './DataContext'
+import { authApi, clearTokens, setTokens, getAccessToken } from '../lib/api'
 
 const AuthContext = createContext(null)
 const SESION_KEY = 'vivero-takumi:sesion'
 
 export function AuthProvider({ children }) {
-  const { usuarios } = useData()
   const [usuario, setUsuario] = useState(null)
+  const [cargando, setCargando] = useState(true)
 
   useEffect(() => {
-    if (!usuarios.length) return
-
-    if (usuario?.id) {
-      const actualizado = usuarios.find((u) => u.id === usuario.id)
-      if (
-        actualizado &&
-        (actualizado.nombre !== usuario.nombre ||
-          actualizado.email !== usuario.email ||
-          actualizado.rol !== usuario.rol ||
-          actualizado.password !== usuario.password)
-      ) {
-        setUsuario(actualizado)
+    async function restaurarSesion() {
+      if (!getAccessToken()) {
+        setCargando(false)
+        return
       }
-      return
+      try {
+        const data = await authApi.me()
+        setUsuario(data.usuario)
+        localStorage.setItem(SESION_KEY, String(data.usuario.id))
+      } catch {
+        clearTokens()
+        localStorage.removeItem(SESION_KEY)
+      } finally {
+        setCargando(false)
+      }
     }
-
-    try {
-      const id = localStorage.getItem(SESION_KEY)
-      if (!id) return
-      const encontrado = usuarios.find((u) => u.id === Number(id))
-      if (encontrado) setUsuario(encontrado)
-      else localStorage.removeItem(SESION_KEY)
-    } catch {
-      void 0
-    }
-  }, [usuarios, usuario?.id])
+    restaurarSesion()
+  }, [])
 
   const login = async (email, password) => {
-    const encontrado = usuarios.find(
-      (u) => u.email === email && u.password === password
-    )
-    if (encontrado) {
-      setUsuario(encontrado)
-      try {
-        localStorage.setItem(SESION_KEY, String(encontrado.id))
-      } catch {
-        void 0
-      }
-      return { ok: true, usuario: encontrado }
+    try {
+      const data = await authApi.login(email, password)
+      setTokens({ accessToken: data.accessToken, refreshToken: data.refreshToken })
+      setUsuario(data.usuario)
+      localStorage.setItem(SESION_KEY, String(data.usuario.id))
+      return { ok: true, usuario: data.usuario }
+    } catch (error) {
+      return { ok: false, error: error.message || 'Email o contraseña incorrectos' }
     }
-    return { ok: false, error: 'Email o contraseña incorrectos' }
   }
 
   const logout = () => {
-    try {
-      localStorage.removeItem(SESION_KEY)
-    } catch {
-      void 0
-    }
+    clearTokens()
+    localStorage.removeItem(SESION_KEY)
     setUsuario(null)
   }
 
+  const actualizarUsuario = (nuevo) => {
+    setUsuario(nuevo)
+  }
+
   return (
-    <AuthContext.Provider value={{ usuario, login, logout }}>
+    <AuthContext.Provider value={{ usuario, login, logout, actualizarUsuario, cargando }}>
       {children}
     </AuthContext.Provider>
   )

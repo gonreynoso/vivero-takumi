@@ -20,6 +20,13 @@ export default defineConfig([
     },
   },
   {
+    files: ['backend/**/*.js'],
+    extends: [js.configs.recommended],
+    languageOptions: {
+      globals: globals.node,
+    },
+  },
+  {
     files: ['netlify/**/*.js'],
     extends: [js.configs.recommended],
     languageOptions: {

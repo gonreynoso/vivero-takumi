@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Outlet } from 'react-router-dom'
 import { Menu } from 'lucide-react'
 import Sidebar from './Sidebar'
+import ApiStatusBanner from './ApiStatusBanner'
 import { useAuth } from '../context/AuthContext'
 
 export default function Layout() {
@@ -10,6 +11,7 @@ export default function Layout() {
 
   return (
     <div className="min-h-screen bg-background dark:bg-gray-900">
+        <ApiStatusBanner />
         <Sidebar
           rol={usuario?.rol}
           abierto={sidebarAbierto}

@@ -89,8 +89,8 @@ function Campo({ icono: Icono, ...props }) {
 
 export default function Checkout() {
   const { itemsSeleccionados, totalSeleccionado, quitarVarios } = useCart()
-  const { agregarPedido, descontarStock, editarUsuario } = useData()
-  const { usuario } = useAuth()
+  const { agregarPedido, editarUsuario } = useData()
+  const { usuario, actualizarUsuario } = useAuth()
   const { mostrarToast } = useToast()
   const navigate = useNavigate()
 
@@ -117,22 +117,11 @@ export default function Checkout() {
 
   const handleConfirmar = async (e) => {
     e.preventDefault()
-    setConfirmado(true)
     const hoy = new Date().toISOString().slice(0, 10)
     const telefono = datosEnvio.telefono || usuario?.telefono || ''
     const dni = datosEnvio.dni || usuario?.dni || ''
     const direccion = esRetiro ? '' : datosEnvio.direccion || usuario?.direccion || ''
     const ciudad = esRetiro ? '' : datosEnvio.ciudad || usuario?.ciudad || ''
-
-    if (usuario) {
-      editarUsuario({
-        ...usuario,
-        telefono: telefono || usuario.telefono,
-        dni: dni || usuario.dni,
-        direccion: direccion || usuario.direccion,
-        ciudad: ciudad || usuario.ciudad,
-      })
-    }
 
     const pedido = {
       clienteEmail: usuario?.email || datosEnvio.email,
@@ -156,32 +145,44 @@ export default function Checkout() {
       estado: 'pendiente',
       fecha: hoy,
     }
-    agregarPedido(pedido)
+
     try {
-      await descontarStock(itemsSeleccionados)
-    } catch (error) {
-      console.error('No se pudo descontar el stock', error)
-    }
-    quitarVarios(itemsSeleccionados.map((item) => item.plantaId))
-    mostrarToast('¡Compra realizada con éxito!')
+      if (usuario) {
+        const actualizado = await editarUsuario({
+          ...usuario,
+          telefono: telefono || usuario.telefono,
+          dni: dni || usuario.dni,
+          direccion: direccion || usuario.direccion,
+          ciudad: ciudad || usuario.ciudad,
+        })
+        actualizarUsuario(actualizado)
+      }
 
-    fetch('/.netlify/functions/enviar-confirmacion', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ pedido }),
-    })
-      .then(async (res) => {
-        if (!res.ok) console.error('No se pudo enviar el mail de confirmación', await res.text())
+      await agregarPedido(pedido)
+      setConfirmado(true)
+      quitarVarios(itemsSeleccionados.map((item) => item.plantaId))
+      mostrarToast('¡Compra realizada con éxito!')
+
+      fetch('/.netlify/functions/enviar-confirmacion', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ pedido }),
       })
-      .catch((error) => console.error('No se pudo enviar el mail de confirmación', error))
+        .then(async (res) => {
+          if (!res.ok) console.error('No se pudo enviar el mail de confirmación', await res.text())
+        })
+        .catch((error) => console.error('No se pudo enviar el mail de confirmación', error))
 
-    navigate('/pedido-confirmado', {
-      state: {
-        pedido,
-        direccion: pedido.clienteDireccion,
-        ultimosDigitos: pedido.ultimosDigitos,
-      },
-    })
+      navigate('/pedido-confirmado', {
+        state: {
+          pedido,
+          direccion: pedido.clienteDireccion,
+          ultimosDigitos: pedido.ultimosDigitos,
+        },
+      })
+    } catch (error) {
+      mostrarToast(error.message || 'No se pudo confirmar la compra', 'info')
+    }
   }
 
   return (

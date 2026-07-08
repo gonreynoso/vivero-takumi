@@ -90,8 +90,8 @@ function AppRoutes() {
 export default function App() {
   return (
     <BrowserRouter>
-      <DataProvider>
-        <AuthProvider>
+      <AuthProvider>
+        <DataProvider>
           <CartProvider>
             <ToastProvider>
               <ThemeProvider>
@@ -99,8 +99,8 @@ export default function App() {
               </ThemeProvider>
             </ToastProvider>
           </CartProvider>
-        </AuthProvider>
-      </DataProvider>
+        </DataProvider>
+      </AuthProvider>
     </BrowserRouter>
   )
 }

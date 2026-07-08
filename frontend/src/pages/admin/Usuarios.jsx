@@ -34,14 +34,14 @@ export default function Usuarios() {
     setUsuarioAEliminar(usuario)
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     try {
       if (modalForm !== 'crear') {
-        editarUsuario({ ...form, id: modalForm.id })
+        await editarUsuario({ ...form, id: modalForm.id })
         mostrarToast('Usuario actualizado correctamente')
       } else {
-        agregarUsuario(form)
+        await agregarUsuario(form)
         mostrarToast('Usuario creado correctamente')
       }
       setModalForm(null)
@@ -50,10 +50,14 @@ export default function Usuarios() {
     }
   }
 
-  const confirmarEliminar = () => {
-    eliminarUsuario(usuarioAEliminar.id)
-    mostrarToast('Usuario eliminado', 'info')
-    setUsuarioAEliminar(null)
+  const confirmarEliminar = async () => {
+    try {
+      await eliminarUsuario(usuarioAEliminar.id)
+      mostrarToast('Usuario eliminado', 'info')
+      setUsuarioAEliminar(null)
+    } catch (error) {
+      mostrarToast(error.message, 'info')
+    }
   }
 
   return (

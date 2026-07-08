@@ -12,7 +12,7 @@ const camposIniciales = {
 };
 
 export default function Registro() {
-  const { usuarios, agregarUsuario } = useData();
+  const { agregarUsuario } = useData();
   const [form, setForm] = useState(camposIniciales);
   const [error, setError] = useState("");
   const [enviando, setEnviando] = useState(false);
@@ -22,7 +22,7 @@ export default function Registro() {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
 
@@ -34,20 +34,21 @@ export default function Registro() {
       setError("Las contraseñas no coinciden");
       return;
     }
-    if (usuarios.some((u) => u.email === form.email)) {
-      setError("Ya existe una cuenta con ese email");
-      return;
-    }
 
     setEnviando(true);
-    agregarUsuario({
-      nombre: form.nombre,
-      email: form.email,
-      password: form.password,
-      rol: "cliente",
-    });
-    setEnviando(false);
-    setEnviado(true);
+    try {
+      await agregarUsuario({
+        nombre: form.nombre,
+        email: form.email,
+        password: form.password,
+        rol: "cliente",
+      });
+      setEnviado(true);
+    } catch (err) {
+      setError(err.message || "No se pudo crear la cuenta");
+    } finally {
+      setEnviando(false);
+    }
   };
 
   if (enviado) {
