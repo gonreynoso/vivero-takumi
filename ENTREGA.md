@@ -142,11 +142,31 @@ El frontend consume datos **solo vía REST** (`frontend/src/lib/api.js`). No acc
 
 ## Cómo ejecutar
 
+### Requisitos previos
+
+- Node.js 18+
+- MySQL 8 en puerto 3306
+- `pnpm` (frontend) y `npm` (backend)
+
+### Archivos `.env` (importante)
+
+Los `.env` **no van en el ZIP ni en el repo**. Al descomprimir o clonar, crearlos desde los examples **antes** de `npm run dev` / `pnpm dev`:
+
+```bash
+cd backend && cp .env.example .env
+cd frontend && cp .env.example .env
+```
+
+El `backend/.env.example` trae valores de desarrollo: usuario MySQL `vivero`, contraseña `vivero123`, base `vivero_takumi`.
+
 ### 1. Base de datos (una vez)
 
 ```bash
 sudo mysql < backend/sql/setup-local.sql
-cd backend && cp .env.example .env && npm install && npm run seed
+cd backend
+cp .env.example .env
+npm install
+npm run seed
 ```
 
 ### 2. Backend
@@ -158,6 +178,8 @@ npm run dev
 
 API: [http://localhost:8888](http://localhost:8888) — Swagger: [http://localhost:8888/api/docs](http://localhost:8888/api/docs)
 
+Si falla por `.env` faltante: `cp .env.example .env` en `backend/`.
+
 ### 3. Frontend
 
 ```bash
@@ -168,6 +190,8 @@ pnpm dev
 ```
 
 SPA: [http://localhost:5173](http://localhost:5173)
+
+El backend debe estar corriendo en `:8888` antes de usar catálogo o login.
 
 ---
 

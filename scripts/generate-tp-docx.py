@@ -216,17 +216,55 @@ def build_document() -> Document:
     )
 
     add_heading(doc, "Ejecución del proyecto")
+
+    add_heading(doc, "Requisitos previos", level=2)
+    for item in [
+        "Node.js 18 o superior",
+        "MySQL 8 corriendo en el puerto 3306",
+        "pnpm instalado (frontend)",
+        "npm instalado (backend)",
+    ]:
+        doc.add_paragraph(item, style="List Bullet")
+
+    add_heading(doc, "Archivos .env (importante)", level=2)
+    doc.add_paragraph(
+        "Los archivos .env no se incluyen en el ZIP ni en el repositorio (contienen "
+        "configuración local y secretos). Al descomprimir o clonar el proyecto, hay que "
+        "crearlos copiando los .env.example antes de ejecutar npm run dev o pnpm dev."
+    )
+    doc.add_paragraph("Backend: cd backend && cp .env.example .env", style="List Bullet")
+    doc.add_paragraph("Frontend: cd frontend && cp .env.example .env", style="List Bullet")
+    doc.add_paragraph(
+        "El .env.example del backend ya trae valores para desarrollo local: usuario MySQL "
+        "vivero, contraseña vivero123, base vivero_takumi, puerto 8888."
+    )
+
     add_heading(doc, "1. Base de datos (una sola vez)", level=2)
     doc.add_paragraph("sudo mysql < backend/sql/setup-local.sql")
-    doc.add_paragraph("cd backend && cp .env.example .env && npm install && npm run seed")
+    doc.add_paragraph(
+        "Eso crea la base vivero_takumi y el usuario vivero / vivero123. "
+        "Luego, en backend/:"
+    )
+    doc.add_paragraph("cp .env.example .env", style="List Bullet")
+    doc.add_paragraph("npm install", style="List Bullet")
+    doc.add_paragraph("npm run seed", style="List Bullet")
 
     add_heading(doc, "2. Backend", level=2)
     doc.add_paragraph("cd backend && npm run dev")
     doc.add_paragraph("API: http://localhost:8888 — Swagger: http://localhost:8888/api/docs")
+    doc.add_paragraph(
+        "Si aparece error de .env faltante, volver al paso 1 y ejecutar cp .env.example .env."
+    )
 
     add_heading(doc, "3. Frontend", level=2)
-    doc.add_paragraph("cd frontend && cp .env.example .env && pnpm install && pnpm dev")
+    doc.add_paragraph("cd frontend", style="List Bullet")
+    doc.add_paragraph("cp .env.example .env", style="List Bullet")
+    doc.add_paragraph("pnpm install", style="List Bullet")
+    doc.add_paragraph("pnpm dev", style="List Bullet")
     doc.add_paragraph("SPA: http://localhost:5173")
+    doc.add_paragraph(
+        "El backend debe estar corriendo en :8888 antes de usar el catálogo o el login."
+    )
 
     add_heading(doc, "Demo sugerida para la defensa")
     for i, item in enumerate(
