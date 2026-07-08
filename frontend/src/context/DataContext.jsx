@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useEffect, useState } from 'react'
+import { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react'
 import { useAuth } from './AuthContext'
 import {
   plantasApi,
@@ -6,6 +6,7 @@ import {
   pedidosApi,
   usuariosApi,
   authApi,
+  checkApiHealth,
 } from '../lib/api'
 
 const DataContext = createContext(null)
@@ -18,6 +19,15 @@ export function DataProvider({ children }) {
   const [usuarios, setUsuarios] = useState([])
   const [cargando, setCargando] = useState(true)
   const [errorApi, setErrorApi] = useState(null)
+  const errorApiRef = useRef(errorApi)
+  errorApiRef.current = errorApi
+
+  const limpiarDatos = useCallback(() => {
+    setPlantas([])
+    setCategorias([])
+    setPedidos([])
+    setUsuarios([])
+  }, [])
 
   const cargarDatos = useCallback(async () => {
     setCargando(true)
@@ -46,14 +56,11 @@ export function DataProvider({ children }) {
       }
     } catch (error) {
       setErrorApi(error.message || 'Error al conectar con el API')
-      setPlantas([])
-      setCategorias([])
-      setPedidos([])
-      setUsuarios([])
+      limpiarDatos()
     } finally {
       setCargando(false)
     }
-  }, [usuario])
+  }, [usuario, limpiarDatos])
 
   useEffect(() => {
     cargarDatos()
@@ -64,6 +71,21 @@ export function DataProvider({ children }) {
     window.addEventListener('focus', recheck)
     return () => window.removeEventListener('focus', recheck)
   }, [cargarDatos])
+
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      try {
+        await checkApiHealth()
+        if (errorApiRef.current) cargarDatos()
+      } catch (error) {
+        setErrorApi(error.message || 'Error al conectar con el API')
+        limpiarDatos()
+        setCargando(false)
+      }
+    }, 10000)
+
+    return () => clearInterval(interval)
+  }, [cargarDatos, limpiarDatos])
 
   const agregarUsuario = async (payload) => {
     if (usuario?.rol === 'admin') {

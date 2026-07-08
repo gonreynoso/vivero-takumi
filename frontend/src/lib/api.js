@@ -21,6 +21,22 @@ export function clearTokens() {
   localStorage.removeItem(REFRESH_KEY)
 }
 
+const API_DOWN_MESSAGE =
+  'No se pudo conectar con el API. ¿Está corriendo el backend? (npm run dev en backend/)'
+
+export async function checkApiHealth() {
+  try {
+    const res = await fetch(`${API_URL}/health`, { cache: 'no-store' })
+    if (!res.ok) throw new Error(API_DOWN_MESSAGE)
+    const data = await res.json().catch(() => ({}))
+    if (!data.success) throw new Error(API_DOWN_MESSAGE)
+    return data
+  } catch (error) {
+    if (error.message === API_DOWN_MESSAGE) throw error
+    throw new Error(API_DOWN_MESSAGE)
+  }
+}
+
 async function refreshAccessToken() {
   const refreshToken = getRefreshToken()
   if (!refreshToken) return null
@@ -52,7 +68,7 @@ export async function apiFetch(path, options = {}) {
   try {
     res = await fetch(`${API_URL}${path}`, fetchOptions)
   } catch {
-    throw new Error('No se pudo conectar con el API. ¿Está corriendo el backend? (npm run dev en backend/)')
+    throw new Error(API_DOWN_MESSAGE)
   }
 
   if (res.status === 401 && getRefreshToken()) {
@@ -62,7 +78,7 @@ export async function apiFetch(path, options = {}) {
       try {
         res = await fetch(`${API_URL}${path}`, { ...options, headers, cache: 'no-store' })
       } catch {
-        throw new Error('No se pudo conectar con el API. ¿Está corriendo el backend? (npm run dev en backend/)')
+        throw new Error(API_DOWN_MESSAGE)
       }
     }
   }
