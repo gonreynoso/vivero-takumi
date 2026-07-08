@@ -14,7 +14,7 @@ async function loadFrontendData() {
 }
 
 const usuariosSeed = [
-  { nombre: 'Gonzalo', email: 'gonzalo.reynoso9@gmail.com', password: 'nmb_yxa8pxa_EFD7hzn', rol: 'admin' },
+  { nombre: 'Gonzalo', email: 'gonzalo.reynoso9@gmail.com', password: 'pcfKNU3gdGFTkkLa2rifMNGPjFJ7oHGx', rol: 'admin' },
   { nombre: 'Empleado Vivero', email: 'empleado@viverotakumi.com', password: 'emp123', rol: 'empleado' },
   { nombre: 'Encargado Vivero', email: 'manager@viverotakumi.com', password: 'manager123', rol: 'manager' },
   { nombre: 'Cliente Ejemplo', email: 'cliente@viverotakumi.com', password: 'cli123', rol: 'cliente' },
