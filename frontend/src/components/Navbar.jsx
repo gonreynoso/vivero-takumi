@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext'
 import { useCart } from '../context/CartContext'
 import { GlowMenu } from './GlowMenu'
 import ThemeToggle from './ThemeToggle'
+import UserMenu from './UserMenu'
 
 const itemsPorRol = {
   cliente: [
@@ -78,20 +79,24 @@ export default function Navbar() {
           </button>
 
           {usuario ? (
-            <>
-              <div className="text-right hidden sm:block">
-                <p className="text-sm font-medium leading-tight text-gray-800 dark:text-gray-100">{usuario.nombre}</p>
-                <p className="text-xs text-gray-400 dark:text-gray-500 leading-tight capitalize">{usuario.rol}</p>
-              </div>
-              <button
-                onClick={handleLogout}
-                aria-label="Cerrar sesión"
-                className="text-sm border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 px-2.5 sm:px-3.5 py-1.5 rounded-full transition-colors whitespace-nowrap"
-              >
-                <span className="hidden sm:inline">Salir</span>
-                <LogOut className="w-4 h-4 sm:hidden" />
-              </button>
-            </>
+            usuario.rol === 'cliente' ? (
+              <UserMenu />
+            ) : (
+              <>
+                <div className="text-right hidden sm:block">
+                  <p className="text-sm font-medium leading-tight text-gray-800 dark:text-gray-100">{usuario.nombre}</p>
+                  <p className="text-xs text-gray-400 dark:text-gray-500 leading-tight capitalize">{usuario.rol}</p>
+                </div>
+                <button
+                  onClick={handleLogout}
+                  aria-label="Cerrar sesión"
+                  className="text-sm border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 px-2.5 sm:px-3.5 py-1.5 rounded-full transition-colors whitespace-nowrap"
+                >
+                  <span className="hidden sm:inline">Salir</span>
+                  <LogOut className="w-4 h-4 sm:hidden" />
+                </button>
+              </>
+            )
           ) : (
             <button
               onClick={() => navigate('/login')}

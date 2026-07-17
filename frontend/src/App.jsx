@@ -30,6 +30,7 @@ import Carrito from './pages/cliente/Carrito'
 import Checkout from './pages/cliente/Checkout'
 import PedidoConfirmado from './pages/cliente/PedidoConfirmado'
 import MisPedidos from './pages/cliente/MisPedidos'
+import Perfil from './pages/cliente/Perfil'
 import Recomendador from './pages/Recomendador'
 
 function AppRoutes() {
@@ -77,6 +78,7 @@ function AppRoutes() {
       <Route element={<ProtectedRoute rolesPermitidos={['cliente']} />}>
         <Route element={<StoreLayout />}>
           <Route path="/mis-pedidos" element={<MisPedidos />} />
+          <Route path="/perfil" element={<Perfil />} />
           <Route path="/mis-plantas" element={<Navigate to="/mis-pedidos" replace />} />
         </Route>
       </Route>
