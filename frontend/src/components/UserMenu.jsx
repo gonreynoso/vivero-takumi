@@ -1,7 +1,17 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { ChevronDown, LogOut, Package, User } from 'lucide-react'
+import { Boxes, ChevronDown, LayoutDashboard, LogOut, Package, User } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
+
+const enlacesPorRol = {
+  cliente: [
+    { to: '/perfil', label: 'Mi perfil', icon: User },
+    { to: '/mis-pedidos', label: 'Mis compras', icon: Package },
+  ],
+  admin: [{ to: '/admin/dashboard', label: 'Panel de administración', icon: LayoutDashboard }],
+  manager: [{ to: '/admin/dashboard', label: 'Panel de administración', icon: LayoutDashboard }],
+  empleado: [{ to: '/empleado/stock', label: 'Panel de empleado', icon: Boxes }],
+}
 
 export default function UserMenu() {
   const { usuario, logout } = useAuth()
@@ -36,6 +46,7 @@ export default function UserMenu() {
   if (!usuario) return null
 
   const iniciales = `${usuario.nombre?.[0] || ''}${usuario.apellido?.[0] || ''}`.toUpperCase() || 'U'
+  const enlaces = enlacesPorRol[usuario.rol] ?? []
 
   const handleLogout = () => {
     setAbierto(false)
@@ -80,24 +91,18 @@ export default function UserMenu() {
             <p className="text-xs text-gray-400 dark:text-gray-500 truncate">{usuario.email}</p>
           </div>
 
-          <Link
-            to="/perfil"
-            role="menuitem"
-            onClick={() => setAbierto(false)}
-            className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
-          >
-            <User className="w-4 h-4 text-gray-400 dark:text-gray-500" />
-            Mi perfil
-          </Link>
-          <Link
-            to="/mis-pedidos"
-            role="menuitem"
-            onClick={() => setAbierto(false)}
-            className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
-          >
-            <Package className="w-4 h-4 text-gray-400 dark:text-gray-500" />
-            Mis compras
-          </Link>
+          {enlaces.map(({ to, label, icon: Icono }) => (
+            <Link
+              key={to}
+              to={to}
+              role="menuitem"
+              onClick={() => setAbierto(false)}
+              className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
+            >
+              <Icono className="w-4 h-4 text-gray-400 dark:text-gray-500" />
+              {label}
+            </Link>
+          ))}
 
           <div className="border-t border-gray-100 dark:border-gray-700 mt-1 pt-1">
             <button

@@ -1,5 +1,5 @@
 import { useNavigate, Link, useLocation } from 'react-router-dom'
-import { Home, Leaf, ShoppingCart, Package, LogOut, Info, Mail, User, Sprout } from 'lucide-react'
+import { Home, Leaf, ShoppingCart, Package, Info, Mail, User, Sprout } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 import { useCart } from '../context/CartContext'
 import { GlowMenu } from './GlowMenu'
@@ -25,15 +25,10 @@ const itemsPorRol = {
 }
 
 export default function Navbar() {
-  const { usuario, logout } = useAuth()
+  const { usuario } = useAuth()
   const cart = useCart()
   const navigate = useNavigate()
   const location = useLocation()
-
-  const handleLogout = () => {
-    logout()
-    navigate('/login')
-  }
 
   const items = itemsPorRol[usuario?.rol] ?? itemsPorRol.invitado
   const activeItem = items?.find((item) =>
@@ -79,24 +74,7 @@ export default function Navbar() {
           </button>
 
           {usuario ? (
-            usuario.rol === 'cliente' ? (
-              <UserMenu />
-            ) : (
-              <>
-                <div className="text-right hidden sm:block">
-                  <p className="text-sm font-medium leading-tight text-gray-800 dark:text-gray-100">{usuario.nombre}</p>
-                  <p className="text-xs text-gray-400 dark:text-gray-500 leading-tight capitalize">{usuario.rol}</p>
-                </div>
-                <button
-                  onClick={handleLogout}
-                  aria-label="Cerrar sesión"
-                  className="text-sm border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 px-2.5 sm:px-3.5 py-1.5 rounded-full transition-colors whitespace-nowrap"
-                >
-                  <span className="hidden sm:inline">Salir</span>
-                  <LogOut className="w-4 h-4 sm:hidden" />
-                </button>
-              </>
-            )
+            <UserMenu />
           ) : (
             <button
               onClick={() => navigate('/login')}

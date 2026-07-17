@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { NavLink, useNavigate } from 'react-router-dom'
+import { Link, NavLink, useNavigate } from 'react-router-dom'
 import {
   LayoutDashboard,
   Leaf,
@@ -10,6 +10,7 @@ import {
   LogOut,
   Moon,
   MoreVertical,
+  Store,
   Sun,
   X,
 } from 'lucide-react'
@@ -153,6 +154,17 @@ export default function Sidebar({ rol, abierto, onCerrar }) {
                   <div className="absolute z-10 top-10 right-0 w-56 rounded-lg bg-white dark:bg-gray-800 shadow-md border border-gray-100 dark:border-gray-700 text-sm text-gray-600 dark:text-gray-300">
                     <div className="p-2 text-left">
                       <span className="block text-gray-400 dark:text-gray-500 p-2 truncate">{usuario?.email}</span>
+                      <Link
+                        to="/"
+                        onClick={() => {
+                          setMenuAbierto(false)
+                          onCerrar?.()
+                        }}
+                        className="flex items-center gap-2 w-full p-2 text-left rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 active:bg-gray-200 dark:active:bg-gray-600 duration-150"
+                      >
+                        <Store className="w-4 h-4" />
+                        Ver el sitio
+                      </Link>
                       <button
                         onClick={handleLogout}
                         className="flex items-center gap-2 w-full p-2 text-left rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 active:bg-gray-200 dark:active:bg-gray-600 duration-150"
