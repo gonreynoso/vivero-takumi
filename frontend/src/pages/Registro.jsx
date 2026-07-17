@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { UserPlus, User, Mail, Lock, MailCheck } from "lucide-react";
+import { UserPlus, User, Mail, Lock, MailCheck, Eye, EyeOff } from "lucide-react";
 import { useData } from "../context/DataContext";
 
 const camposIniciales = {
@@ -17,6 +17,8 @@ export default function Registro() {
   const [error, setError] = useState("");
   const [enviando, setEnviando] = useState(false);
   const [enviado, setEnviado] = useState(false);
+  const [mostrarPassword, setMostrarPassword] = useState(false);
+  const [mostrarRepetir, setMostrarRepetir] = useState(false);
 
   const handleChange = (e) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -131,15 +133,23 @@ export default function Registro() {
               <Lock className="w-4 h-4" />
             </span>
             <input
-              type="password"
+              type={mostrarPassword ? "text" : "password"}
               name="password"
               placeholder="Contraseña"
               value={form.password}
               onChange={handleChange}
               required
               minLength={6}
-              className="w-full pl-10 pr-3 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-accent bg-gray-50 text-sm"
+              className="w-full pl-10 pr-10 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-accent bg-gray-50 text-sm"
             />
+            <button
+              type="button"
+              onClick={() => setMostrarPassword((v) => !v)}
+              aria-label={mostrarPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+            >
+              {mostrarPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+            </button>
           </div>
 
           <div className="relative">
@@ -147,15 +157,23 @@ export default function Registro() {
               <Lock className="w-4 h-4" />
             </span>
             <input
-              type="password"
+              type={mostrarRepetir ? "text" : "password"}
               name="repetirPassword"
               placeholder="Repetir contraseña"
               value={form.repetirPassword}
               onChange={handleChange}
               required
               minLength={6}
-              className="w-full pl-10 pr-3 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-accent bg-gray-50 text-sm"
+              className="w-full pl-10 pr-10 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-accent bg-gray-50 text-sm"
             />
+            <button
+              type="button"
+              onClick={() => setMostrarRepetir((v) => !v)}
+              aria-label={mostrarRepetir ? "Ocultar contraseña" : "Mostrar contraseña"}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+            >
+              {mostrarRepetir ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+            </button>
           </div>
 
           {error && <p className="text-sm text-red-500">{error}</p>}
