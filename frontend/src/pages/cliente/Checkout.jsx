@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Navigate, useNavigate } from 'react-router-dom'
-import { Check, CreditCard, IdCard, Lock, Mail, MapPin, Phone, ShieldCheck, Store, Truck, User } from 'lucide-react'
+import { Check, CreditCard, IdCard, Lock, Mail, MapPin, Pencil, Phone, ShieldCheck, Store, Truck, User } from 'lucide-react'
 import { useCart } from '../../context/CartContext'
 import { useData } from '../../context/DataContext'
 import { useAuth } from '../../context/AuthContext'
@@ -87,6 +87,21 @@ function Campo({ icono: Icono, ...props }) {
   )
 }
 
+function DatoResumen({ icono: Icono, etiqueta, valor }) {
+  if (!valor) return null
+  return (
+    <div className="flex items-center gap-3 py-2.5">
+      <span className="flex items-center justify-center w-9 h-9 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-400 dark:text-gray-500 shrink-0">
+        <Icono className="w-4 h-4" />
+      </span>
+      <div className="min-w-0">
+        <p className="text-xs text-gray-400 dark:text-gray-500">{etiqueta}</p>
+        <p className="text-sm text-gray-700 dark:text-gray-200 truncate">{valor}</p>
+      </div>
+    </div>
+  )
+}
+
 export default function Checkout() {
   const { itemsSeleccionados, totalSeleccionado, quitarVarios } = useCart()
   const { agregarPedido, editarUsuario } = useData()
@@ -98,6 +113,7 @@ export default function Checkout() {
   const [datosPago, setDatosPago] = useState(() => datosPagoIniciales(usuario))
   const [metodoEnvio, setMetodoEnvio] = useState('domicilio')
   const [confirmado, setConfirmado] = useState(false)
+  const [editandoEnvio, setEditandoEnvio] = useState(false)
 
   if (itemsSeleccionados.length === 0 && !confirmado) {
     return <Navigate to="/carrito" replace />
@@ -114,6 +130,12 @@ export default function Checkout() {
   const pedirNombre = necesitaCampo(usuario, 'nombre')
   const pedirEmail = necesitaCampo(usuario, 'email')
   const datosCompletos = usuario && !pedirNombre && !pedirEmail && !pedirTelefono && !pedirDni && !pedirDireccion && !pedirCiudad
+
+  // Al editar inline mostramos también los campos ya cargados (los de entrega).
+  const mostrarTelefono = pedirTelefono || editandoEnvio
+  const mostrarDni = pedirDni || (editandoEnvio && !esRetiro)
+  const mostrarDireccion = pedirDireccion || (editandoEnvio && !esRetiro)
+  const mostrarCiudad = pedirCiudad || (editandoEnvio && !esRetiro)
 
   const handleConfirmar = async (e) => {
     e.preventDefault()
@@ -251,11 +273,30 @@ export default function Checkout() {
               titulo={esRetiro ? 'Datos de contacto' : 'Datos de envío'}
               nota={usuario ? '(completá solo lo que falte en tu cuenta)' : null}
             />
-            {datosCompletos ? (
-              <p className="text-sm text-gray-500 dark:text-gray-400">
-                Usamos los datos de tu cuenta ({usuario.email}
-                {!esRetiro && usuario.direccion ? ` · ${usuario.direccion}, ${usuario.ciudad}` : ''}).
-              </p>
+            {datosCompletos && !editandoEnvio ? (
+              <div className="flex flex-col">
+                <div className="divide-y divide-gray-100 dark:divide-gray-700">
+                  <DatoResumen icono={User} etiqueta="Nombre" valor={datosEnvio.nombre} />
+                  <DatoResumen icono={Mail} etiqueta="Email" valor={usuario.email} />
+                  <DatoResumen icono={Phone} etiqueta="Teléfono" valor={usuario.telefono} />
+                  {!esRetiro && <DatoResumen icono={IdCard} etiqueta="DNI" valor={usuario.dni} />}
+                  {!esRetiro && (
+                    <DatoResumen
+                      icono={MapPin}
+                      etiqueta="Dirección"
+                      valor={usuario.ciudad ? `${usuario.direccion}, ${usuario.ciudad}` : usuario.direccion}
+                    />
+                  )}
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setEditandoEnvio(true)}
+                  className="flex items-center gap-1.5 text-sm text-primary dark:text-accent font-medium hover:underline mt-3 self-start"
+                >
+                  <Pencil className="w-3.5 h-3.5" />
+                  Editar mis datos
+                </button>
+              </div>
             ) : (
               <>
             {pedirNombre && (
@@ -277,7 +318,7 @@ export default function Checkout() {
                 placeholder={esRetiro ? 'Email, para avisarte cuando esté listo' : 'Email, para coordinar la entrega'}
               />
             )}
-            {pedirTelefono && (
+            {mostrarTelefono && (
               <Campo
                 icono={Phone}
                 type="tel"
@@ -287,7 +328,7 @@ export default function Checkout() {
                 placeholder="Teléfono de contacto"
               />
             )}
-            {pedirDni && (
+            {mostrarDni && (
               <Campo
                 icono={IdCard}
                 value={datosEnvio.dni}
@@ -296,7 +337,7 @@ export default function Checkout() {
                 placeholder="DNI"
               />
             )}
-            {pedirDireccion && (
+            {mostrarDireccion && (
               <Campo
                 icono={MapPin}
                 value={datosEnvio.direccion}
@@ -305,7 +346,7 @@ export default function Checkout() {
                 placeholder="Dirección de entrega"
               />
             )}
-            {pedirCiudad && (
+            {mostrarCiudad && (
               <Campo
                 icono={MapPin}
                 value={datosEnvio.ciudad}
@@ -313,6 +354,16 @@ export default function Checkout() {
                 required
                 placeholder="Ciudad"
               />
+            )}
+            {datosCompletos && editandoEnvio && (
+              <button
+                type="button"
+                onClick={() => setEditandoEnvio(false)}
+                className="flex items-center gap-1.5 text-sm text-gray-500 dark:text-gray-400 font-medium hover:text-gray-700 dark:hover:text-gray-200 self-start"
+              >
+                <Check className="w-3.5 h-3.5" />
+                Listo
+              </button>
             )}
               </>
             )}
