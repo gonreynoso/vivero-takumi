@@ -39,10 +39,10 @@ export default function Nosotros() {
           <span className="inline-flex self-start bg-primary/10 text-primary text-xs font-medium px-3 py-1.5 rounded-full">
             Sobre nosotros
           </span>
-          <h1 className="text-3xl sm:text-4xl font-bold text-gray-900">
+          <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-gray-100">
             Hacemos que cuidar plantas sea fácil
           </h1>
-          <p className="text-gray-600 leading-relaxed">
+          <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
             Vivero Takumi nació de una idea simple: que cualquiera, sin importar su
             experiencia, pueda llenar su casa de vida verde. Empezamos como un pequeño
             vivero familiar y hoy ayudamos a miles de personas a encontrar, cuidar y
@@ -66,29 +66,29 @@ export default function Nosotros() {
         {stats.map((stat) => (
           <div
             key={stat.etiqueta}
-            className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 text-center"
+            className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm p-5 text-center"
           >
             <p className="text-2xl font-bold text-primary">{stat.valor}</p>
-            <p className="text-sm text-gray-500 mt-1">{stat.etiqueta}</p>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{stat.etiqueta}</p>
           </div>
         ))}
       </section>
 
       <section>
-        <h2 className="text-xl font-bold text-gray-800 mb-5 text-center">Nuestros valores</h2>
+        <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-5 text-center">Nuestros valores</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {valores.map((valor) => {
             const Icon = valor.icon
             return (
               <div
                 key={valor.titulo}
-                className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 flex flex-col items-center text-center gap-2"
+                className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm p-5 flex flex-col items-center text-center gap-2"
               >
-                <span className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+                <span className="w-12 h-12 rounded-full bg-primary/10 dark:bg-primary/20 flex items-center justify-center text-primary">
                   <Icon className="w-6 h-6" />
                 </span>
-                <h3 className="font-semibold text-gray-800">{valor.titulo}</h3>
-                <p className="text-sm text-gray-500">{valor.descripcion}</p>
+                <h3 className="font-semibold text-gray-800 dark:text-gray-100">{valor.titulo}</h3>
+                <p className="text-sm text-gray-500 dark:text-gray-400">{valor.descripcion}</p>
               </div>
             )
           })}

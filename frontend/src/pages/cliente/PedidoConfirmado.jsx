@@ -17,36 +17,36 @@ export default function PedidoConfirmado() {
         <div className="flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 text-primary">
           <CheckCircle2 className="w-9 h-9" />
         </div>
-        <h1 className="text-2xl font-bold text-gray-800">¡Compra realizada con éxito!</h1>
-        <p className="text-sm text-gray-500">
+        <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100">¡Compra realizada con éxito!</h1>
+        <p className="text-sm text-gray-500 dark:text-gray-400">
           Te enviamos los detalles a {pedido.clienteEmail}. Pronto nos pondremos en contacto para coordinar la entrega.
         </p>
       </div>
 
-      <div className="w-full bg-white rounded-2xl shadow-sm border border-gray-100 p-5 flex flex-col gap-3.5">
-        <h2 className="font-semibold text-gray-800">Resumen del pedido</h2>
-        <ul className="divide-y divide-gray-100">
+      <div className="w-full bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-5 flex flex-col gap-3.5">
+        <h2 className="font-semibold text-gray-800 dark:text-gray-100">Resumen del pedido</h2>
+        <ul className="divide-y divide-gray-100 dark:divide-gray-700">
           {pedido.items.map((item) => (
-            <li key={item.plantaId} className="py-2 flex items-center justify-between text-sm text-gray-600">
+            <li key={item.plantaId} className="py-2 flex items-center justify-between text-sm text-gray-600 dark:text-gray-300">
               <span>{item.cantidad} × {item.nombre}</span>
               <span>${item.precio * item.cantidad}</span>
             </li>
           ))}
         </ul>
         {pedido.costoEnvio != null && (
-          <div className="flex items-center justify-between text-sm text-gray-600 pt-1">
+          <div className="flex items-center justify-between text-sm text-gray-600 dark:text-gray-300 pt-1">
             <span>Productos</span>
             <span>${pedido.total - pedido.costoEnvio}</span>
           </div>
         )}
         {pedido.costoEnvio != null && (
-          <div className="flex items-center justify-between text-sm text-gray-600">
+          <div className="flex items-center justify-between text-sm text-gray-600 dark:text-gray-300">
             <span>Envío</span>
             <span>{pedido.costoEnvio > 0 ? `$${pedido.costoEnvio}` : 'Gratis'}</span>
           </div>
         )}
-        <div className="border-t border-dashed border-gray-200 pt-3.5 flex items-center justify-between">
-          <span className="font-semibold text-gray-800">Total</span>
+        <div className="border-t border-dashed border-gray-200 dark:border-gray-700 pt-3.5 flex items-center justify-between">
+          <span className="font-semibold text-gray-800 dark:text-gray-100">Total</span>
           <span className="text-xl font-bold text-primary">${pedido.total}</span>
         </div>
       </div>

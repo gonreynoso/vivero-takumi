@@ -31,13 +31,13 @@ export default function Carrito() {
         <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-primary/10 text-primary">
           <ShoppingBag className="w-5 h-5" />
         </div>
-        <h1 className="text-2xl font-bold text-gray-800">Carrito ({items.length})</h1>
+        <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100">Carrito ({items.length})</h1>
       </div>
 
       <div className="grid lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 flex flex-col gap-3">
-          <div className="flex items-center justify-between bg-white rounded-2xl border border-gray-100 px-5 py-3.5">
-            <label className="flex items-center gap-2 text-sm font-medium text-gray-700 cursor-pointer">
+          <div className="flex items-center justify-between bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 px-5 py-3.5">
+            <label className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300 cursor-pointer">
               <input
                 type="checkbox"
                 checked={todosSeleccionados}
@@ -48,7 +48,7 @@ export default function Carrito() {
             </label>
             <button
               onClick={vaciarCarrito}
-              className="flex items-center gap-1.5 text-sm text-gray-400 hover:text-red-500 transition-colors"
+              className="flex items-center gap-1.5 text-sm text-gray-400 dark:text-gray-500 hover:text-red-500 transition-colors"
             >
               <Trash2 className="w-4 h-4" />
               Vaciar carrito
@@ -72,21 +72,21 @@ export default function Carrito() {
         </div>
 
         <div className="lg:sticky lg:top-6 lg:self-start flex flex-col gap-4">
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 flex flex-col gap-3.5">
-            <h2 className="font-semibold text-gray-800">Resumen de compra</h2>
-            <div className="flex items-center justify-between text-sm text-gray-600">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-5 flex flex-col gap-3.5">
+            <h2 className="font-semibold text-gray-800 dark:text-gray-100">Resumen de compra</h2>
+            <div className="flex items-center justify-between text-sm text-gray-600 dark:text-gray-300">
               <span>Productos ({cantidadSeleccionada})</span>
               <span>${totalSeleccionado}</span>
             </div>
-            <div className="flex items-center justify-between text-sm text-gray-600">
+            <div className="flex items-center justify-between text-sm text-gray-600 dark:text-gray-300">
               <span className="flex items-center gap-1.5">
                 <Truck className="w-4 h-4 text-accent" />
                 Envío
               </span>
-              <span className="text-gray-400 font-medium">Se calcula en el siguiente paso</span>
+              <span className="text-gray-400 dark:text-gray-500 font-medium">Se calcula en el siguiente paso</span>
             </div>
-            <div className="border-t border-dashed border-gray-200 pt-3.5 flex items-center justify-between">
-              <span className="font-semibold text-gray-800">Total</span>
+            <div className="border-t border-dashed border-gray-200 dark:border-gray-700 pt-3.5 flex items-center justify-between">
+              <span className="font-semibold text-gray-800 dark:text-gray-100">Total</span>
               <span className="text-xl font-bold text-primary">${totalSeleccionado}</span>
             </div>
           </div>

@@ -26,7 +26,7 @@ export default function QuizRecomendador({ plantas }) {
     return (
       <div className="flex flex-col gap-6">
         <div className="flex items-center justify-between">
-          <h2 className="text-xl font-bold text-gray-800">Estas plantas son para vos</h2>
+          <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100">Estas plantas son para vos</h2>
           <button
             onClick={reiniciar}
             className="flex items-center gap-1.5 text-sm text-primary hover:underline"
@@ -50,24 +50,24 @@ export default function QuizRecomendador({ plantas }) {
   }
 
   return (
-    <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 sm:p-8 flex flex-col gap-6">
+    <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm p-6 sm:p-8 flex flex-col gap-6">
       <div className="flex items-center gap-2">
         {preguntasRecomendador.map((_, i) => (
           <span
             key={i}
-            className={`h-1.5 flex-1 rounded-full ${i <= paso ? 'bg-primary' : 'bg-gray-100'}`}
+            className={`h-1.5 flex-1 rounded-full ${i <= paso ? 'bg-primary' : 'bg-gray-100 dark:bg-gray-700'}`}
           />
         ))}
       </div>
 
-      <h2 className="text-xl font-semibold text-gray-800">{preguntaActual.pregunta}</h2>
+      <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100">{preguntaActual.pregunta}</h2>
 
       <div className="flex flex-col gap-3">
         {preguntaActual.opciones.map((opcion) => (
           <button
             key={opcion.valor}
             onClick={() => elegirOpcion(preguntaActual.id, opcion.valor)}
-            className="text-left px-4 py-3 rounded-xl border border-gray-200 hover:border-primary hover:bg-primary/5 transition-colors text-sm font-medium text-gray-700"
+            className="text-left px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-primary hover:bg-primary/5 transition-colors text-sm font-medium text-gray-700 dark:text-gray-200"
           >
             {opcion.label}
           </button>

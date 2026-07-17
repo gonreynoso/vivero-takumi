@@ -52,7 +52,7 @@ export default function DetallePlanta() {
         ← Volver al catálogo
       </button>
 
-      <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 grid md:grid-cols-2 gap-6">
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 grid md:grid-cols-2 gap-6">
         <div className="flex flex-col gap-3">
           <button
             onClick={() => setLightboxAbierto(true)}
@@ -63,8 +63,8 @@ export default function DetallePlanta() {
               alt={planta.nombre}
               className="w-full h-full object-cover"
             />
-            <span className="absolute bottom-3 right-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur flex items-center justify-center shadow-sm opacity-0 group-hover:opacity-100 transition-opacity">
-              <ZoomIn className="w-4 h-4 text-gray-700" />
+            <span className="absolute bottom-3 right-3 w-9 h-9 rounded-full bg-white/90 dark:bg-gray-800/90 backdrop-blur flex items-center justify-center shadow-sm opacity-0 group-hover:opacity-100 transition-opacity">
+              <ZoomIn className="w-4 h-4 text-gray-700 dark:text-gray-200" />
             </span>
           </button>
 
@@ -75,7 +75,7 @@ export default function DetallePlanta() {
                   key={i}
                   onClick={() => setImagenActiva(i)}
                   className={`aspect-square rounded-lg overflow-hidden border-2 transition-colors ${
-                    i === imagenActiva ? 'border-primary' : 'border-transparent hover:border-gray-200'
+                    i === imagenActiva ? 'border-primary' : 'border-transparent hover:border-gray-200 dark:hover:border-gray-600'
                   }`}
                 >
                   <img src={img} alt={`${planta.nombre} ${i + 1}`} className="w-full h-full object-cover" />
@@ -87,19 +87,19 @@ export default function DetallePlanta() {
 
         <div className="flex flex-col gap-4">
           <div className="flex items-start justify-between gap-2">
-            <h1 className="text-2xl font-bold text-gray-800">{planta.nombre}</h1>
+            <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100">{planta.nombre}</h1>
             <div className="flex gap-1.5 shrink-0">
               {!habilitada && <Badge color="gris">Deshabilitada</Badge>}
               <Badge color={colorDificultad[planta.dificultad]}>{planta.dificultad}</Badge>
             </div>
           </div>
-          <p className="text-sm text-gray-500">{planta.categoria}</p>
-          <p className="text-gray-600">{planta.descripcion}</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400">{planta.categoria}</p>
+          <p className="text-gray-600 dark:text-gray-300">{planta.descripcion}</p>
 
           <div className="flex items-center justify-between">
             <div>
               <span className="text-2xl font-bold text-primary">${formatoEntero.format(planta.precio)}</span>
-              <p className="text-xs text-gray-400">
+              <p className="text-xs text-gray-400 dark:text-gray-500">
                 {CUOTAS} cuotas sin interés de ${formatoDecimal.format(planta.precio / CUOTAS)}
               </p>
             </div>
@@ -116,16 +116,16 @@ export default function DetallePlanta() {
             {habilitada ? 'Agregar al carrito' : 'No disponible'}
           </button>
 
-          <div className="flex flex-col divide-y divide-gray-100 border border-gray-100 rounded-xl">
+          <div className="flex flex-col divide-y divide-gray-100 dark:divide-gray-700 border border-gray-100 dark:border-gray-700 rounded-xl">
             <details className="group p-4" open>
-              <summary className="flex items-center justify-between gap-2 cursor-pointer font-semibold text-gray-800 text-sm">
+              <summary className="flex items-center justify-between gap-2 cursor-pointer font-semibold text-gray-800 dark:text-gray-100 text-sm">
                 <span className="flex items-center gap-2">
                   <CreditCard className="w-4 h-4 text-accent" />
                   Medios de pago
                 </span>
-                <span className="text-gray-400 group-open:rotate-180 transition-transform">⌄</span>
+                <span className="text-gray-400 dark:text-gray-500 group-open:rotate-180 transition-transform">⌄</span>
               </summary>
-              <div className="mt-3 text-sm text-gray-600 flex flex-col gap-1.5">
+              <div className="mt-3 text-sm text-gray-600 dark:text-gray-300 flex flex-col gap-1.5">
                 <p>
                   {CUOTAS} cuotas sin interés de ${formatoDecimal.format(planta.precio / CUOTAS)}
                 </p>
@@ -134,28 +134,28 @@ export default function DetallePlanta() {
             </details>
 
             <details className="group p-4" open>
-              <summary className="flex items-center justify-between gap-2 cursor-pointer font-semibold text-gray-800 text-sm">
+              <summary className="flex items-center justify-between gap-2 cursor-pointer font-semibold text-gray-800 dark:text-gray-100 text-sm">
                 <span className="flex items-center gap-2">
                   <Info className="w-4 h-4 text-accent" />
                   Importante
                 </span>
-                <span className="text-gray-400 group-open:rotate-180 transition-transform">⌄</span>
+                <span className="text-gray-400 dark:text-gray-500 group-open:rotate-180 transition-transform">⌄</span>
               </summary>
-              <div className="mt-3 text-sm text-gray-600 flex flex-col gap-1.5">
+              <div className="mt-3 text-sm text-gray-600 dark:text-gray-300 flex flex-col gap-1.5">
                 <p>Las fotos son ilustrativas: podés recibir variaciones naturales propias de cada ejemplar.</p>
                 <p>¿Tenés dudas sobre esta planta? Escribinos desde la página de Contacto.</p>
               </div>
             </details>
 
             <details className="group p-4" open>
-              <summary className="flex items-center justify-between gap-2 cursor-pointer font-semibold text-gray-800 text-sm">
+              <summary className="flex items-center justify-between gap-2 cursor-pointer font-semibold text-gray-800 dark:text-gray-100 text-sm">
                 <span className="flex items-center gap-2">
                   <MapPin className="w-4 h-4 text-accent" />
                   Retiro en local
                 </span>
-                <span className="text-gray-400 group-open:rotate-180 transition-transform">⌄</span>
+                <span className="text-gray-400 dark:text-gray-500 group-open:rotate-180 transition-transform">⌄</span>
               </summary>
-              <div className="mt-3 text-sm text-gray-600 flex flex-col gap-1.5">
+              <div className="mt-3 text-sm text-gray-600 dark:text-gray-300 flex flex-col gap-1.5">
                 <p>Ruta 8 km 45, Buenos Aires</p>
                 <p>Lunes a viernes de 9 a 18 hs</p>
               </div>
@@ -165,7 +165,7 @@ export default function DetallePlanta() {
       </div>
 
       <div>
-        <h2 className="font-semibold text-gray-800 mb-3 flex items-center gap-2">
+        <h2 className="font-semibold text-gray-800 dark:text-gray-100 mb-3 flex items-center gap-2">
           <Sprout className="w-4 h-4 text-accent" />
           Guía de cuidado
         </h2>

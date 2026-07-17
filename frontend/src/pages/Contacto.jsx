@@ -50,8 +50,8 @@ export default function Contacto() {
         <span className="inline-flex self-center bg-primary/10 text-primary text-xs font-medium px-3 py-1.5 rounded-full">
           Contacto
         </span>
-        <h1 className="text-3xl font-bold text-gray-900">¿En qué te podemos ayudar?</h1>
-        <p className="text-gray-600">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">¿En qué te podemos ayudar?</h1>
+        <p className="text-gray-600 dark:text-gray-300">
           Escribinos por el formulario o por cualquiera de nuestros canales y te respondemos a la brevedad.
         </p>
       </div>
@@ -59,7 +59,7 @@ export default function Contacto() {
       <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto w-full">
         <form
           onSubmit={handleSubmit}
-          className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 flex flex-col gap-4"
+          className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm p-6 flex flex-col gap-4"
         >
           <input
             type="text"
@@ -73,32 +73,32 @@ export default function Contacto() {
           />
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Nombre</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Nombre</label>
             <input
               value={form.nombre}
               onChange={(e) => setForm({ ...form, nombre: e.target.value })}
               required
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent"
+              className="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email</label>
             <input
               type="email"
               value={form.email}
               onChange={(e) => setForm({ ...form, email: e.target.value })}
               required
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent"
+              className="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Mensaje</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Mensaje</label>
             <textarea
               value={form.mensaje}
               onChange={(e) => setForm({ ...form, mensaje: e.target.value })}
               required
               rows={4}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent"
+              className="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent"
             />
           </div>
           <button
@@ -112,15 +112,15 @@ export default function Contacto() {
         </form>
 
         <div className="flex flex-col gap-4">
-          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 flex flex-col gap-4">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm p-6 flex flex-col gap-4">
             {infoContacto.map((item) => {
               const Icon = item.icon
               return (
                 <div key={item.texto} className="flex items-center gap-3">
-                  <span className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary flex-shrink-0">
+                  <span className="w-10 h-10 rounded-full bg-primary/10 dark:bg-primary/20 flex items-center justify-center text-primary flex-shrink-0">
                     <Icon className="w-5 h-5" />
                   </span>
-                  <span className="text-gray-700">{item.texto}</span>
+                  <span className="text-gray-700 dark:text-gray-300">{item.texto}</span>
                 </div>
               )
             })}

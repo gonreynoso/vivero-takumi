@@ -65,9 +65,9 @@ function PasoHeader({ numero, titulo, nota }) {
       <span className="flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-br from-accent to-primary text-white text-sm font-semibold shrink-0">
         {numero}
       </span>
-      <h2 className="font-semibold text-gray-800">
+      <h2 className="font-semibold text-gray-800 dark:text-gray-100">
         {titulo}
-        {nota && <span className="ml-2 text-xs font-normal text-gray-400">{nota}</span>}
+        {nota && <span className="ml-2 text-xs font-normal text-gray-400 dark:text-gray-500">{nota}</span>}
       </h2>
     </div>
   )
@@ -76,12 +76,12 @@ function PasoHeader({ numero, titulo, nota }) {
 function Campo({ icono: Icono, ...props }) {
   return (
     <div className="relative">
-      <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400">
+      <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500">
         <Icono className="w-4 h-4" />
       </span>
       <input
         {...props}
-        className="w-full pl-10 pr-3 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent bg-gray-50 text-sm transition"
+        className="w-full pl-10 pr-3 py-3 rounded-xl border border-gray-200 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent bg-gray-50 dark:bg-gray-900 dark:text-gray-100 text-sm transition"
       />
     </div>
   )
@@ -188,13 +188,13 @@ export default function Checkout() {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-800">Finalizar compra</h1>
-        <p className="text-sm text-gray-500 mt-0.5">Completá los siguientes pasos para confirmar tu pedido</p>
+        <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100">Finalizar compra</h1>
+        <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">Completá los siguientes pasos para confirmar tu pedido</p>
       </div>
 
       <form onSubmit={handleConfirmar} className="grid lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 flex flex-col gap-5">
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 flex flex-col gap-4">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-5 flex flex-col gap-4">
             <PasoHeader numero={1} titulo="Método de envío" />
             <div className="grid sm:grid-cols-2 gap-3">
               {METODOS_ENVIO.map((metodo) => {
@@ -205,7 +205,7 @@ export default function Checkout() {
                     key={metodo.id}
                     className={cn(
                       'relative flex flex-col gap-2.5 p-4 rounded-2xl border-2 cursor-pointer transition',
-                      seleccionado ? 'border-accent bg-accent/5' : 'border-gray-100 hover:border-gray-200'
+                      seleccionado ? 'border-accent bg-accent/5' : 'border-gray-100 dark:border-gray-700 hover:border-gray-200 dark:hover:border-gray-600'
                     )}
                   >
                     <input
@@ -219,7 +219,7 @@ export default function Checkout() {
                     <span
                       className={cn(
                         'absolute top-3 right-3 flex items-center justify-center w-5 h-5 rounded-full transition',
-                        seleccionado ? 'bg-accent text-white' : 'bg-gray-100 text-transparent'
+                        seleccionado ? 'bg-accent text-white' : 'bg-gray-100 dark:bg-gray-700 text-transparent'
                       )}
                     >
                       <Check className="w-3 h-3" />
@@ -227,14 +227,14 @@ export default function Checkout() {
                     <span
                       className={cn(
                         'flex items-center justify-center w-10 h-10 rounded-xl',
-                        seleccionado ? 'bg-accent/15 text-accent' : 'bg-gray-100 text-gray-400'
+                        seleccionado ? 'bg-accent/15 text-accent' : 'bg-gray-100 dark:bg-gray-700 text-gray-400 dark:text-gray-500'
                       )}
                     >
                       <Icono className="w-5 h-5" />
                     </span>
                     <span className="flex flex-col gap-0.5 pr-4">
-                      <span className="font-medium text-sm text-gray-800">{metodo.titulo}</span>
-                      <span className="text-xs text-gray-500">{metodo.descripcion}</span>
+                      <span className="font-medium text-sm text-gray-800 dark:text-gray-100">{metodo.titulo}</span>
+                      <span className="text-xs text-gray-500 dark:text-gray-400">{metodo.descripcion}</span>
                     </span>
                     <span className="text-sm font-semibold text-primary">
                       {metodo.costo > 0 ? `$${metodo.costo}` : 'Gratis'}
@@ -245,14 +245,14 @@ export default function Checkout() {
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 flex flex-col gap-3.5">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-5 flex flex-col gap-3.5">
             <PasoHeader
               numero={2}
               titulo={esRetiro ? 'Datos de contacto' : 'Datos de envío'}
               nota={usuario ? '(completá solo lo que falte en tu cuenta)' : null}
             />
             {datosCompletos ? (
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-gray-500 dark:text-gray-400">
                 Usamos los datos de tu cuenta ({usuario.email}
                 {!esRetiro && usuario.direccion ? ` · ${usuario.direccion}, ${usuario.ciudad}` : ''}).
               </p>
@@ -318,7 +318,7 @@ export default function Checkout() {
             )}
           </div>
 
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 flex flex-col gap-3.5">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-5 flex flex-col gap-3.5">
             <PasoHeader numero={3} titulo="Datos de pago" />
             <Campo
               icono={User}
@@ -347,7 +347,7 @@ export default function Checkout() {
                 inputMode="numeric"
                 placeholder="MM/AA"
                 maxLength={5}
-                className="w-full px-3 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent bg-gray-50 text-sm transition"
+                className="w-full px-3 py-3 rounded-xl border border-gray-200 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent bg-gray-50 dark:bg-gray-900 dark:text-gray-100 text-sm transition"
               />
               <Campo
                 icono={Lock}
@@ -359,7 +359,7 @@ export default function Checkout() {
                 placeholder="CVV"
               />
             </div>
-            <p className="flex items-center gap-1.5 text-xs text-gray-400">
+            <p className="flex items-center gap-1.5 text-xs text-gray-400 dark:text-gray-500">
               <ShieldCheck className="w-3.5 h-3.5" />
               Tus datos de pago están protegidos
             </p>
@@ -367,37 +367,37 @@ export default function Checkout() {
         </div>
 
         <div className="lg:sticky lg:top-6 lg:self-start flex flex-col gap-4">
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden flex flex-col">
             <div className="p-5 flex flex-col gap-3.5">
-              <h2 className="font-semibold text-gray-800">Resumen de compra</h2>
+              <h2 className="font-semibold text-gray-800 dark:text-gray-100">Resumen de compra</h2>
               <div className="flex flex-col gap-3 max-h-56 overflow-y-auto pr-1">
                 {itemsSeleccionados.map((item) => (
                   <div key={item.plantaId} className="flex items-center gap-3 text-sm">
                     <img
                       src={item.imagen}
                       alt={item.nombre}
-                      className="w-11 h-11 rounded-lg object-cover bg-gray-100 shrink-0"
+                      className="w-11 h-11 rounded-lg object-cover bg-gray-100 dark:bg-gray-700 shrink-0"
                     />
-                    <span className="flex-1 truncate text-gray-600">
+                    <span className="flex-1 truncate text-gray-600 dark:text-gray-300">
                       {item.cantidad} × {item.nombre}
                     </span>
-                    <span className="shrink-0 text-gray-700 font-medium">${item.precio * item.cantidad}</span>
+                    <span className="shrink-0 text-gray-700 dark:text-gray-200 font-medium">${item.precio * item.cantidad}</span>
                   </div>
                 ))}
               </div>
-              <div className="border-t border-dashed border-gray-200 pt-3.5 flex flex-col gap-2">
-                <div className="flex items-center justify-between text-sm text-gray-600">
+              <div className="border-t border-dashed border-gray-200 dark:border-gray-700 pt-3.5 flex flex-col gap-2">
+                <div className="flex items-center justify-between text-sm text-gray-600 dark:text-gray-300">
                   <span>Productos</span>
                   <span>${totalSeleccionado}</span>
                 </div>
-                <div className="flex items-center justify-between text-sm text-gray-600">
+                <div className="flex items-center justify-between text-sm text-gray-600 dark:text-gray-300">
                   <span>Envío</span>
                   <span>{costoEnvio > 0 ? `$${costoEnvio}` : 'Gratis'}</span>
                 </div>
               </div>
             </div>
-            <div className="px-5 py-4 bg-primary/5 flex items-center justify-between">
-              <span className="font-semibold text-gray-800">Total</span>
+            <div className="px-5 py-4 bg-primary/5 dark:bg-primary/10 flex items-center justify-between">
+              <span className="font-semibold text-gray-800 dark:text-gray-100">Total</span>
               <span className="text-xl font-bold text-primary">${totalConEnvio}</span>
             </div>
           </div>
