@@ -1,6 +1,6 @@
 # Vivero Takumi
 
-Proyecto de **Plataformas de Desarrollo** (ACN4AP) — Final con frontend React + backend Express.
+Proyecto de **Plataformas de Desarrollo** (ACN4AV) — Final con frontend React + backend Express.
 
 ## Estructura
 
