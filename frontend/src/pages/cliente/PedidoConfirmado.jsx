@@ -52,8 +52,8 @@ export default function PedidoConfirmado() {
       </div>
 
       <div className="w-full grid sm:grid-cols-2 gap-4">
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 flex flex-col gap-2.5">
-          <h2 className="font-semibold text-gray-800 flex items-center gap-2">
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-5 flex flex-col gap-2.5">
+          <h2 className="font-semibold text-gray-800 dark:text-gray-100 flex items-center gap-2">
             {pedido.metodoEnvio === 'retiro' ? (
               <Store className="w-4 h-4 text-accent" />
             ) : (
@@ -61,32 +61,32 @@ export default function PedidoConfirmado() {
             )}
             {pedido.metodoEnvio === 'retiro' ? 'Retiro en el local' : 'Datos de envío'}
           </h2>
-          <p className="text-sm text-gray-600 flex items-center gap-2">
+          <p className="text-sm text-gray-600 dark:text-gray-300 flex items-center gap-2">
             <User className="w-3.5 h-3.5 text-gray-400" />
             {pedido.clienteNombre}
           </p>
-          <p className="text-sm text-gray-600 flex items-center gap-2">
+          <p className="text-sm text-gray-600 dark:text-gray-300 flex items-center gap-2">
             <Mail className="w-3.5 h-3.5 text-gray-400" />
             {pedido.clienteEmail}
           </p>
           {direccion && (
-            <p className="text-sm text-gray-600 flex items-center gap-2">
+            <p className="text-sm text-gray-600 dark:text-gray-300 flex items-center gap-2">
               <MapPin className="w-3.5 h-3.5 text-gray-400" />
               {direccion}
             </p>
           )}
         </div>
 
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 flex flex-col gap-2.5">
-          <h2 className="font-semibold text-gray-800 flex items-center gap-2">
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-5 flex flex-col gap-2.5">
+          <h2 className="font-semibold text-gray-800 dark:text-gray-100 flex items-center gap-2">
             <CreditCard className="w-4 h-4 text-accent" />
             Método de pago
           </h2>
-          <p className="text-sm text-gray-600">Tarjeta terminada en •••• {ultimosDigitos}</p>
-          <p className="text-sm text-gray-600">
-            Estado: <span className="font-medium text-yellow-600">{pedido.estado}</span>
+          <p className="text-sm text-gray-600 dark:text-gray-300">Tarjeta terminada en •••• {ultimosDigitos}</p>
+          <p className="text-sm text-gray-600 dark:text-gray-300">
+            Estado: <span className="font-medium text-yellow-600 dark:text-yellow-400">{pedido.estado}</span>
           </p>
-          <p className="text-xs text-gray-400">Fecha: {pedido.fecha}</p>
+          <p className="text-xs text-gray-400 dark:text-gray-500">Fecha: {pedido.fecha}</p>
         </div>
       </div>
 
@@ -101,7 +101,7 @@ export default function PedidoConfirmado() {
         )}
         <Link
           to="/catalogo"
-          className={`flex-1 text-center font-medium py-2.5 rounded-xl border border-gray-200 text-gray-700 hover:bg-gray-50 transition ${!usuario ? 'sm:w-full' : ''}`}
+          className={`flex-1 text-center font-medium py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 transition ${!usuario ? 'sm:w-full' : ''}`}
         >
           Seguir comprando
         </Link>
